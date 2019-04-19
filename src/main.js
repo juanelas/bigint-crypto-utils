@@ -97,7 +97,7 @@ export const gcd = function (a, b) {
 export const isProbablyPrime = async function (w, iterations = 16) {
     if (process.browser) {
         return new Promise(resolve => {
-            let worker = _isProbablyPrimeWorker();
+            let worker = new Worker(_isProbablyPrimeWorkerURL());
 
             worker.onmessage = (event) => {
                 worker.terminate();
@@ -189,8 +189,9 @@ export const prime = async function (bitLength, iterations = 16) {
     return new Promise(async (resolve) => {
         if (process.browser) {
             let workerList = [];
+            let workerURL = _isProbablyPrimeWorkerURL();
             for (let i = 0; i < self.navigator.hardwareConcurrency; i++) {
-                let newWorker = _isProbablyPrimeWorker();
+                let newWorker = new Worker(workerURL);
                 newWorker.onmessage = async (event) => {
                     if (event.data.isPrime) {
                         // if a prime number has been found, stop all the workers, and return it
@@ -327,7 +328,7 @@ function bitLength(a) {
     return bits;
 }
 
-function _isProbablyPrimeWorker() {
+function _isProbablyPrimeWorkerURL() {
     async function _onmessage(event) { // Let's start once we are called
         // event.data = {rnd: <bigint>, iterations: <number>}
         const isPrime = await isProbablyPrime(event.data.rnd, event.data.iterations);
@@ -341,7 +342,7 @@ function _isProbablyPrimeWorker() {
 
     var _blob = new Blob([workerCode], { type: 'text/javascript' });
 
-    return new Worker(window.URL.createObjectURL(_blob));
+    return window.URL.createObjectURL(_blob);
 }
 
 async function _isProbablyPrime(w, iterations = 16) {

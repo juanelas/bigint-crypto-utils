@@ -98,7 +98,7 @@ var bigintCryptoUtils = (function (exports) {
     const isProbablyPrime = async function (w, iterations = 16) {
         {
             return new Promise(resolve => {
-                let worker = _isProbablyPrimeWorker();
+                let worker = new Worker(_isProbablyPrimeWorkerURL());
 
                 worker.onmessage = (event) => {
                     worker.terminate();
@@ -188,8 +188,9 @@ var bigintCryptoUtils = (function (exports) {
         return new Promise(async (resolve) => {
             {
                 let workerList = [];
+                let workerURL = _isProbablyPrimeWorkerURL();
                 for (let i = 0; i < self.navigator.hardwareConcurrency; i++) {
-                    let newWorker = _isProbablyPrimeWorker();
+                    let newWorker = new Worker(workerURL);
                     newWorker.onmessage = async (event) => {
                         if (event.data.isPrime) {
                             // if a prime number has been found, stop all the workers, and return it
@@ -310,7 +311,7 @@ var bigintCryptoUtils = (function (exports) {
         return bits;
     }
 
-    function _isProbablyPrimeWorker() {
+    function _isProbablyPrimeWorkerURL() {
         async function _onmessage(event) { // Let's start once we are called
             // event.data = {rnd: <bigint>, iterations: <number>}
             const isPrime = await isProbablyPrime(event.data.rnd, event.data.iterations);
@@ -324,7 +325,7 @@ var bigintCryptoUtils = (function (exports) {
 
         var _blob = new Blob([workerCode], { type: 'text/javascript' });
 
-        return new Worker(window.URL.createObjectURL(_blob));
+        return window.URL.createObjectURL(_blob);
     }
 
     async function _isProbablyPrime(w, iterations = 16) {
