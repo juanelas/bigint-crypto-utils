@@ -1,0 +1,87 @@
+# bigint-utils 
+
+Some extra functions to work with modular arithmetics along with secure random numbers and probable prime (Miller-Rabin primality test) generation/testing using native JS (stage 3) implementation of BigInt. It can be used with Node.js (>=10.4.0) and [Web Browsers supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility).
+
+_The operations supported on BigInts are not constant time. BigInt can be therefore **[unsuitable for use in cryptography](https://www.chosenplaintext.ca/articles/beginners-guide-constant-time-cryptography.html)**_
+
+Many platforms provide native support for cryptography, such as [webcrypto](https://w3c.github.io/webcrypto/Overview.html) or [node crypto](https://nodejs.org/dist/latest/docs/api/crypto.html).
+
+## Installation
+bigint-utils is distributed as both an ES6 and a CJS module.
+
+The ES6 module is built for any [web browser supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility). The module only uses native javascript implementations and no polyfills had been applied.
+
+The CJS module is built as a standard node module.
+
+bigint-utils can be imported to your project with `npm`:
+```bash
+npm install bigint-utils
+```
+
+For web browsers, you can also [download the bundle from GitHub](https://raw.githubusercontent.com/juanelas/bigint-utils/master/dist/bigint-utils-latest.browser.mod.min.js).
+
+## Usage example
+
+With node js:
+```javascript
+const bigintUtils = require('bigint-utils');
+
+// Stage 3 BigInts with value 666 can be declared as BigInt('666')
+// or the shorter new no-so-linter-friendly syntax 666n
+let a = BigInt('5');
+let b = BigInt('2');
+let n = BigInt('19');
+
+console.log(bigintModArith.modPow(a, b, n)); // prints 6
+
+console.log(bigintModArith.modInv(BigInt('2'), BigInt('5'))); // prints 3
+
+console.log(bigintModArith.modInv(BigInt('3'), BigInt('5'))); // prints 2
+
+// Generation of a probable prime of 2048 bits
+const prime = await bigintUtils.prime(2048);
+
+// Testing if a prime is a probable prime (Miller-Rabin)
+if ( await bigintUtils.isProbablyPrime(prime) )
+    // code if is prime
+
+// Get a cryptographically secure random number between 1 and 2**256 bits.
+const rnd = bigintUtils.randBetween(BigInt(2)**256);
+
+```
+
+From a browser, you can just load the module in a html page as:
+```html
+  <script type="module">
+    import * as bigintUtils from 'bigint-utils-latest.browser.mod.min.js';
+
+    let a = BigInt('5');
+    let b = BigInt('2');
+    let n = BigInt('19');
+
+    console.log(bigintModArith.modPow(a, b, n)); // prints 6
+
+    console.log(bigintModArith.modInv(BigInt('2'), BigInt('5'))); // prints 3
+
+    console.log(bigintModArith.modInv(BigInt('3'), BigInt('5'))); // prints 2
+
+    (async function () {
+      // Generation of a probable prime of 2018 bits
+      const p = await bigintSecrets.prime(2048);
+
+      // Testing if a prime is a probable prime (Miller-Rabin)
+      const isPrime = await bigintSecrets.isProbablyPrime(p);
+      alert(p.toString() + '\nIs prime?\n' + isPrime);
+
+      // Get a cryptographically secure random number between 1 and 2**256 bits.
+      const rnd = await bigintSecrets.randBetween(BigInt(2)**256);
+      alert(rnd);
+    })();
+  </script>
+```
+
+# bigint-utils JS Doc
+
+{{>main}}
+
+* * *

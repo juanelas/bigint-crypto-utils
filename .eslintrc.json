@@ -1,0 +1,36 @@
+{
+    "env": {
+        "node": true,
+        "mocha": true,
+        "worker": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 2017,
+        "sourceType": "module"
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        "no-console": 0,
+        "indent": [
+            "error",
+            4
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ]
+    },
+    "globals": {
+        "BigInt": "readonly",
+        "window": "readonly",
+        "Uint8Array": "readonly"
+    }
+}
