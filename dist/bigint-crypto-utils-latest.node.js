@@ -9,10 +9,10 @@ Object.defineProperty(exports, '__esModule', { value: true });
  * 
  * @returns {bigint} the absolute value of a
  */
-const abs = function (a) {
+function abs(a) {
     a = BigInt(a);
     return (a >= BigInt(0)) ? a : -a;
-};
+}
 
 /**
  * @typedef {Object} egcdReturn A triple (g, x, y), such that ax + by = g = gcd(a, b).
@@ -29,7 +29,7 @@ const abs = function (a) {
  * 
  * @returns {egcdReturn}
  */
-const eGcd = function (a, b) {
+function eGcd(a, b) {
     a = BigInt(a);
     b = BigInt(b);
     let x = BigInt(0);
@@ -54,7 +54,7 @@ const eGcd = function (a, b) {
         x: x,
         y: y
     };
-};
+}
 
 /**
  * Greatest-common divisor of two integers based on the iterative binary algorithm.
@@ -64,7 +64,7 @@ const eGcd = function (a, b) {
  * 
  * @returns {bigint} The greatest common divisor of a and b
  */
-const gcd = function (a, b) {
+function gcd(a, b) {
     a = abs(a);
     b = abs(b);
     let shift = BigInt(0);
@@ -86,7 +86,7 @@ const gcd = function (a, b) {
 
     // rescale
     return a << shift;
-};
+}
 
 /**
  * The test first tries if any of the first 250 small primes are a factor of the input number and then passes several iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)
@@ -96,11 +96,11 @@ const gcd = function (a, b) {
  * 
  * @return {Promise} A promise that resolve to a boolean that is either true (a probably prime number) or false (definitely composite)
  */
-const isProbablyPrime = async function (w, iterations = 16) {
+async function isProbablyPrime(w, iterations = 16) {
     {
         return _isProbablyPrime(w, iterations);
     }
-};
+}
 
 /**
  * The least common multiple computed as abs(a*b)/gcd(a,b)
@@ -109,11 +109,11 @@ const isProbablyPrime = async function (w, iterations = 16) {
  * 
  * @returns {bigint} The least common multiple of a and b
  */
-const lcm = function (a, b) {
+function lcm(a, b) {
     a = BigInt(a);
     b = BigInt(b);
     return abs(a * b) / gcd(a, b);
-};
+}
 
 /**
  * Modular inverse.
@@ -123,14 +123,14 @@ const lcm = function (a, b) {
  * 
  * @returns {bigint} the inverse modulo n
  */
-const modInv = function (a, n) {
+function modInv(a, n) {
     let egcd = eGcd(a, n);
     if (egcd.b !== BigInt(1)) {
         return null; // modular inverse does not exist
     } else {
         return toZn(egcd.x, n);
     }
-};
+}
 
 /**
  * Modular exponentiation a**b mod n
@@ -140,7 +140,7 @@ const modInv = function (a, n) {
  * 
  * @returns {bigint} a**b mod n
  */
-const modPow = function (a, b, n) {
+function modPow(a, b, n) {
     // See Knuth, volume 2, section 4.6.3.
     n = BigInt(n);
     a = toZn(a, n);
@@ -161,7 +161,7 @@ const modPow = function (a, b, n) {
         x = x % n;
     }
     return result;
-};
+}
 
 /**
  * A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator. 
@@ -173,7 +173,7 @@ const modPow = function (a, b, n) {
  * 
  * @returns {Promise} A promise that resolves to a bigint probable prime of bitLength bits
  */
-const prime = async function (bitLength, iterations = 16) {
+async function prime(bitLength, iterations = 16) {
     return new Promise(async (resolve) => {
         {
             let rnd = BigInt(0);
@@ -183,7 +183,7 @@ const prime = async function (bitLength, iterations = 16) {
             resolve(rnd);
         }
     });
-};
+}
 
 /**
  * Returns a cryptographically secure random integer between [min,max]
@@ -192,7 +192,7 @@ const prime = async function (bitLength, iterations = 16) {
  * 
  * @returns {Promise} A promise that resolves to a cryptographically secure random bigint between [min,max]
  */
-const randBetween = async function (max, min = 1) {
+async function randBetween(max, min = 1) {
     let bitLen = bitLength(max);
     let byteLength = bitLen >> 3;
     let remaining = bitLen - (byteLength * 8);
@@ -211,7 +211,7 @@ const randBetween = async function (max, min = 1) {
         rnd = fromBuffer(buf);
     } while (rnd > max || rnd < min);
     return rnd;
-};
+}
 
 /**
  * Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
@@ -221,7 +221,7 @@ const randBetween = async function (max, min = 1) {
  * 
  * @returns {Promise} A promise that resolves to a Buffer/UInt8Array filled with cryptographically secure random bytes
  */
-const randBytes = async function (byteLength, forceLength = false) {
+async function randBytes(byteLength, forceLength = false) {
     return new Promise((resolve) => {
         let buf;
 
@@ -237,7 +237,7 @@ const randBytes = async function (byteLength, forceLength = false) {
             });
         }
     });
-};
+}
 
 /**
  * Finds the smallest positive element that is congruent to a in modulo n
@@ -246,11 +246,11 @@ const randBytes = async function (byteLength, forceLength = false) {
  * 
  * @returns {bigint} The smallest positive representation of a in modulo n
  */
-const toZn = function (a, n) {
+function toZn(a, n) {
     n = BigInt(n);
     a = BigInt(a) % n;
     return (a < 0) ? a + n : a;
-};
+}
 
 
 
