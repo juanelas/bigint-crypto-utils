@@ -2,7 +2,7 @@
 
 // For the browser test builder to work you MUST import them module in a variable that
 // is the camelised version of the package name.
-const bigintUtils = require('../dist/bigint-utils-latest.node');
+const bigintCryptoUtils = require('../dist/bigint-crypto-utils-latest.node');
 const chai = require('chai');
 
 const numbers = [
@@ -52,7 +52,7 @@ describe('Testing validation of prime numbers', function () {
     for (const num of numbers) {
         describe(`isProbablyPrime(${num.value})`, function () {
             it(`should return ${num.prime}`, async function () {
-                const ret = await bigintUtils.isProbablyPrime(num.value);
+                const ret = await bigintCryptoUtils.isProbablyPrime(num.value);
                 chai.expect(ret).to.equal(num.prime);
             });
         });

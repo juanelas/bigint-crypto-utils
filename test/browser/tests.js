@@ -50,7 +50,7 @@ describe('Testing validation of prime numbers', function () {
     for (const num of numbers) {
         describe(`isProbablyPrime(${num.value})`, function () {
             it(`should return ${num.prime}`, async function () {
-                const ret = await bigintUtils.isProbablyPrime(num.value);
+                const ret = await bigintCryptoUtils.isProbablyPrime(num.value);
                 chai.expect(ret).to.equal(num.prime);
             });
         });
@@ -63,19 +63,18 @@ describe('Testing validation of prime numbers', function () {
 
 
 const bitLengths = [
-    256,
-    512,
     1024,
     2048,
-    3072
+    3072,
+    4096
 ];
 
 describe('Testing generation of prime numbers', function () {
     for (const bitLength of bitLengths) {
         describe(`Executing prime(${bitLength})`, function () {
             it(`should return a random ${bitLength}-bits probable prime`, async function () {
-                let prime = await bigintUtils.prime(bitLength);
-                const ret = await bigintUtils.isProbablyPrime(prime);
+                let prime = await bigintCryptoUtils.prime(bitLength);
+                const ret = await bigintCryptoUtils.isProbablyPrime(prime);
                 chai.expect(ret).to.equal(true);
                 let bits = 1;
                 do {

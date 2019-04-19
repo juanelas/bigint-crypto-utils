@@ -27,7 +27,7 @@ const testsJs = `
     mocha.run();
 </script>
 `;
-fs.writeFileSync(dstFileName, template.replace('{{TESTS}}', testsJs));
+fs.writeFileSync(dstFileName, template.replace('{{TESTS}}', testsJs).replace('{{PKG_NAME}}', pkgJson.name));
 
 /*
 Now we create a bundle of all the tests called test.js

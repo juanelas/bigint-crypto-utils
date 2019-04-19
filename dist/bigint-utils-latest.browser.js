@@ -222,6 +222,51 @@ var bigintUtils = (function (exports) {
      * @return {Promise} A promise that resolve to a boolean that is either true (a probably prime number) or false (definitely composite)
      */
     const isProbablyPrime = async function (w, iterations = 16) {
+        {
+            return new Promise(resolve => {
+                let worker = _isProbablyPrimeWorker();
+
+                worker.onmessage = (event) => {
+                    resolve(event.data.isPrime);
+                };
+                worker.postMessage({
+                    'rnd': w,
+                    'iterations': iterations
+                });
+            });
+        }
+    };
+    function _isProbablyPrimeWorker() {
+        async function _onmessage(event) { // Let's start once we are called
+            // event.data = {rnd: <bigint>, iterations: <number>}
+            const isPrime = await isProbablyPrime(event.data.rnd, event.data.iterations, false);
+            postMessage({
+                'isPrime': isPrime,
+                'value': event.data.rnd
+            });
+        }
+
+        let workerCode = `(() => {
+                'use strict';
+
+                const eGcd = ${eGcd.toString()};
+                const modInv = ${modInv.toString()};
+                const modPow = ${modPow.toString()};
+                const toZn = ${toZn.toString()};
+                const randBytes = ${randBytes.toString()};
+                const randBetween = ${randBetween.toString()};
+                const isProbablyPrime = ${_isProbablyPrime.toString()};
+                ${bitLength.toString()}
+                ${fromBuffer.toString()}
+                
+                onmessage = ${_onmessage.toString()};
+            })()`;
+        var _blob = new Blob([workerCode], { type: 'text/javascript' });
+
+        return new Worker(window.URL.createObjectURL(_blob));
+    }
+
+    async function _isProbablyPrime(w, iterations = 16) {
         /*
     	PREFILTERING. Even values but 2 are not primes, so don't test. 
     	1 is not a prime and the M-R algorithm needs w>1.
@@ -538,7 +583,7 @@ var bigintUtils = (function (exports) {
         } while (--iterations);
 
         return true;
-    };
+    }
 
     /**
      * A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator
@@ -553,8 +598,7 @@ var bigintUtils = (function (exports) {
             {
                 let workerList = [];
                 for (let i = 0; i < self.navigator.hardwareConcurrency; i++) {
-                    const moduleDir = new URL('./', (document.currentScript && document.currentScript.src || new URL('bigint-utils-0.9.0.browser.js', document.baseURI).href)).pathname;
-                    let newWorker = new Worker(`${moduleDir}/workerPrimalityTest.js`);
+                    let newWorker = _isProbablyPrimeWorker();
                     newWorker.onmessage = async (event) => {
                         if (event.data.isPrime) {
                             // if a prime number has been found, stop all the workers, and return it

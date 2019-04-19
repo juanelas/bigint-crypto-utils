@@ -27,24 +27,24 @@ const buildOptions = [
             name: camelise(pkgJson.name)
         }
     },
-    // { // Browser minified
-    //     input: {
-    //         input: path.join(srcDir, 'main.js'),
-    //         plugins: [
-    //             replace({
-    //                 'process.browser': true
-    //             }),
-    //             minify({
-    //                 'comments': false
-    //             })
-    //         ],
-    //     },
-    //     output: {
-    //         file: path.join(dstDir, `${pkgJson.name}-${pkgJson.version}.browser.min.js`),
-    //         format: 'iife',
-    //         name: camelise(pkgJson.name)
-    //     }
-    // },
+    { // Browser minified
+        input: {
+            input: path.join(srcDir, 'main.js'),
+            plugins: [
+                replace({
+                    'process.browser': true
+                }),
+                minify({
+                    'comments': false
+                })
+            ],
+        },
+        output: {
+            file: path.join(dstDir, `${pkgJson.name}-${pkgJson.version}.browser.min.js`),
+            format: 'iife',
+            name: camelise(pkgJson.name)
+        }
+    },
     { // Browser esm
         input: {
             input: path.join(srcDir, 'main.js'),
@@ -59,23 +59,23 @@ const buildOptions = [
             format: 'esm'
         }
     },
-    // { // Browser esm minified
-    //     input: {
-    //         input: path.join(srcDir, 'main.js'),
-    //         plugins: [
-    //             replace({
-    //                 'process.browser': true
-    //             }),
-    //             minify({
-    //                 'comments': false
-    //             })
-    //         ],
-    //     },
-    //     output: {
-    //         file: path.join(dstDir, `${pkgJson.name}-${pkgJson.version}.browser.mod.min.js`),
-    //         format: 'esm'
-    //     }
-    // },
+    { // Browser esm minified
+        input: {
+            input: path.join(srcDir, 'main.js'),
+            plugins: [
+                replace({
+                    'process.browser': true
+                }),
+                minify({
+                    'comments': false
+                })
+            ],
+        },
+        output: {
+            file: path.join(dstDir, `${pkgJson.name}-${pkgJson.version}.browser.mod.min.js`),
+            format: 'esm'
+        }
+    },
     { // Node
         input: {
             input: path.join(srcDir, 'main.js'),
@@ -95,17 +95,6 @@ const buildOptions = [
 for (const options of buildOptions) {
     build(options);
 }
-
-
-
-// Let's manually build the worker file
-const workerFilename = path.join(srcDir, 'workerPrimalityTest.js');
-const dstFileName = path.join(dstDir, 'workerPrimalityTest.js');
-
-const workerFile = fs.readFileSync(workerFilename, 'utf-8');
-
-fs.writeFileSync(dstFileName, workerFile.replace('{{IIFE}}', `./${pkgJson.name}-latest.browser.js`));
-
 
 
 /* --- HELPLER FUNCTIONS --- */

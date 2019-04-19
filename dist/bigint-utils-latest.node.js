@@ -226,6 +226,12 @@ const randBetween = async function (max, min = 1) {
  * @return {Promise} A promise that resolve to a boolean that is either true (a probably prime number) or false (definitely composite)
  */
 const isProbablyPrime = async function (w, iterations = 16) {
+    {
+        return _isProbablyPrime(w, iterations);
+    }
+};
+
+async function _isProbablyPrime(w, iterations = 16) {
     /*
 	PREFILTERING. Even values but 2 are not primes, so don't test. 
 	1 is not a prime and the M-R algorithm needs w>1.
@@ -542,7 +548,7 @@ const isProbablyPrime = async function (w, iterations = 16) {
     } while (--iterations);
 
     return true;
-};
+}
 
 /**
  * A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator

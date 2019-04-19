@@ -13,64 +13,6 @@ export const abs = function (a) {
 };
 
 /**
- * Greatest-common divisor of two integers based on the iterative binary algorithm.
- * 
- * @param {number|bigint} a 
- * @param {number|bigint} b 
- * 
- * @returns {bigint} The greatest common divisor of a and b
- */
-export const gcd = function (a, b) {
-    a = abs(a);
-    b = abs(b);
-    let shift = BigInt(0);
-    while (!((a | b) & BigInt(1))) {
-        a >>= BigInt(1);
-        b >>= BigInt(1);
-        shift++;
-    }
-    while (!(a & BigInt(1))) a >>= BigInt(1);
-    do {
-        while (!(b & BigInt(1))) b >>= BigInt(1);
-        if (a > b) {
-            let x = a;
-            a = b;
-            b = x;
-        }
-        b -= a;
-    } while (b);
-
-    // rescale
-    return a << shift;
-};
-
-/**
- * The least common multiple computed as abs(a*b)/gcd(a,b)
- * @param {number|bigint} a 
- * @param {number|bigint} b 
- * 
- * @returns {bigint} The least common multiple of a and b
- */
-export const lcm = function (a, b) {
-    a = BigInt(a);
-    b = BigInt(b);
-    return abs(a * b) / gcd(a, b);
-};
-
-/**
- * Finds the smallest positive element that is congruent to a in modulo n
- * @param {number|bigint} a An integer
- * @param {number|bigint} n The modulo
- * 
- * @returns {bigint} The smallest positive representation of a in modulo n
- */
-export const toZn = function (a, n) {
-    n = BigInt(n);
-    a = BigInt(a) % n;
-    return (a < 0) ? a + n : a;
-};
-
-/**
  * @typedef {Object} egcdReturn A triple (g, x, y), such that ax + by = g = gcd(a, b).
  * @property {bigint} g
  * @property {bigint} x 
@@ -110,6 +52,79 @@ export const eGcd = function (a, b) {
         x: x,
         y: y
     };
+};
+
+/**
+ * Greatest-common divisor of two integers based on the iterative binary algorithm.
+ * 
+ * @param {number|bigint} a 
+ * @param {number|bigint} b 
+ * 
+ * @returns {bigint} The greatest common divisor of a and b
+ */
+export const gcd = function (a, b) {
+    a = abs(a);
+    b = abs(b);
+    let shift = BigInt(0);
+    while (!((a | b) & BigInt(1))) {
+        a >>= BigInt(1);
+        b >>= BigInt(1);
+        shift++;
+    }
+    while (!(a & BigInt(1))) a >>= BigInt(1);
+    do {
+        while (!(b & BigInt(1))) b >>= BigInt(1);
+        if (a > b) {
+            let x = a;
+            a = b;
+            b = x;
+        }
+        b -= a;
+    } while (b);
+
+    // rescale
+    return a << shift;
+};
+
+/**
+ * The test first tries if any of the first 250 small primes are a factor of the input number and then passes several iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)
+ * 
+ * @param {bigint} w An integer to be tested for primality
+ * @param {number} iterations The number of iterations for the primality test. The value shall be consistent with Table C.1, C.2 or C.3
+ * 
+ * @return {Promise} A promise that resolve to a boolean that is either true (a probably prime number) or false (definitely composite)
+ */
+export const isProbablyPrime = async function (w, iterations = 16) {
+    if (process.browser) {
+        return new Promise(resolve => {
+            let worker = _isProbablyPrimeWorker();
+
+            worker.onmessage = (event) => {
+                worker.terminate();
+                resolve(event.data.isPrime);
+            };
+
+            worker.postMessage({
+                'rnd': w,
+                'iterations': iterations
+            });
+        });
+    } else {
+        return _isProbablyPrime(w, iterations);
+    }
+};
+
+/**
+ * The least common multiple computed as abs(a*b)/gcd(a,b)
+ * @param {number|bigint} a 
+ * @param {number|bigint} b 
+ * 
+ * @returns {bigint} The least common multiple of a and b
+ */
+export const lcm = function (a, b) {
+    a = BigInt(a);
+    b = BigInt(b);
+    return abs(a * b) / gcd(a, b);
 };
 
 /**
@@ -161,7 +176,92 @@ export const modPow = function (a, b, n) {
 };
 
 /**
- * Secure random bytes for both node and browsers. Browser implementation uses WebWorkers in order to not lock the main process
+ * A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator. 
+ * The browser version uses web workers to parallelise prime look up. Therefore, it does not lock the UI 
+ * main process, and it can be much faster (if several cores or cpu are available). 
+ * 
+ * @param {number} bitLength The required bit length for the generated prime
+ * @param {number} iterations The number of iterations for the Miller-Rabin Probabilistic Primality Test
+ * 
+ * @returns {Promise} A promise that resolves to a bigint probable prime of bitLength bits
+ */
+export const prime = async function (bitLength, iterations = 16) {
+    return new Promise(async (resolve) => {
+        if (process.browser) {
+            let workerList = [];
+            for (let i = 0; i < self.navigator.hardwareConcurrency; i++) {
+                let newWorker = _isProbablyPrimeWorker();
+                newWorker.onmessage = async (event) => {
+                    if (event.data.isPrime) {
+                        // if a prime number has been found, stop all the workers, and return it
+                        for (let j = 0; j < workerList.length; j++) {
+                            workerList[j].terminate();
+                        }
+                        while (workerList.length) {
+                            workerList.pop();
+                        }
+                        resolve(event.data.value);
+                    } else { // if a composite is found, make the worker test another random number
+                        let rnd = BigInt(0);
+                        rnd = fromBuffer(await randBytes(bitLength / 8, true));
+                        newWorker.postMessage({
+                            'rnd': rnd,
+                            'iterations': iterations
+                        });
+                    }
+                };
+                workerList.push(newWorker);
+            }
+
+            for (const worker of workerList) {
+                let rnd = BigInt(0);
+                rnd = fromBuffer(await randBytes(bitLength / 8, true));
+                worker.postMessage({
+                    'rnd': rnd,
+                    'iterations': iterations
+                });
+            }
+
+        } else {
+            let rnd = BigInt(0);
+            do {
+                rnd = fromBuffer(await randBytes(bitLength / 8, true));
+            } while (! await isProbablyPrime(rnd, iterations));
+            resolve(rnd);
+        }
+    });
+};
+
+/**
+ * Returns a cryptographically secure random integer between [min,max]
+ * @param {bigint} max Returned value will be <= max
+ * @param {bigint} min Returned value will be >= min
+ * 
+ * @returns {Promise} A promise that resolves to a cryptographically secure random bigint between [min,max]
+ */
+export const randBetween = async function (max, min = 1) {
+    let bitLen = bitLength(max);
+    let byteLength = bitLen >> 3;
+    let remaining = bitLen - (byteLength * 8);
+    let extraBits;
+    if (remaining > 0) {
+        byteLength++;
+        extraBits = 2 ** remaining - 1;
+    }
+
+    let rnd;
+    do {
+        let buf = await randBytes(byteLength);
+        // remove extra bits
+        if (remaining > 0)
+            buf[0] = buf[0] & extraBits;
+        rnd = fromBuffer(buf);
+    } while (rnd > max || rnd < min);
+    return rnd;
+};
+
+/**
+ * Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
  * 
  * @param {number} byteLength The desired number of random bytes
  * @param {boolean} forceLength If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1
@@ -193,44 +293,58 @@ export const randBytes = async function (byteLength, forceLength = false) {
     });
 };
 
-
 /**
- * Returns a cryptographically secure random integer between [min,max]
- * @param {bigint} max Returned value will be <= max
- * @param {bigint} min Returned value will be >= min
+ * Finds the smallest positive element that is congruent to a in modulo n
+ * @param {number|bigint} a An integer
+ * @param {number|bigint} n The modulo
  * 
- * @returns {Promise} A promise that resolves to a cryptographically secure random bigint between [min,max]
+ * @returns {bigint} The smallest positive representation of a in modulo n
  */
-export const randBetween = async function (max, min = 1) {
-    let bitLen = bitLength(max);
-    let byteLength = bitLen >> 3;
-    let remaining = bitLen - (byteLength * 8);
-    let extraBits;
-    if (remaining > 0) {
-        byteLength++;
-        extraBits = 2 ** remaining - 1;
-    }
-
-    let rnd;
-    do {
-        let buf = await randBytes(byteLength);
-        // remove extra bits
-        if (remaining > 0)
-            buf[0] = buf[0] & extraBits;
-        rnd = fromBuffer(buf);
-    } while (rnd > max || rnd < min);
-    return rnd;
+export const toZn = function (a, n) {
+    n = BigInt(n);
+    a = BigInt(a) % n;
+    return (a < 0) ? a + n : a;
 };
 
-/**
- * The test first tries if any of the first 250 small primes are a factor of the input number and then passes several iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)
- * 
- * @param {bigint} w An integer to be tested for primality
- * @param {number} iterations The number of iterations for the primality test. The value shall be consistent with Table C.1, C.2 or C.3
- * 
- * @return {Promise} A promise that resolve to a boolean that is either true (a probably prime number) or false (definitely composite)
- */
-export const isProbablyPrime = async function (w, iterations = 16) {
+
+
+/* HELPER FUNCTIONS */
+
+function fromBuffer(buf) {
+    let ret = BigInt(0);
+    for (let i of buf.values()) {
+        let bi = BigInt(i);
+        ret = (ret << BigInt(8)) + bi;
+    }
+    return ret;
+}
+
+function bitLength(a) {
+    let bits = 1;
+    do {
+        bits++;
+    } while ((a >>= BigInt(1)) > BigInt(1));
+    return bits;
+}
+
+function _isProbablyPrimeWorker() {
+    async function _onmessage(event) { // Let's start once we are called
+        // event.data = {rnd: <bigint>, iterations: <number>}
+        const isPrime = await isProbablyPrime(event.data.rnd, event.data.iterations);
+        postMessage({
+            'isPrime': isPrime,
+            'value': event.data.rnd
+        });
+    }
+
+    let workerCode = `(() => {'use strict';const eGcd = ${eGcd.toString()};const modInv = ${modInv.toString()};const modPow = ${modPow.toString()};const toZn = ${toZn.toString()};const randBytes = ${randBytes.toString()};const randBetween = ${randBetween.toString()};const isProbablyPrime = ${_isProbablyPrime.toString()};${bitLength.toString()}${fromBuffer.toString()}onmessage = ${_onmessage.toString()};})()`;
+
+    var _blob = new Blob([workerCode], { type: 'text/javascript' });
+
+    return new Worker(window.URL.createObjectURL(_blob));
+}
+
+async function _isProbablyPrime(w, iterations = 16) {
     /*
 	PREFILTERING. Even values but 2 are not primes, so don't test. 
 	1 is not a prime and the M-R algorithm needs w>1.
@@ -547,82 +661,4 @@ export const isProbablyPrime = async function (w, iterations = 16) {
     } while (--iterations);
 
     return true;
-};
-
-/**
- * A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator
- *  
- * @param {number} bitLength The required bit length for the generated prime
- * @param {number} iterations The number of iterations for the Miller-Rabin Probabilistic Primality Test
- * 
- * @returns {Promise} A promise that resolves to a bigint probable prime of bitLength bits
- */
-export const prime = async function (bitLength, iterations = 16) {
-    return new Promise(async (resolve) => {
-        if (process.browser) {
-            let workerList = [];
-            for (let i = 0; i < self.navigator.hardwareConcurrency; i++) {
-                const moduleDir = new URL('./', import.meta.url).pathname;
-                let newWorker = new Worker(`${moduleDir}/workerPrimalityTest.js`);
-                newWorker.onmessage = async (event) => {
-                    if (event.data.isPrime) {
-                        // if a prime number has been found, stop all the workers, and return it
-                        for (let j = 0; j < workerList.length; j++) {
-                            workerList[j].terminate();
-                        }
-                        while (workerList.length) {
-                            workerList.pop();
-                        }
-                        resolve(event.data.value);
-                    } else { // if a composite is found, make the worker test another random number
-                        let rnd = BigInt(0);
-                        rnd = fromBuffer(await randBytes(bitLength / 8, true));
-                        newWorker.postMessage({
-                            'rnd': rnd,
-                            'iterations': iterations
-                        });
-                    }
-                };
-                workerList.push(newWorker);
-            }
-
-            for (const worker of workerList) {
-                let rnd = BigInt(0);
-                rnd = fromBuffer(await randBytes(bitLength / 8, true));
-                worker.postMessage({
-                    'rnd': rnd,
-                    'iterations': iterations
-                });
-            }
-
-        } else {
-            let rnd = BigInt(0);
-            do {
-                rnd = fromBuffer(await randBytes(bitLength / 8, true));
-            } while (! await isProbablyPrime(rnd, iterations));
-            resolve(rnd);
-        }
-    });
-};
-
-
-
-
-/* HELPER FUNCTIONS */
-
-function fromBuffer(buf) {
-    let ret = BigInt(0);
-    for (let i of buf.values()) {
-        let bi = BigInt(i);
-        ret = (ret << BigInt(8)) + bi;
-    }
-    return ret;
-}
-
-function bitLength(a) {
-    let bits = 1;
-    do {
-        bits++;
-    } while ((a >>= BigInt(1)) > BigInt(1));
-    return bits;
 }

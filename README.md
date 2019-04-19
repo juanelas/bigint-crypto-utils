@@ -1,30 +1,27 @@
-# bigint-utils 
+# bigint-crypto-utils 
 
-Some extra functions to work with modular arithmetics along with secure random numbers and probable prime (Miller-Rabin primality test) generation/testing using native JS (stage 3) implementation of BigInt. It can be used with Node.js (>=10.4.0) and [Web Browsers supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility).
+Utils for working with cryptography using native JS (stage 3) implementation of BigInt. It includes some extra functions to work with modular arithmetics along with secure random numbers and a very fast strong probable prime generation/testing (parallelised multi-threaded Miller-Rabin primality test). It can be used with Node.js (>=10.4.0) and [Web Browsers supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility).
 
 _The operations supported on BigInts are not constant time. BigInt can be therefore **[unsuitable for use in cryptography](https://www.chosenplaintext.ca/articles/beginners-guide-constant-time-cryptography.html)**_
 
 Many platforms provide native support for cryptography, such as [webcrypto](https://w3c.github.io/webcrypto/Overview.html) or [node crypto](https://nodejs.org/dist/latest/docs/api/crypto.html).
 
 ## Installation
-bigint-utils is distributed as both an ES6 and a CJS module.
+bigint-crypto-utils is distributed for [web browsers supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility) as an ES6 module or a IIFE file, and for Node.js (>=10.4.0) as a CJS module.
 
-The ES6 module is built for any [web browser supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility). The module only uses native javascript implementations and no polyfills had been applied.
-
-The CJS module is built as a standard node module.
-
-bigint-utils can be imported to your project with `npm`:
+bigint-crypto-utils can be imported to your project with `npm`:
 ```bash
-npm install bigint-utils
+npm install bigint-crypto-utils
 ```
+NPM installation defaults to the ES6 module for browsers and the CJS for Node.js.
 
-For web browsers, you can also [download the bundle from GitHub](https://raw.githubusercontent.com/juanelas/bigint-utils/master/dist/bigint-utils-latest.browser.mod.min.js).
+For web browsers, you can also directly download the [IIFE file](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bigint-crypto-utils-latest.browser.min.js) or the [ES6 module](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bigint-crypto-utils-latest.browser.mod.min.js) from GitHub.
 
 ## Usage example
 
 With node js:
 ```javascript
-const bigintUtils = require('bigint-utils');
+const bigintCryptoUtils = require('bigint-crypto-utils');
 
 // Stage 3 BigInts with value 666 can be declared as BigInt('666')
 // or the shorter new no-so-linter-friendly syntax 666n
@@ -32,55 +29,55 @@ let a = BigInt('5');
 let b = BigInt('2');
 let n = BigInt('19');
 
-console.log(bigintModArith.modPow(a, b, n)); // prints 6
+console.log(bigintCryptoUtils.modPow(a, b, n)); // prints 6
 
-console.log(bigintModArith.modInv(BigInt('2'), BigInt('5'))); // prints 3
+console.log(bigintCryptoUtils.modInv(BigInt('2'), BigInt('5'))); // prints 3
 
-console.log(bigintModArith.modInv(BigInt('3'), BigInt('5'))); // prints 2
+console.log(bigintCryptoUtils.modInv(BigInt('3'), BigInt('5'))); // prints 2
 
 // Generation of a probable prime of 2048 bits
-const prime = await bigintUtils.prime(2048);
+const prime = await bigintCryptoUtils.prime(2048);
 
 // Testing if a prime is a probable prime (Miller-Rabin)
-if ( await bigintUtils.isProbablyPrime(prime) )
+if ( await bigintCryptoUtils.isProbablyPrime(prime) )
     // code if is prime
 
 // Get a cryptographically secure random number between 1 and 2**256 bits.
-const rnd = bigintUtils.randBetween(BigInt(2)**256);
+const rnd = bigintCryptoUtils.randBetween(BigInt(2)**256);
 
 ```
 
 From a browser, you can just load the module in a html page as:
 ```html
   <script type="module">
-    import * as bigintUtils from 'bigint-utils-latest.browser.mod.min.js';
+    import * as bigintCryptoUtils from 'bigint-utils-latest.browser.mod.min.js';
 
     let a = BigInt('5');
     let b = BigInt('2');
     let n = BigInt('19');
 
-    console.log(bigintModArith.modPow(a, b, n)); // prints 6
+    console.log(bigintCryptoUtils.modPow(a, b, n)); // prints 6
 
-    console.log(bigintModArith.modInv(BigInt('2'), BigInt('5'))); // prints 3
+    console.log(bigintCryptoUtils.modInv(BigInt('2'), BigInt('5'))); // prints 3
 
-    console.log(bigintModArith.modInv(BigInt('3'), BigInt('5'))); // prints 2
+    console.log(bigintCryptoUtils.modInv(BigInt('3'), BigInt('5'))); // prints 2
 
     (async function () {
       // Generation of a probable prime of 2018 bits
-      const p = await bigintSecrets.prime(2048);
+      const p = await bigintCryptoUtils.prime(2048);
 
       // Testing if a prime is a probable prime (Miller-Rabin)
-      const isPrime = await bigintSecrets.isProbablyPrime(p);
+      const isPrime = await bigintCryptoUtils.isProbablyPrime(p);
       alert(p.toString() + '\nIs prime?\n' + isPrime);
 
       // Get a cryptographically secure random number between 1 and 2**256 bits.
-      const rnd = await bigintSecrets.randBetween(BigInt(2)**256);
+      const rnd = await bigintCryptoUtils.randBetween(BigInt(2)**256);
       alert(rnd);
     })();
   </script>
 ```
 
-# bigint-utils JS Doc
+# bigint-crypto-utils JS Doc
 
 ## Constants
 
@@ -88,18 +85,18 @@ From a browser, you can just load the module in a html page as:
 <dt><a href="#abs">abs</a> ⇒ <code>bigint</code></dt>
 <dd><p>Absolute value. abs(a)==a if a&gt;=0. abs(a)==-a if a&lt;0</p>
 </dd>
-<dt><a href="#gcd">gcd</a> ⇒ <code>bigint</code></dt>
-<dd><p>Greatest-common divisor of two integers based on the iterative binary algorithm.</p>
-</dd>
-<dt><a href="#lcm">lcm</a> ⇒ <code>bigint</code></dt>
-<dd><p>The least common multiple computed as abs(a*b)/gcd(a,b)</p>
-</dd>
-<dt><a href="#toZn">toZn</a> ⇒ <code>bigint</code></dt>
-<dd><p>Finds the smallest positive element that is congruent to a in modulo n</p>
-</dd>
 <dt><a href="#eGcd">eGcd</a> ⇒ <code><a href="#egcdReturn">egcdReturn</a></code></dt>
 <dd><p>An iterative implementation of the extended euclidean algorithm or extended greatest common divisor algorithm. 
 Take positive integers a, b as input, and return a triple (g, x, y), such that ax + by = g = gcd(a, b).</p>
+</dd>
+<dt><a href="#gcd">gcd</a> ⇒ <code>bigint</code></dt>
+<dd><p>Greatest-common divisor of two integers based on the iterative binary algorithm.</p>
+</dd>
+<dt><a href="#isProbablyPrime">isProbablyPrime</a> ⇒ <code>Promise</code></dt>
+<dd><p>The test first tries if any of the first 250 small primes are a factor of the input number and then passes several iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)</p>
+</dd>
+<dt><a href="#lcm">lcm</a> ⇒ <code>bigint</code></dt>
+<dd><p>The least common multiple computed as abs(a*b)/gcd(a,b)</p>
 </dd>
 <dt><a href="#modInv">modInv</a> ⇒ <code>bigint</code></dt>
 <dd><p>Modular inverse.</p>
@@ -107,17 +104,19 @@ Take positive integers a, b as input, and return a triple (g, x, y), such that a
 <dt><a href="#modPow">modPow</a> ⇒ <code>bigint</code></dt>
 <dd><p>Modular exponentiation a**b mod n</p>
 </dd>
-<dt><a href="#randBytes">randBytes</a> ⇒ <code>Promise</code></dt>
-<dd><p>Secure random bytes for both node and browsers. Browser implementation uses WebWorkers in order to not lock the main process</p>
+<dt><a href="#prime">prime</a> ⇒ <code>Promise</code></dt>
+<dd><p>A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator. 
+The browser version uses web workers to parallelise prime look up. Therefore, it does not lock the UI 
+main process, and it can be much faster (if several cores or cpu are available).</p>
 </dd>
 <dt><a href="#randBetween">randBetween</a> ⇒ <code>Promise</code></dt>
 <dd><p>Returns a cryptographically secure random integer between [min,max]</p>
 </dd>
-<dt><a href="#isProbablyPrime">isProbablyPrime</a> ⇒ <code>Promise</code></dt>
-<dd><p>The test first tries if any of the first 250 small primes are a factor of the input number and then passes several iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)</p>
+<dt><a href="#randBytes">randBytes</a> ⇒ <code>Promise</code></dt>
+<dd><p>Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
 </dd>
-<dt><a href="#prime">prime</a> ⇒ <code>Promise</code></dt>
-<dd><p>A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator</p>
+<dt><a href="#toZn">toZn</a> ⇒ <code>bigint</code></dt>
+<dd><p>Finds the smallest positive element that is congruent to a in modulo n</p>
 </dd>
 </dl>
 
@@ -141,6 +140,19 @@ Absolute value. abs(a)==a if a>=0. abs(a)==-a if a<0
 | --- | --- |
 | a | <code>number</code> \| <code>bigint</code> | 
 
+<a name="eGcd"></a>
+
+## eGcd ⇒ [<code>egcdReturn</code>](#egcdReturn)
+An iterative implementation of the extended euclidean algorithm or extended greatest common divisor algorithm. 
+Take positive integers a, b as input, and return a triple (g, x, y), such that ax + by = g = gcd(a, b).
+
+**Kind**: global constant  
+
+| Param | Type |
+| --- | --- |
+| a | <code>number</code> \| <code>bigint</code> | 
+| b | <code>number</code> \| <code>bigint</code> | 
+
 <a name="gcd"></a>
 
 ## gcd ⇒ <code>bigint</code>
@@ -154,6 +166,19 @@ Greatest-common divisor of two integers based on the iterative binary algorithm.
 | a | <code>number</code> \| <code>bigint</code> | 
 | b | <code>number</code> \| <code>bigint</code> | 
 
+<a name="isProbablyPrime"></a>
+
+## isProbablyPrime ⇒ <code>Promise</code>
+The test first tries if any of the first 250 small primes are a factor of the input number and then passes several iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)
+
+**Kind**: global constant  
+**Returns**: <code>Promise</code> - A promise that resolve to a boolean that is either true (a probably prime number) or false (definitely composite)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| w | <code>bigint</code> | An integer to be tested for primality |
+| iterations | <code>number</code> | The number of iterations for the primality test. The value shall be consistent with Table C.1, C.2 or C.3 |
+
 <a name="lcm"></a>
 
 ## lcm ⇒ <code>bigint</code>
@@ -161,32 +186,6 @@ The least common multiple computed as abs(a*b)/gcd(a,b)
 
 **Kind**: global constant  
 **Returns**: <code>bigint</code> - The least common multiple of a and b  
-
-| Param | Type |
-| --- | --- |
-| a | <code>number</code> \| <code>bigint</code> | 
-| b | <code>number</code> \| <code>bigint</code> | 
-
-<a name="toZn"></a>
-
-## toZn ⇒ <code>bigint</code>
-Finds the smallest positive element that is congruent to a in modulo n
-
-**Kind**: global constant  
-**Returns**: <code>bigint</code> - The smallest positive representation of a in modulo n  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| a | <code>number</code> \| <code>bigint</code> | An integer |
-| n | <code>number</code> \| <code>bigint</code> | The modulo |
-
-<a name="eGcd"></a>
-
-## eGcd ⇒ [<code>egcdReturn</code>](#egcdReturn)
-An iterative implementation of the extended euclidean algorithm or extended greatest common divisor algorithm. 
-Take positive integers a, b as input, and return a triple (g, x, y), such that ax + by = g = gcd(a, b).
-
-**Kind**: global constant  
 
 | Param | Type |
 | --- | --- |
@@ -220,18 +219,20 @@ Modular exponentiation a**b mod n
 | b | <code>number</code> \| <code>bigint</code> | exponent |
 | n | <code>number</code> \| <code>bigint</code> | modulo |
 
-<a name="randBytes"></a>
+<a name="prime"></a>
 
-## randBytes ⇒ <code>Promise</code>
-Secure random bytes for both node and browsers. Browser implementation uses WebWorkers in order to not lock the main process
+## prime ⇒ <code>Promise</code>
+A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator. 
+The browser version uses web workers to parallelise prime look up. Therefore, it does not lock the UI 
+main process, and it can be much faster (if several cores or cpu are available).
 
 **Kind**: global constant  
-**Returns**: <code>Promise</code> - A promise that resolves to a Buffer/UInt8Array filled with cryptographically secure random bytes  
+**Returns**: <code>Promise</code> - A promise that resolves to a bigint probable prime of bitLength bits  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| byteLength | <code>number</code> | The desired number of random bytes |
-| forceLength | <code>boolean</code> | If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1 |
+| bitLength | <code>number</code> | The required bit length for the generated prime |
+| iterations | <code>number</code> | The number of iterations for the Miller-Rabin Probabilistic Primality Test |
 
 <a name="randBetween"></a>
 
@@ -246,31 +247,31 @@ Returns a cryptographically secure random integer between [min,max]
 | max | <code>bigint</code> | Returned value will be <= max |
 | min | <code>bigint</code> | Returned value will be >= min |
 
-<a name="isProbablyPrime"></a>
+<a name="randBytes"></a>
 
-## isProbablyPrime ⇒ <code>Promise</code>
-The test first tries if any of the first 250 small primes are a factor of the input number and then passes several iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)
+## randBytes ⇒ <code>Promise</code>
+Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
 
 **Kind**: global constant  
-**Returns**: <code>Promise</code> - A promise that resolve to a boolean that is either true (a probably prime number) or false (definitely composite)  
+**Returns**: <code>Promise</code> - A promise that resolves to a Buffer/UInt8Array filled with cryptographically secure random bytes  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| w | <code>bigint</code> | An integer to be tested for primality |
-| iterations | <code>number</code> | The number of iterations for the primality test. The value shall be consistent with Table C.1, C.2 or C.3 |
+| byteLength | <code>number</code> | The desired number of random bytes |
+| forceLength | <code>boolean</code> | If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1 |
 
-<a name="prime"></a>
+<a name="toZn"></a>
 
-## prime ⇒ <code>Promise</code>
-A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator
+## toZn ⇒ <code>bigint</code>
+Finds the smallest positive element that is congruent to a in modulo n
 
 **Kind**: global constant  
-**Returns**: <code>Promise</code> - A promise that resolves to a bigint probable prime of bitLength bits  
+**Returns**: <code>bigint</code> - The smallest positive representation of a in modulo n  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| bitLength | <code>number</code> | The required bit length for the generated prime |
-| iterations | <code>number</code> | The number of iterations for the Miller-Rabin Probabilistic Primality Test |
+| a | <code>number</code> \| <code>bigint</code> | An integer |
+| n | <code>number</code> \| <code>bigint</code> | The modulo |
 
 <a name="egcdReturn"></a>
 
