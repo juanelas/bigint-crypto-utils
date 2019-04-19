@@ -1,3 +1,6 @@
+# Project specific files
+dist/bigint-crypto-utils-?.?.?.*
+
 # Logs
 logs
 *.log
@@ -62,4 +65,3 @@ typings/
 
 # Visual Studio Code
 .vscode
-
