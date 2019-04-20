@@ -1,6 +1,7 @@
 {
     "env": {
         "node": true,
+        "browser": true,
         "mocha": true,
         "worker": true
     },
@@ -30,7 +31,6 @@
     },
     "globals": {
         "BigInt": "readonly",
-        "window": "readonly",
         "Uint8Array": "readonly"
     }
 }
