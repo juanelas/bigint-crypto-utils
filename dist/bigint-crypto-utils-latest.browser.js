@@ -88,7 +88,8 @@ var bigintCryptoUtils = (function (exports) {
     }
 
     /**
-     * The test first tries if any of the first 250 small primes are a factor of the input number and then passes several iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)
+     * The test first tries if any of the first 250 small primes are a factor of the input number and then passes several 
+     * iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)
      * 
      * @param {bigint} w An integer to be tested for primality
      * @param {number} iterations The number of iterations for the primality test. The value shall be consistent with Table C.1, C.2 or C.3
@@ -96,8 +97,8 @@ var bigintCryptoUtils = (function (exports) {
      * @return {Promise} A promise that resolve to a boolean that is either true (a probably prime number) or false (definitely composite)
      */
     async function isProbablyPrime(w, iterations = 16) {
-        {
-            return new Promise(resolve => {
+        { // browser
+            return new Promise((resolve, reject) => {
                 let worker = new Worker(_isProbablyPrimeWorkerURL());
 
                 worker.onmessage = (event) => {
@@ -105,9 +106,14 @@ var bigintCryptoUtils = (function (exports) {
                     resolve(event.data.isPrime);
                 };
 
+                worker.onmessageerror = (event) => {
+                    reject(event);
+                };
+
                 worker.postMessage({
                     'rnd': w,
-                    'iterations': iterations
+                    'iterations': iterations,
+                    'id': 0
                 });
             });
         }
@@ -185,43 +191,50 @@ var bigintCryptoUtils = (function (exports) {
      * @returns {Promise} A promise that resolves to a bigint probable prime of bitLength bits
      */
     async function prime(bitLength, iterations = 16) {
-        return new Promise(async (resolve) => {
-            {
-                let workerList = [];
+        return new Promise((resolve) => {
+            let workerList = [];
+            const _onmessage = (msg, newWorker) => {
+                if (msg.isPrime) {
+                    // if a prime number has been found, stop all the workers, and return it
+                    for (let j = 0; j < workerList.length; j++) {
+                        workerList[j].terminate();
+                    }
+                    while (workerList.length) {
+                        workerList.pop();
+                    }
+                    resolve(msg.value);
+                } else { // if a composite is found, make the worker test another random number
+                    randBits(bitLength, true).then((buf) => {
+                        let rnd = fromBuffer(buf);
+                        try {
+                            newWorker.postMessage({
+                                'rnd': rnd,
+                                'iterations': iterations,
+                                'id': msg.id
+                            });
+                        } catch (error) {
+                            // The worker has already terminated. There is nothing to handle here
+                        }
+                    });
+                }
+            };
+            { //browser
                 let workerURL = _isProbablyPrimeWorkerURL();
                 for (let i = 0; i < self.navigator.hardwareConcurrency; i++) {
                     let newWorker = new Worker(workerURL);
-                    newWorker.onmessage = async (event) => {
-                        if (event.data.isPrime) {
-                            // if a prime number has been found, stop all the workers, and return it
-                            for (let j = 0; j < workerList.length; j++) {
-                                workerList[j].terminate();
-                            }
-                            while (workerList.length) {
-                                workerList.pop();
-                            }
-                            resolve(event.data.value);
-                        } else { // if a composite is found, make the worker test another random number
-                            let rnd = BigInt(0);
-                            rnd = fromBuffer(await randBytes(bitLength / 8, true));
-                            newWorker.postMessage({
-                                'rnd': rnd,
-                                'iterations': iterations
-                            });
-                        }
-                    };
+                    newWorker.onmessage = (event) => _onmessage(event.data, newWorker);
                     workerList.push(newWorker);
                 }
-
-                for (const worker of workerList) {
-                    let rnd = BigInt(0);
-                    rnd = fromBuffer(await randBytes(bitLength / 8, true));
-                    worker.postMessage({
+            }
+            for (let i = 0; i < workerList.length; i++) {
+                randBits(bitLength, true).then((buf) => {
+                    let rnd = fromBuffer(buf);
+                    workerList[i].postMessage({
                         'rnd': rnd,
-                        'iterations': iterations
+                        'iterations': iterations,
+                        'id': i
                     });
-                }
-
+                });
             }
         });
     }
@@ -233,25 +246,36 @@ var bigintCryptoUtils = (function (exports) {
      * 
      * @returns {Promise} A promise that resolves to a cryptographically secure random bigint between [min,max]
      */
-    async function randBetween(max, min = 1) {
-        let bitLen = bitLength(max);
-        let byteLength = bitLen >> 3;
-        let remaining = bitLen - (byteLength * 8);
-        let extraBits;
-        if (remaining > 0) {
-            byteLength++;
-            extraBits = 2 ** remaining - 1;
-        }
-
+    async function randBetween(max, min = BigInt(1)) {
+        if (max <= min) throw new Error('max must be > min');
+        const interval = max - min;
+        let bitLen = bitLength(interval);
         let rnd;
         do {
-            let buf = await randBytes(byteLength);
-            // remove extra bits
-            if (remaining > 0)
-                buf[0] = buf[0] & extraBits;
+            let buf = await randBits(bitLen);
             rnd = fromBuffer(buf);
-        } while (rnd > max || rnd < min);
-        return rnd;
+        } while (rnd > interval);
+        return rnd + min;
+    }
+
+    /**
+     * Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
+     * 
+     * @param {number} bitLength The desired number of random bits
+     * @param {boolean} forceLength If we want to force the output to have a specific bit length. It basically forces the msb to be 1
+     * 
+     * @returns {Promise} A promise that resolves to a Buffer/UInt8Array filled with cryptographically secure random bits
+     */
+    async function randBits(bitLength, forceLength = false) {
+        const byteLength = Math.ceil(bitLength / 8);
+        let rndBytes = await randBytes(byteLength, false);
+        // Fill with 0's the extra birs
+        rndBytes[0] = rndBytes[0] & (2 ** (bitLength % 8) - 1);
+        if (forceLength) {
+            let mask = (bitLength % 8) ? 2 ** ((bitLength % 8) - 1) : 128;
+            rndBytes[0] = rndBytes[0] | mask;
+        }
+        return rndBytes;
     }
 
     /**
@@ -312,16 +336,21 @@ var bigintCryptoUtils = (function (exports) {
     }
 
     function _isProbablyPrimeWorkerURL() {
-        async function _onmessage(event) { // Let's start once we are called
+        // Let's us first add all the required functions
+        let workerCode = `'use strict';const eGcd = ${eGcd.toString()};const modInv = ${modInv.toString()};const modPow = ${modPow.toString()};const toZn = ${toZn.toString()};const randBits = ${randBits.toString()};const randBytes = ${randBytes.toString()};const randBetween = ${randBetween.toString()};const isProbablyPrime = ${_isProbablyPrime.toString()};${bitLength.toString()}${fromBuffer.toString()}`;
+
+        const _onmessage = async function (event) { // Let's start once we are called
             // event.data = {rnd: <bigint>, iterations: <number>}
             const isPrime = await isProbablyPrime(event.data.rnd, event.data.iterations);
             postMessage({
                 'isPrime': isPrime,
-                'value': event.data.rnd
+                'value': event.data.rnd,
+                'id': event.data.id
             });
-        }
+        };
+        workerCode += `onmessage = ${_onmessage.toString()};`;
 
-        let workerCode = `(() => {'use strict';const eGcd = ${eGcd.toString()};const modInv = ${modInv.toString()};const modPow = ${modPow.toString()};const toZn = ${toZn.toString()};const randBytes = ${randBytes.toString()};const randBetween = ${randBetween.toString()};const isProbablyPrime = ${_isProbablyPrime.toString()};${bitLength.toString()}${fromBuffer.toString()}onmessage = ${_onmessage.toString()};})()`;
+        workerCode = `(() => {${workerCode}})()`; // encapsulate IIFE
 
         var _blob = new Blob([workerCode], { type: 'text/javascript' });
 
@@ -629,7 +658,7 @@ var bigintCryptoUtils = (function (exports) {
         let m = (w - BigInt(1)) / (BigInt(2) ** a);
 
         loop: do {
-            let b = await randBetween(w - BigInt(1), 2);
+            let b = await randBetween(w - BigInt(1), BigInt(2));
             let z = modPow(b, m, w);
             if (z === BigInt(1) || z === w - BigInt(1))
                 continue;
@@ -656,6 +685,7 @@ var bigintCryptoUtils = (function (exports) {
     exports.modPow = modPow;
     exports.prime = prime;
     exports.randBetween = randBetween;
+    exports.randBits = randBits;
     exports.randBytes = randBytes;
     exports.toZn = toZn;
 

@@ -28,7 +28,7 @@
     "test": "./test"
   },
   "scripts": {
-    "test": "mocha --timeout 600000",
+    "test": "node --experimental-worker node_modules/mocha/bin/_mocha --timeout 600000",
     "build": "node build/build.rollup.js",
     "build:browserTests": "node build/build.browser.tests.js",
     "build:docs": "jsdoc2md --template=README.hbs --files ./src/main.js > README.md",

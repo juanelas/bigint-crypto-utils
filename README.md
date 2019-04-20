@@ -91,7 +91,8 @@ Take positive integers a, b as input, and return a triple (g, x, y), such that a
 <dd><p>Greatest-common divisor of two integers based on the iterative binary algorithm.</p>
 </dd>
 <dt><a href="#isProbablyPrime">isProbablyPrime(w, iterations)</a> ⇒ <code>Promise</code></dt>
-<dd><p>The test first tries if any of the first 250 small primes are a factor of the input number and then passes several iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)</p>
+<dd><p>The test first tries if any of the first 250 small primes are a factor of the input number and then passes several 
+iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)</p>
 </dd>
 <dt><a href="#lcm">lcm(a, b)</a> ⇒ <code>bigint</code></dt>
 <dd><p>The least common multiple computed as abs(a*b)/gcd(a,b)</p>
@@ -109,6 +110,9 @@ main process, and it can be much faster (if several cores or cpu are available).
 </dd>
 <dt><a href="#randBetween">randBetween(max, min)</a> ⇒ <code>Promise</code></dt>
 <dd><p>Returns a cryptographically secure random integer between [min,max]</p>
+</dd>
+<dt><a href="#randBits">randBits(bitLength, forceLength)</a> ⇒ <code>Promise</code></dt>
+<dd><p>Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
 </dd>
 <dt><a href="#randBytes">randBytes(byteLength, forceLength)</a> ⇒ <code>Promise</code></dt>
 <dd><p>Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
@@ -167,7 +171,8 @@ Greatest-common divisor of two integers based on the iterative binary algorithm.
 <a name="isProbablyPrime"></a>
 
 ## isProbablyPrime(w, iterations) ⇒ <code>Promise</code>
-The test first tries if any of the first 250 small primes are a factor of the input number and then passes several iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)
+The test first tries if any of the first 250 small primes are a factor of the input number and then passes several 
+iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)
 
 **Kind**: global function  
 **Returns**: <code>Promise</code> - A promise that resolve to a boolean that is either true (a probably prime number) or false (definitely composite)  
@@ -244,6 +249,19 @@ Returns a cryptographically secure random integer between [min,max]
 | --- | --- | --- |
 | max | <code>bigint</code> | Returned value will be <= max |
 | min | <code>bigint</code> | Returned value will be >= min |
+
+<a name="randBits"></a>
+
+## randBits(bitLength, forceLength) ⇒ <code>Promise</code>
+Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
+
+**Kind**: global function  
+**Returns**: <code>Promise</code> - A promise that resolves to a Buffer/UInt8Array filled with cryptographically secure random bits  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| bitLength | <code>number</code> | The desired number of random bits |
+| forceLength | <code>boolean</code> | If we want to force the output to have a specific bit length. It basically forces the msb to be 1 |
 
 <a name="randBytes"></a>
 
