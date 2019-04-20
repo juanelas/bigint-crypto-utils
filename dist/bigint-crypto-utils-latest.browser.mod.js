@@ -181,6 +181,8 @@ function modPow(a, b, n) {
  * A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator. 
  * The browser version uses web workers to parallelise prime look up. Therefore, it does not lock the UI 
  * main process, and it can be much faster (if several cores or cpu are available). 
+ * The node version can also use worker_threads if they are available (enabled by default with Node 11 and 
+ * and can be enabled at runtime executing node --experimental-worker with node >=10.5.0)
  * 
  * @param {number} bitLength The required bit length for the generated prime
  * @param {number} iterations The number of iterations for the Miller-Rabin Probabilistic Primality Test
