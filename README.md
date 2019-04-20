@@ -11,7 +11,7 @@ bigint-crypto-utils can be imported to your project with `npm`:
 ```bash
 npm install bigint-crypto-utils
 ```
-NPM installation defaults to the ES6 module for browsers and the CJS for Node.js.
+NPM installation defaults to the ES6 module for browsers and the CJS one for Node.js.
 
 For web browsers, you can also directly download the minimised version of the [IIFE file](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bigint-crypto-utils-latest.browser.min.js) or the [ES6 module](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bigint-crypto-utils-latest.browser.mod.min.js) from GitHub.
 
