@@ -5,7 +5,7 @@ Utils for working with cryptography using native JS (stage 3) implementation of 
 _The operations supported on BigInts are not constant time. BigInt can be therefore **[unsuitable for use in cryptography](https://www.chosenplaintext.ca/articles/beginners-guide-constant-time-cryptography.html).** Many platforms provide native support for cryptography, such as [Web Cryptography API](https://w3c.github.io/webcrypto/) or [Node.js Crypto](https://nodejs.org/dist/latest/docs/api/crypto.html)._
 
 ## Installation
-bigint-crypto-utils is distributed for [web browsers supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility) as an ES6 module or a IIFE file, and for Node.js (>=10.4.0) as a CJS module.
+bigint-crypto-utils is distributed for [web browsers and/or webviews supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility) as an ES6 module or an IIFE file; and for Node.js (>=10.4.0), as a CJS module.
 
 bigint-crypto-utils can be imported to your project with `npm`:
 ```bash
@@ -21,8 +21,12 @@ With node js:
 ```javascript
 const bigintCryptoUtils = require('bigint-crypto-utils');
 
-// Stage 3 BigInts with value 666 can be declared as BigInt('666')
-// or the shorter new no-so-linter-friendly syntax 666n
+/* Stage 3 BigInts with value 666 can be declared as BigInt('666')
+ or the shorter new no-so-linter-friendly syntax 666n.
+ Notice that you can also pass a number, e.g. BigInt(666), but it is not
+ recommended since values over 2**53 - 1 won't be safe but no warning will
+ be raised.
+*/
 let a = BigInt('5');
 let b = BigInt('2');
 let n = BigInt('19');
@@ -108,7 +112,7 @@ iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)</p>
 The browser version uses web workers to parallelise prime look up. Therefore, it does not lock the UI 
 main process, and it can be much faster (if several cores or cpu are available). 
 The node version can also use worker_threads if they are available (enabled by default with Node 11 and 
-and can be enabled at runtime executing node --experimental-worker with node &gt;=10.5.0)</p>
+and can be enabled at runtime executing node --experimental-worker with node &gt;=10.5.0).</p>
 </dd>
 <dt><a href="#randBetween">randBetween(max, min)</a> ⇒ <code>Promise</code></dt>
 <dd><p>Returns a cryptographically secure random integer between [min,max]</p>
@@ -231,7 +235,7 @@ A probably-prime (Miller-Rabin), cryptographically-secure, random-number generat
 The browser version uses web workers to parallelise prime look up. Therefore, it does not lock the UI 
 main process, and it can be much faster (if several cores or cpu are available). 
 The node version can also use worker_threads if they are available (enabled by default with Node 11 and 
-and can be enabled at runtime executing node --experimental-worker with node >=10.5.0)
+and can be enabled at runtime executing node --experimental-worker with node >=10.5.0).
 
 **Kind**: global function  
 **Returns**: <code>Promise</code> - A promise that resolves to a bigint probable prime of bitLength bits  

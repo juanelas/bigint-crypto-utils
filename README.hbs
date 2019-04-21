@@ -5,7 +5,7 @@ Utils for working with cryptography using native JS (stage 3) implementation of 
 _The operations supported on BigInts are not constant time. BigInt can be therefore **[unsuitable for use in cryptography](https://www.chosenplaintext.ca/articles/beginners-guide-constant-time-cryptography.html).** Many platforms provide native support for cryptography, such as [Web Cryptography API](https://w3c.github.io/webcrypto/) or [Node.js Crypto](https://nodejs.org/dist/latest/docs/api/crypto.html)._
 
 ## Installation
-bigint-crypto-utils is distributed for [web browsers supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility) as an ES6 module or a IIFE file, and for Node.js (>=10.4.0) as a CJS module.
+bigint-crypto-utils is distributed for [web browsers and/or webviews supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility) as an ES6 module or an IIFE file; and for Node.js (>=10.4.0), as a CJS module.
 
 bigint-crypto-utils can be imported to your project with `npm`:
 ```bash
@@ -21,8 +21,12 @@ With node js:
 ```javascript
 const bigintCryptoUtils = require('bigint-crypto-utils');
 
-// Stage 3 BigInts with value 666 can be declared as BigInt('666')
-// or the shorter new no-so-linter-friendly syntax 666n
+/* Stage 3 BigInts with value 666 can be declared as BigInt('666')
+ or the shorter new no-so-linter-friendly syntax 666n.
+ Notice that you can also pass a number, e.g. BigInt(666), but it is not
+ recommended since values over 2**53 - 1 won't be safe but no warning will
+ be raised.
+*/
 let a = BigInt('5');
 let b = BigInt('2');
 let n = BigInt('19');
