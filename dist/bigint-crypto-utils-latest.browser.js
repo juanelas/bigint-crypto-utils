@@ -94,7 +94,7 @@ var bigintCryptoUtils = (function (exports) {
      * @param {bigint} w An integer to be tested for primality
      * @param {number} iterations The number of iterations for the primality test. The value shall be consistent with Table C.1, C.2 or C.3
      * 
-     * @return {Promise} A promise that resolve to a boolean that is either true (a probably prime number) or false (definitely composite)
+     * @return {Promise} A promise that resolves to a boolean that is either true (a probably prime number) or false (definitely composite)
      */
     async function isProbablyPrime(w, iterations = 16) {
         { // browser
