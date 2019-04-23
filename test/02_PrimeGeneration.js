@@ -17,8 +17,6 @@ describe('Testing generation of prime numbers', function () {
         describe(`Executing prime(${bitLength})`, function () {
             it(`should return a random ${bitLength}-bits probable prime`, async function () {
                 let prime = await bigintCryptoUtils.prime(bitLength);
-                const ret = await bigintCryptoUtils.isProbablyPrime(prime);
-                chai.expect(ret).to.equal(true);
                 let bits = 1;
                 do {
                     bits++;

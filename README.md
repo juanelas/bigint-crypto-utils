@@ -1,11 +1,21 @@
-# bigint-crypto-utils 
+# bigint-crypto-utils
 
-Utils for working with cryptography using native JS (stage 3) implementation of BigInt. It includes some extra functions to work with modular arithmetics along with secure random numbers and a fast strong probable prime generation/testing (parallelised multi-threaded Miller-Rabin primality test). It can be used by any [Web Browser or webview supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility) and with Node.js (>=10.4.0). In the former case, for multi-threaded primality tests, you should use Node.js 11 or enable at runtime with `node --experimental-worker` with Node.js >=10.5.0.
+Utils for working with cryptography using native JS (stage 3) implementation of BigInt. It includes some extra functions
+to work with modular arithmetics along with secure random numbers and a fast strong probable prime generation/testing
+(parallelised multi-threaded Miller-Rabin primality test). It can be used by any [Web Browser or webview supporting
+BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility)
+and with Node.js (>=10.4.0). In the former case, for multi-threaded primality tests, you should use Node.js 11 or enable
+at runtime with `node --experimental-worker` with Node.js >=10.5.0.
 
-_The operations supported on BigInts are not constant time. BigInt can be therefore **[unsuitable for use in cryptography](https://www.chosenplaintext.ca/articles/beginners-guide-constant-time-cryptography.html).** Many platforms provide native support for cryptography, such as [Web Cryptography API](https://w3c.github.io/webcrypto/) or [Node.js Crypto](https://nodejs.org/dist/latest/docs/api/crypto.html)._
+_The operations supported on BigInts are not constant time. BigInt can be therefore **[unsuitable for use in
+cryptography](https://www.chosenplaintext.ca/articles/beginners-guide-constant-time-cryptography.html).** Many platforms
+provide native support for cryptography, such as [Web Cryptography API](https://w3c.github.io/webcrypto/) or [Node.js
+Crypto](https://nodejs.org/dist/latest/docs/api/crypto.html)._
 
 ## Installation
-bigint-crypto-utils is distributed for [web browsers and/or webviews supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility) as an ES6 module or an IIFE file; and for Node.js (>=10.4.0), as a CJS module.
+bigint-crypto-utils is distributed for [web browsers and/or webviews supporting
+BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility)
+as an ES6 module or an IIFE file; and for Node.js (>=10.4.0), as a CJS module.
 
 bigint-crypto-utils can be imported to your project with `npm`:
 ```bash
@@ -13,7 +23,11 @@ npm install bigint-crypto-utils
 ```
 NPM installation defaults to the ES6 module for browsers and the CJS one for Node.js.
 
-For web browsers, you can also directly download the minimised version of the [IIFE file](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bigint-crypto-utils-latest.browser.min.js) or the [ES6 module](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bigint-crypto-utils-latest.browser.mod.min.js) from GitHub.
+For web browsers, you can also directly download the minimised version of the [IIFE
+file](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bigint-crypto-utils-latest.browser.min.js)
+or the [ES6
+module](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bigint-crypto-utils-latest.browser.mod.min.js)
+from GitHub.
 
 ## Usage example
 
@@ -22,10 +36,10 @@ With node js:
 const bigintCryptoUtils = require('bigint-crypto-utils');
 
 /* Stage 3 BigInts with value 666 can be declared as BigInt('666')
- or the shorter new no-so-linter-friendly syntax 666n.
- Notice that you can also pass a number, e.g. BigInt(666), but it is not
- recommended since values over 2**53 - 1 won't be safe but no warning will
- be raised.
+or the shorter new no-so-linter-friendly syntax 666n.
+Notice that you can also pass a number, e.g. BigInt(666), but it is not
+recommended since values over 2**53 - 1 won't be safe but no warning will
+be raised.
 */
 let a = BigInt('5');
 let b = BigInt('2');
@@ -42,41 +56,41 @@ const prime = await bigintCryptoUtils.prime(2048);
 
 // Testing if a prime is a probable prime (Miller-Rabin)
 if ( await bigintCryptoUtils.isProbablyPrime(prime) )
-    // code if is prime
+// code if is prime
 
 // Get a cryptographically secure random number between 1 and 2**256 bits.
-const rnd = bigintCryptoUtils.randBetween(BigInt(2)**BigInt(256));
+const rnd = bigintCryptoUtils.randBetween(BigInt(2) ** BigInt(256));
 
 ```
 
 From a browser, you can just load the module in a html page as:
 ```html
-  <script type="module">
-    import * as bigintCryptoUtils from 'bigint-utils-latest.browser.mod.min.js';
+<script type="module">
+  import * as bigintCryptoUtils from 'bigint-utils-latest.browser.mod.min.js';
 
-    let a = BigInt('5');
-    let b = BigInt('2');
-    let n = BigInt('19');
+  let a = BigInt('5');
+  let b = BigInt('2');
+  let n = BigInt('19');
 
-    console.log(bigintCryptoUtils.modPow(a, b, n)); // prints 6
+  console.log(bigintCryptoUtils.modPow(a, b, n)); // prints 6
 
-    console.log(bigintCryptoUtils.modInv(BigInt('2'), BigInt('5'))); // prints 3
+  console.log(bigintCryptoUtils.modInv(BigInt('2'), BigInt('5'))); // prints 3
 
-    console.log(bigintCryptoUtils.modInv(BigInt('3'), BigInt('5'))); // prints 2
+  console.log(bigintCryptoUtils.modInv(BigInt('3'), BigInt('5'))); // prints 2
 
-    (async function () {
-      // Generation of a probable prime of 2018 bits
-      const p = await bigintCryptoUtils.prime(2048);
+  (async function () {
+    // Generation of a probable prime of 2018 bits
+    const p = await bigintCryptoUtils.prime(2048);
 
-      // Testing if a prime is a probable prime (Miller-Rabin)
-      const isPrime = await bigintCryptoUtils.isProbablyPrime(p);
-      alert(p.toString() + '\nIs prime?\n' + isPrime);
+    // Testing if a prime is a probable prime (Miller-Rabin)
+    const isPrime = await bigintCryptoUtils.isProbablyPrime(p);
+    alert(p.toString() + '\nIs prime?\n' + isPrime);
 
-      // Get a cryptographically secure random number between 1 and 2**256 bits.
-      const rnd = await bigintCryptoUtils.randBetween(BigInt(2)**BigInt(256));
-      alert(rnd);
-    })();
-  </script>
+    // Get a cryptographically secure random number between 1 and 2**256 bits.
+    const rnd = await bigintCryptoUtils.randBetween(BigInt(2) ** BigInt(256));
+    alert(rnd);
+  })();
+</script>
 ```
 
 # bigint-crypto-utils JS Doc
