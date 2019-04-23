@@ -11,7 +11,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
  */
 function abs(a) {
     a = BigInt(a);
-    return (a >= BigInt(0)) ? a : -a;
+    return (a >= _ZERO) ? a : -a;
 }
 
 /**
@@ -32,12 +32,12 @@ function abs(a) {
 function eGcd(a, b) {
     a = BigInt(a);
     b = BigInt(b);
-    let x = BigInt(0);
-    let y = BigInt(1);
-    let u = BigInt(1);
-    let v = BigInt(0);
+    let x = _ZERO;
+    let y = _ONE;
+    let u = _ONE;
+    let v = _ZERO;
 
-    while (a !== BigInt(0)) {
+    while (a !== _ZERO) {
         let q = b / a;
         let r = b % a;
         let m = x - (u * q);
@@ -67,15 +67,15 @@ function eGcd(a, b) {
 function gcd(a, b) {
     a = abs(a);
     b = abs(b);
-    let shift = BigInt(0);
-    while (!((a | b) & BigInt(1))) {
-        a >>= BigInt(1);
-        b >>= BigInt(1);
+    let shift = _ZERO;
+    while (!((a | b) & _ONE)) {
+        a >>= _ONE;
+        b >>= _ONE;
         shift++;
     }
-    while (!(a & BigInt(1))) a >>= BigInt(1);
+    while (!(a & _ONE)) a >>= _ONE;
     do {
-        while (!(b & BigInt(1))) b >>= BigInt(1);
+        while (!(b & _ONE)) b >>= _ONE;
         if (a > b) {
             let x = a;
             a = b;
@@ -147,7 +147,7 @@ function lcm(a, b) {
  */
 function modInv(a, n) {
     let egcd = eGcd(a, n);
-    if (egcd.b !== BigInt(1)) {
+    if (egcd.b !== _ONE) {
         return null; // modular inverse does not exist
     } else {
         return toZn(egcd.x, n);
@@ -167,15 +167,15 @@ function modPow(a, b, n) {
     n = BigInt(n);
     a = toZn(a, n);
     b = BigInt(b);
-    if (b < BigInt(0)) {
+    if (b < _ZERO) {
         return modInv(modPow(a, abs(b), n), n);
     }
-    let result = BigInt(1);
+    let result = _ONE;
     let x = a;
     while (b > 0) {
-        var leastSignificantBit = b % BigInt(2);
-        b = b / BigInt(2);
-        if (leastSignificantBit == BigInt(1)) {
+        var leastSignificantBit = b % _TWO;
+        b = b / _TWO;
+        if (leastSignificantBit == _ONE) {
             result = result * x;
             result = result % n;
         }
@@ -199,7 +199,7 @@ function modPow(a, b, n) {
  */
 async function prime(bitLength, iterations = 16) {
     if (!_useWorkers) {
-        let rnd = BigInt(0);
+        let rnd = _ZERO;
         do {
             rnd = fromBuffer(await randBytes(bitLength / 8, true));
         } while (! await _isProbablyPrime(rnd, iterations));
@@ -261,7 +261,7 @@ async function prime(bitLength, iterations = 16) {
  * 
  * @returns {Promise} A promise that resolves to a cryptographically secure random bigint between [min,max]
  */
-async function randBetween(max, min = BigInt(1)) {
+async function randBetween(max, min = _ONE) {
     if (max <= min) throw new Error('max must be > min');
     const interval = max - min;
     let bitLen = bitLength(interval);
@@ -337,7 +337,7 @@ function toZn(a, n) {
 /* HELPER FUNCTIONS */
 
 function fromBuffer(buf) {
-    let ret = BigInt(0);
+    let ret = _ZERO;
     for (let i of buf.values()) {
         let bi = BigInt(i);
         ret = (ret << BigInt(8)) + bi;
@@ -349,7 +349,7 @@ function bitLength(a) {
     let bits = 1;
     do {
         bits++;
-    } while ((a >>= BigInt(1)) > BigInt(1));
+    } while ((a >>= _ONE) > _ONE);
     return bits;
 }
 
@@ -358,9 +358,9 @@ async function _isProbablyPrime(w, iterations = 16) {
 	PREFILTERING. Even values but 2 are not primes, so don't test. 
 	1 is not a prime and the M-R algorithm needs w>1.
 	*/
-    if (w === BigInt(2))
+    if (w === _TWO)
         return true;
-    else if ((w & BigInt(1)) === BigInt(0) || w === BigInt(1))
+    else if ((w & _ONE) === _ZERO || w === _ONE)
         return false;
 
     /*
@@ -622,7 +622,7 @@ async function _isProbablyPrime(w, iterations = 16) {
         const p = BigInt(firstPrimes[i]);
         if (w === p)
             return true;
-        else if (w % p === BigInt(0))
+        else if (w % p === _ZERO)
             return false;
     }
 
@@ -645,25 +645,25 @@ async function _isProbablyPrime(w, iterations = 16) {
 		Comment: Increment i for the do-loop in step 4.
 	5. Return PROBABLY PRIME.
 	*/
-    let a = BigInt(0), d = w - BigInt(1);
-    while (d % BigInt(2) === BigInt(0)) {
-        d /= BigInt(2);
+    let a = _ZERO, d = w - _ONE;
+    while (d % _TWO === _ZERO) {
+        d /= _TWO;
         ++a;
     }
 
-    let m = (w - BigInt(1)) / (BigInt(2) ** a);
+    let m = (w - _ONE) / (_TWO ** a);
 
     loop: do {
-        let b = await randBetween(w - BigInt(1), BigInt(2));
+        let b = await randBetween(w - _ONE, _TWO);
         let z = modPow(b, m, w);
-        if (z === BigInt(1) || z === w - BigInt(1))
+        if (z === _ONE || z === w - _ONE)
             continue;
 
         for (let j = 1; j < a; j++) {
-            z = modPow(z, BigInt(2), w);
-            if (z === w - BigInt(1))
+            z = modPow(z, _TWO, w);
+            if (z === w - _ONE)
                 continue loop;
-            if (z === BigInt(1))
+            if (z === _ONE)
                 break;
         }
         return false;
@@ -672,9 +672,13 @@ async function _isProbablyPrime(w, iterations = 16) {
     return true;
 }
 
-let _useWorkers = true;
+/* HELPLER CONSTANTS/VARIABLES*/
+const _ZERO = BigInt(0);
+const _ONE = BigInt(1);
+const _TWO = BigInt(2);
 
-{
+let _useWorkers = true; // The following is just to check wheter Node.js can use workers
+{ // Node.js
     _useWorkers = (function _workers() {
         try {
             require.resolve('worker_threads');
@@ -689,7 +693,9 @@ This node version doesn't support worker_threads. You should enable them in orde
     })();
 }
 
-if (_useWorkers) { // node.js
+
+
+if (_useWorkers) { // node.js with support for workers
     const { parentPort, isMainThread } = require('worker_threads');
     if (!isMainThread) { // worker
         parentPort.on('message', async function (data) { // Let's start once we are called
