@@ -1,21 +1,11 @@
 # bigint-crypto-utils
 
-Utils for working with cryptography using native JS (stage 3) implementation of BigInt. It includes some extra functions
-to work with modular arithmetics along with secure random numbers and a fast strong probable prime generation/testing
-(parallelised multi-threaded Miller-Rabin primality test). It can be used by any [Web Browser or webview supporting
-BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility)
-and with Node.js (>=10.4.0). In the latter case, for multi-threaded primality tests, you should use Node.js 11 or enable
-at runtime with `node --experimental-worker` with Node.js >=10.5.0.
+Utils for working with cryptography using native JS (stage 3) implementation of BigInt. It includes some extra functions to work with modular arithmetics along with secure random numbers and a fast strong probable prime generation/testing(parallelised multi-threaded Miller-Rabin primality test). It can be used by any [Web Browser or webview supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility) and with Node.js (>=10.4.0). In the latter case, for multi-threaded primality tests, you should use Node.js 11 or enable at runtime with `node --experimental-worker` with Node.js >=10.5.0.
 
-_The operations supported on BigInts are not constant time. BigInt can be therefore **[unsuitable for use in
-cryptography](https://www.chosenplaintext.ca/articles/beginners-guide-constant-time-cryptography.html).** Many platforms
-provide native support for cryptography, such as [Web Cryptography API](https://w3c.github.io/webcrypto/) or [Node.js
-Crypto](https://nodejs.org/dist/latest/docs/api/crypto.html)._
+_The operations supported on BigInts are not constant time. BigInt can be therefore **[unsuitable for use in cryptography](https://www.chosenplaintext.ca/articles/beginners-guide-constant-time-cryptography.html).** Many platforms provide native support for cryptography, such as [Web Cryptography API](https://w3c.github.io/webcrypto/) or [Node.js Crypto](https://nodejs.org/dist/latest/docs/api/crypto.html)._
 
 ## Installation
-bigint-crypto-utils is distributed for [web browsers and/or webviews supporting
-BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility)
-as an ES6 module or an IIFE file; and for Node.js (>=10.4.0), as a CJS module.
+bigint-crypto-utils is distributed for [web browsers and/or webviews supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility) as an ES6 module or an IIFE file; and for Node.js (>=10.4.0), as a CJS module.
 
 bigint-crypto-utils can be imported to your project with `npm`:
 ```bash
@@ -23,11 +13,7 @@ npm install bigint-crypto-utils
 ```
 NPM installation defaults to the ES6 module for browsers and the CJS one for Node.js.
 
-For web browsers, you can also directly download the minimised version of the [IIFE
-file](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bigint-crypto-utils-latest.browser.min.js)
-or the [ES6
-module](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bigint-crypto-utils-latest.browser.mod.min.js)
-from GitHub.
+For web browsers, you can also directly download the minimised version of the [IIFE file](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bigint-crypto-utils-latest.browser.min.js) or the [ES6 module](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bigint-crypto-utils-latest.browser.mod.min.js) from GitHub.
 
 ## Usage example
 
