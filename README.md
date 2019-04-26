@@ -114,13 +114,13 @@ main process, and it can be much faster (if several cores or cpu are available).
 The node version can also use worker_threads if they are available (enabled by default with Node 11 and 
 and can be enabled at runtime executing node --experimental-worker with node &gt;=10.5.0).</p>
 </dd>
-<dt><a href="#randBetween">randBetween(max, min)</a> ⇒ <code>Promise</code></dt>
+<dt><a href="#randBetween">randBetween(max, min)</a> ⇒ <code>bigint</code></dt>
 <dd><p>Returns a cryptographically secure random integer between [min,max]</p>
 </dd>
-<dt><a href="#randBits">randBits(bitLength, forceLength)</a> ⇒ <code>Promise</code></dt>
+<dt><a href="#randBits">randBits(bitLength, forceLength)</a> ⇒ <code>Buffer</code> | <code>Uint8Array</code></dt>
 <dd><p>Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
 </dd>
-<dt><a href="#randBytes">randBytes(byteLength, forceLength)</a> ⇒ <code>Promise</code></dt>
+<dt><a href="#randBytes">randBytes(byteLength, forceLength)</a> ⇒ <code>Buffer</code> | <code>Uint8Array</code></dt>
 <dd><p>Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
 </dd>
 <dt><a href="#toZn">toZn(a, n)</a> ⇒ <code>bigint</code></dt>
@@ -247,11 +247,11 @@ and can be enabled at runtime executing node --experimental-worker with node >=1
 
 <a name="randBetween"></a>
 
-## randBetween(max, min) ⇒ <code>Promise</code>
+## randBetween(max, min) ⇒ <code>bigint</code>
 Returns a cryptographically secure random integer between [min,max]
 
 **Kind**: global function  
-**Returns**: <code>Promise</code> - A promise that resolves to a cryptographically secure random bigint between [min,max]  
+**Returns**: <code>bigint</code> - A cryptographically secure random bigint between [min,max]  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -260,11 +260,11 @@ Returns a cryptographically secure random integer between [min,max]
 
 <a name="randBits"></a>
 
-## randBits(bitLength, forceLength) ⇒ <code>Promise</code>
+## randBits(bitLength, forceLength) ⇒ <code>Buffer</code> \| <code>Uint8Array</code>
 Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
 
 **Kind**: global function  
-**Returns**: <code>Promise</code> - A promise that resolves to a Buffer/UInt8Array filled with cryptographically secure random bits  
+**Returns**: <code>Buffer</code> \| <code>Uint8Array</code> - A Buffer/UInt8Array filled with cryptographically secure random bits  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -273,11 +273,11 @@ Secure random bits for both node and browsers. Node version uses crypto.randomFi
 
 <a name="randBytes"></a>
 
-## randBytes(byteLength, forceLength) ⇒ <code>Promise</code>
+## randBytes(byteLength, forceLength) ⇒ <code>Buffer</code> \| <code>Uint8Array</code>
 Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
 
 **Kind**: global function  
-**Returns**: <code>Promise</code> - A promise that resolves to a Buffer/UInt8Array filled with cryptographically secure random bytes  
+**Returns**: <code>Buffer</code> \| <code>Uint8Array</code> - A Buffer/UInt8Array filled with cryptographically secure random bytes  
 
 | Param | Type | Description |
 | --- | --- | --- |

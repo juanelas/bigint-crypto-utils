@@ -119,7 +119,9 @@ async function isProbablyPrime(w, iterations = 16) {
                 });
             });
         } else {
-            return _isProbablyPrime(w, iterations);
+            return new Promise((resolve) => {
+                resolve(_isProbablyPrime(w, iterations));
+            });
         }
     }
 }
@@ -197,13 +199,13 @@ function modPow(a, b, n) {
  * 
  * @returns {Promise} A promise that resolves to a bigint probable prime of bitLength bits
  */
-async function prime(bitLength, iterations = 16) {
+function prime(bitLength, iterations = 16) {
     if (!_useWorkers) {
         let rnd = _ZERO;
         do {
-            rnd = fromBuffer(await randBytes(bitLength / 8, true));
-        } while (! await _isProbablyPrime(rnd, iterations));
-        return rnd;
+            rnd = fromBuffer(randBytes(bitLength / 8, true));
+        } while (!_isProbablyPrime(rnd, iterations));
+        return new Promise((resolve) => { resolve(rnd); });
     }
     return new Promise((resolve) => {
         let workerList = [];
@@ -218,18 +220,17 @@ async function prime(bitLength, iterations = 16) {
                 }
                 resolve(msg.value);
             } else { // if a composite is found, make the worker test another random number
-                randBits(bitLength, true).then((buf) => {
-                    let rnd = fromBuffer(buf);
-                    try {
-                        newWorker.postMessage({
-                            'rnd': rnd,
-                            'iterations': iterations,
-                            'id': msg.id
-                        });
-                    } catch (error) {
-                        // The worker has already terminated. There is nothing to handle here
-                    }
-                });
+                let buf = randBits(bitLength, true);
+                let rnd = fromBuffer(buf);
+                try {
+                    newWorker.postMessage({
+                        'rnd': rnd,
+                        'iterations': iterations,
+                        'id': msg.id
+                    });
+                } catch (error) {
+                    // The worker has already terminated. There is nothing to handle here
+                }
             }
         };
         { // Node.js
@@ -242,13 +243,12 @@ async function prime(bitLength, iterations = 16) {
             }
         }
         for (let i = 0; i < workerList.length; i++) {
-            randBits(bitLength, true).then((buf) => {
-                let rnd = fromBuffer(buf);
-                workerList[i].postMessage({
-                    'rnd': rnd,
-                    'iterations': iterations,
-                    'id': i
-                });
+            let buf = randBits(bitLength, true);
+            let rnd = fromBuffer(buf);
+            workerList[i].postMessage({
+                'rnd': rnd,
+                'iterations': iterations,
+                'id': i
             });
         }
     });
@@ -259,15 +259,15 @@ async function prime(bitLength, iterations = 16) {
  * @param {bigint} max Returned value will be <= max
  * @param {bigint} min Returned value will be >= min
  * 
- * @returns {Promise} A promise that resolves to a cryptographically secure random bigint between [min,max]
+ * @returns {bigint} A cryptographically secure random bigint between [min,max]
  */
-async function randBetween(max, min = _ONE) {
+function randBetween(max, min = _ONE) {
     if (max <= min) throw new Error('max must be > min');
     const interval = max - min;
     let bitLen = bitLength(interval);
     let rnd;
     do {
-        let buf = await randBits(bitLen);
+        let buf = randBits(bitLen);
         rnd = fromBuffer(buf);
     } while (rnd > interval);
     return rnd + min;
@@ -279,11 +279,11 @@ async function randBetween(max, min = _ONE) {
  * @param {number} bitLength The desired number of random bits
  * @param {boolean} forceLength If we want to force the output to have a specific bit length. It basically forces the msb to be 1
  * 
- * @returns {Promise} A promise that resolves to a Buffer/UInt8Array filled with cryptographically secure random bits
+ * @returns {Buffer|Uint8Array} A Buffer/UInt8Array filled with cryptographically secure random bits
  */
-async function randBits(bitLength, forceLength = false) {
+function randBits(bitLength, forceLength = false) {
     const byteLength = Math.ceil(bitLength / 8);
-    let rndBytes = await randBytes(byteLength, false);
+    let rndBytes = randBytes(byteLength, false);
     // Fill with 0's the extra birs
     rndBytes[0] = rndBytes[0] & (2 ** (bitLength % 8) - 1);
     if (forceLength) {
@@ -299,24 +299,19 @@ async function randBits(bitLength, forceLength = false) {
  * @param {number} byteLength The desired number of random bytes
  * @param {boolean} forceLength If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1
  * 
- * @returns {Promise} A promise that resolves to a Buffer/UInt8Array filled with cryptographically secure random bytes
+ * @returns {Buffer|Uint8Array} A Buffer/UInt8Array filled with cryptographically secure random bytes
  */
-async function randBytes(byteLength, forceLength = false) {
-    return new Promise((resolve) => {
-        let buf;
-
-        {  // node
-            const crypto = require('crypto');
-            buf = Buffer.alloc(byteLength);
-            crypto.randomFill(buf, (err, buf) => {
-                // If fixed length is required we put the first bit to 1 -> to get the necessary bitLength
-                if (forceLength)
-                    buf[0] = buf[0] | 128;
-
-                resolve(buf);
-            });
-        }
-    });
+function randBytes(byteLength, forceLength = false) {
+    let buf;
+    {  // node
+        const crypto = require('crypto');
+        buf = Buffer.alloc(byteLength);
+        crypto.randomFillSync(buf);
+    }
+    // If fixed length is required we put the first bit to 1 -> to get the necessary bitLength
+    if (forceLength)
+        buf[0] = buf[0] | 128;
+    return buf;
 }
 
 /**
@@ -353,7 +348,7 @@ function bitLength(a) {
     return bits;
 }
 
-async function _isProbablyPrime(w, iterations = 16) {
+function _isProbablyPrime(w, iterations = 16) {
     /*
 	PREFILTERING. Even values but 2 are not primes, so don't test. 
 	1 is not a prime and the M-R algorithm needs w>1.
@@ -654,7 +649,7 @@ async function _isProbablyPrime(w, iterations = 16) {
     let m = (w - _ONE) / (_TWO ** a);
 
     loop: do {
-        let b = await randBetween(w - _ONE, _TWO);
+        let b = randBetween(w - _ONE, _TWO);
         let z = modPow(b, m, w);
         if (z === _ONE || z === w - _ONE)
             continue;
@@ -698,9 +693,9 @@ This node version doesn't support worker_threads. You should enable them in orde
 if (_useWorkers) { // node.js with support for workers
     const { parentPort, isMainThread } = require('worker_threads');
     if (!isMainThread) { // worker
-        parentPort.on('message', async function (data) { // Let's start once we are called
+        parentPort.on('message', function (data) { // Let's start once we are called
             // data = {rnd: <bigint>, iterations: <number>}
-            const isPrime = await _isProbablyPrime(data.rnd, data.iterations);
+            const isPrime = _isProbablyPrime(data.rnd, data.iterations);
             parentPort.postMessage({
                 'isPrime': isPrime,
                 'value': data.rnd,
