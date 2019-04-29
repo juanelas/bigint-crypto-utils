@@ -1,3 +1,8 @@
+const _ZERO = BigInt(0);
+const _ONE = BigInt(1);
+const _TWO = BigInt(2);
+
+
 /**
  * Absolute value. abs(a)==a if a>=0. abs(a)==-a if a<0
  *  
@@ -678,10 +683,5 @@ function _isProbablyPrime(w, iterations = 16) {
 
     return true;
 }
-
-/* HELPLER CONSTANTS/VARIABLES*/
-const _ZERO = BigInt(0);
-const _ONE = BigInt(1);
-const _TWO = BigInt(2);
 
 export { abs, bitLength, eGcd, gcd, isProbablyPrime, lcm, modInv, modPow, prime, randBetween, randBits, randBytes, toZn };

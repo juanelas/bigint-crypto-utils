@@ -1,6 +1,11 @@
 var bigintCryptoUtils = (function (exports) {
     'use strict';
 
+    const _ZERO = BigInt(0);
+    const _ONE = BigInt(1);
+    const _TWO = BigInt(2);
+
+
     /**
      * Absolute value. abs(a)==a if a>=0. abs(a)==-a if a<0
      *  
@@ -681,11 +686,6 @@ var bigintCryptoUtils = (function (exports) {
 
         return true;
     }
-
-    /* HELPLER CONSTANTS/VARIABLES*/
-    const _ZERO = BigInt(0);
-    const _ONE = BigInt(1);
-    const _TWO = BigInt(2);
 
     exports.abs = abs;
     exports.bitLength = bitLength;
