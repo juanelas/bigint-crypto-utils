@@ -15,6 +15,20 @@ function abs(a) {
 }
 
 /**
+ * Returns the bitlength of a number
+ * 
+ * @param {bigint} a  
+ * @returns {number} - the bit length
+ */
+function bitLength(a) {
+    let bits = 1;
+    do {
+        bits++;
+    } while ((a >>= _ONE) > _ONE);
+    return bits;
+}
+
+/**
  * @typedef {Object} egcdReturn A triple (g, x, y), such that ax + by = g = gcd(a, b).
  * @property {bigint} g
  * @property {bigint} x 
@@ -338,14 +352,6 @@ function fromBuffer(buf) {
         ret = (ret << BigInt(8)) + bi;
     }
     return ret;
-}
-
-function bitLength(a) {
-    let bits = 1;
-    do {
-        bits++;
-    } while ((a >>= _ONE) > _ONE);
-    return bits;
 }
 
 function _isProbablyPrime(w, iterations = 16) {
@@ -706,6 +712,7 @@ if (_useWorkers) { // node.js with support for workers
 }
 
 exports.abs = abs;
+exports.bitLength = bitLength;
 exports.eGcd = eGcd;
 exports.gcd = gcd;
 exports.isProbablyPrime = isProbablyPrime;

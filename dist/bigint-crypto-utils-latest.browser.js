@@ -14,6 +14,20 @@ var bigintCryptoUtils = (function (exports) {
     }
 
     /**
+     * Returns the bitlength of a number
+     * 
+     * @param {bigint} a  
+     * @returns {number} - the bit length
+     */
+    function bitLength(a) {
+        let bits = 1;
+        do {
+            bits++;
+        } while ((a >>= _ONE) > _ONE);
+        return bits;
+    }
+
+    /**
      * @typedef {Object} egcdReturn A triple (g, x, y), such that ax + by = g = gcd(a, b).
      * @property {bigint} g
      * @property {bigint} x 
@@ -322,14 +336,6 @@ var bigintCryptoUtils = (function (exports) {
             ret = (ret << BigInt(8)) + bi;
         }
         return ret;
-    }
-
-    function bitLength(a) {
-        let bits = 1;
-        do {
-            bits++;
-        } while ((a >>= _ONE) > _ONE);
-        return bits;
     }
 
     function _isProbablyPrimeWorkerUrl() {
@@ -682,6 +688,7 @@ var bigintCryptoUtils = (function (exports) {
     const _TWO = BigInt(2);
 
     exports.abs = abs;
+    exports.bitLength = bitLength;
     exports.eGcd = eGcd;
     exports.gcd = gcd;
     exports.isProbablyPrime = isProbablyPrime;

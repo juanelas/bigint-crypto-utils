@@ -87,6 +87,9 @@ From a browser, you can just load the module in a html page as:
 <dt><a href="#abs">abs(a)</a> ⇒ <code>bigint</code></dt>
 <dd><p>Absolute value. abs(a)==a if a&gt;=0. abs(a)==-a if a&lt;0</p>
 </dd>
+<dt><a href="#bitLength">bitLength(a)</a> ⇒ <code>number</code></dt>
+<dd><p>Returns the bitlength of a number</p>
+</dd>
 <dt><a href="#eGcd">eGcd(a, b)</a> ⇒ <code><a href="#egcdReturn">egcdReturn</a></code></dt>
 <dd><p>An iterative implementation of the extended euclidean algorithm or extended greatest common divisor algorithm. 
 Take positive integers a, b as input, and return a triple (g, x, y), such that ax + by = g = gcd(a, b).</p>
@@ -147,6 +150,18 @@ Absolute value. abs(a)==a if a>=0. abs(a)==-a if a<0
 | Param | Type |
 | --- | --- |
 | a | <code>number</code> \| <code>bigint</code> | 
+
+<a name="bitLength"></a>
+
+## bitLength(a) ⇒ <code>number</code>
+Returns the bitlength of a number
+
+**Kind**: global function  
+**Returns**: <code>number</code> - - the bit length  
+
+| Param | Type |
+| --- | --- |
+| a | <code>bigint</code> | 
 
 <a name="eGcd"></a>
 
