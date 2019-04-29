@@ -261,7 +261,7 @@ function randBetween(max, min = _ONE) {
  * @param {number} bitLength The desired number of random bits
  * @param {boolean} forceLength If we want to force the output to have a specific bit length. It basically forces the msb to be 1
  * 
- * @returns {Buffer|Uint8Array} A Buffer/UInt8Array filled with cryptographically secure random bits
+ * @returns {Buffer|Uint8Array} A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bits
  */
 function randBits(bitLength, forceLength = false) {
     const byteLength = Math.ceil(bitLength / 8);
@@ -281,7 +281,7 @@ function randBits(bitLength, forceLength = false) {
  * @param {number} byteLength The desired number of random bytes
  * @param {boolean} forceLength If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1
  * 
- * @returns {Buffer|Uint8Array} A Buffer/UInt8Array filled with cryptographically secure random bytes
+ * @returns {Buffer|Uint8Array} A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
  */
 function randBytes(byteLength, forceLength = false) {
     let buf;

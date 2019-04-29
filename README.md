@@ -264,7 +264,7 @@ Returns a cryptographically secure random integer between [min,max]
 Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
 
 **Kind**: global function  
-**Returns**: <code>Buffer</code> \| <code>Uint8Array</code> - A Buffer/UInt8Array filled with cryptographically secure random bits  
+**Returns**: <code>Buffer</code> \| <code>Uint8Array</code> - A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bits  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -277,7 +277,7 @@ Secure random bits for both node and browsers. Node version uses crypto.randomFi
 Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
 
 **Kind**: global function  
-**Returns**: <code>Buffer</code> \| <code>Uint8Array</code> - A Buffer/UInt8Array filled with cryptographically secure random bytes  
+**Returns**: <code>Buffer</code> \| <code>Uint8Array</code> - A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes  
 
 | Param | Type | Description |
 | --- | --- | --- |
