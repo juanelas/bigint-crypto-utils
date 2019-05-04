@@ -15,7 +15,7 @@ const numbers = [
         prime: true
     },
     {
-        value: BigInt(3),
+        value: 3,
         prime: true
     },
     {
@@ -23,7 +23,7 @@ const numbers = [
         prime: false
     },
     {
-        value: BigInt(29),
+        value: 29,
         prime: true
     },
     {
