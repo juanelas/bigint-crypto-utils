@@ -24,6 +24,8 @@ export function abs(a) {
  * @returns {number} - the bit length
  */
 export function bitLength(a) {
+    if (a === _ONE) 
+        return 1;
     let bits = 1;
     do {
         bits++;
@@ -184,7 +186,7 @@ export function lcm(a, b) {
  * @returns {bigint} the inverse modulo n
  */
 export function modInv(a, n) {
-    let egcd = eGcd(a, n);
+    let egcd = eGcd(toZn(a,n), n);
     if (egcd.b !== _ONE) {
         return null; // modular inverse does not exist
     } else {
@@ -239,7 +241,7 @@ export function prime(bitLength, iterations = 16) {
     if (!process.browser && !_useWorkers) {
         let rnd = _ZERO;
         do {
-            rnd = fromBuffer(randBytes(bitLength / 8, true));
+            rnd = fromBuffer(randBytesSync(bitLength / 8, true));
         } while (!_isProbablyPrime(rnd, iterations));
         return new Promise((resolve) => { resolve(rnd); });
     }
@@ -326,7 +328,7 @@ export function randBetween(max, min = _ONE) {
  */
 export function randBits(bitLength, forceLength = false) {
     const byteLength = Math.ceil(bitLength / 8);
-    let rndBytes = randBytes(byteLength, false);
+    let rndBytes = randBytesSync(byteLength, false);
     // Fill with 0's the extra birs
     rndBytes[0] = rndBytes[0] & (2 ** (bitLength % 8) - 1);
     if (forceLength) {
@@ -342,9 +344,37 @@ export function randBits(bitLength, forceLength = false) {
  * @param {number} byteLength The desired number of random bytes
  * @param {boolean} forceLength If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1
  * 
- * @returns {Buffer|Uint8Array} A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
+ * @returns {Promise} A promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
  */
 export function randBytes(byteLength, forceLength = false) {
+    let buf;
+    if (!process.browser) {  // node
+        const crypto = require('crypto');
+        buf = Buffer.alloc(byteLength);
+        return crypto.randomFill(buf, function (resolve) {
+            // If fixed length is required we put the first bit to 1 -> to get the necessary bitLength
+            if (forceLength)
+                buf[0] = buf[0] | 128;
+            resolve(buf);
+        });
+    } else { // browser
+        return new Promise(function (resolve) {
+            buf = new Uint8Array(byteLength);
+            self.crypto.getRandomValues(buf);
+            resolve(buf);
+        });
+    }
+}
+
+/**
+ * Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
+ * 
+ * @param {number} byteLength The desired number of random bytes
+ * @param {boolean} forceLength If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1
+ * 
+ * @returns {Buffer|Uint8Array} A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
+ */
+export function randBytesSync(byteLength, forceLength = false) {
     let buf;
     if (!process.browser) {  // node
         const crypto = require('crypto');
@@ -388,7 +418,7 @@ function fromBuffer(buf) {
 
 function _isProbablyPrimeWorkerUrl() {
     // Let's us first add all the required functions
-    let workerCode = `'use strict';const _ZERO = BigInt(0);const _ONE = BigInt(1);const _TWO = BigInt(2);const eGcd = ${eGcd.toString()};const modInv = ${modInv.toString()};const modPow = ${modPow.toString()};const toZn = ${toZn.toString()};const randBits = ${randBits.toString()};const randBytes = ${randBytes.toString()};const randBetween = ${randBetween.toString()};const isProbablyPrime = ${_isProbablyPrime.toString()};${bitLength.toString()}${fromBuffer.toString()}`;
+    let workerCode = `'use strict';const _ZERO = BigInt(0);const _ONE = BigInt(1);const _TWO = BigInt(2);const eGcd = ${eGcd.toString()};const modInv = ${modInv.toString()};const modPow = ${modPow.toString()};const toZn = ${toZn.toString()};const randBits = ${randBits.toString()};const randBytesSync = ${randBytesSync.toString()};const randBetween = ${randBetween.toString()};const isProbablyPrime = ${_isProbablyPrime.toString()};${bitLength.toString()}${fromBuffer.toString()}`;
 
     const onmessage = async function (event) { // Let's start once we are called
         // event.data = {rnd: <bigint>, iterations: <number>}
@@ -399,7 +429,7 @@ function _isProbablyPrimeWorkerUrl() {
             'id': event.data.id
         });
     };
-    
+
     workerCode += `onmessage = ${onmessage.toString()};`;
 
     return _workerUrl(workerCode);

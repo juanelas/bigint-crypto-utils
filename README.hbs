@@ -73,7 +73,7 @@ From a browser, you can just load the module in a html page as:
     alert(p.toString() + '\nIs prime?\n' + isPrime);
 
     // Get a cryptographically secure random number between 1 and 2**256 bits.
-    const rnd = await bigintCryptoUtils.randBetween(BigInt(2) ** BigInt(256));
+    const rnd = bigintCryptoUtils.randBetween(BigInt(2) ** BigInt(256));
     alert(rnd);
   })();
 </script>

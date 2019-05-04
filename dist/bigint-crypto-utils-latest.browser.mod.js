@@ -22,6 +22,8 @@ function abs(a) {
  * @returns {number} - the bit length
  */
 function bitLength(a) {
+    if (a === _ONE) 
+        return 1;
     let bits = 1;
     do {
         bits++;
@@ -157,7 +159,7 @@ function lcm(a, b) {
  * @returns {bigint} the inverse modulo n
  */
 function modInv(a, n) {
-    let egcd = eGcd(a, n);
+    let egcd = eGcd(toZn(a,n), n);
     if (egcd.b !== _ONE) {
         return null; // modular inverse does not exist
     } else {
@@ -284,7 +286,7 @@ function randBetween(max, min = _ONE) {
  */
 function randBits(bitLength, forceLength = false) {
     const byteLength = Math.ceil(bitLength / 8);
-    let rndBytes = randBytes(byteLength, false);
+    let rndBytes = randBytesSync(byteLength, false);
     // Fill with 0's the extra birs
     rndBytes[0] = rndBytes[0] & (2 ** (bitLength % 8) - 1);
     if (forceLength) {
@@ -300,9 +302,28 @@ function randBits(bitLength, forceLength = false) {
  * @param {number} byteLength The desired number of random bytes
  * @param {boolean} forceLength If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1
  * 
- * @returns {Buffer|Uint8Array} A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
+ * @returns {Promise} A promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
  */
 function randBytes(byteLength, forceLength = false) {
+    let buf;
+    { // browser
+        return new Promise(function (resolve) {
+            buf = new Uint8Array(byteLength);
+            self.crypto.getRandomValues(buf);
+            resolve(buf);
+        });
+    }
+}
+
+/**
+ * Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
+ * 
+ * @param {number} byteLength The desired number of random bytes
+ * @param {boolean} forceLength If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1
+ * 
+ * @returns {Buffer|Uint8Array} A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
+ */
+function randBytesSync(byteLength, forceLength = false) {
     let buf;
     { // browser
         buf = new Uint8Array(byteLength);
@@ -342,7 +363,7 @@ function fromBuffer(buf) {
 
 function _isProbablyPrimeWorkerUrl() {
     // Let's us first add all the required functions
-    let workerCode = `'use strict';const _ZERO = BigInt(0);const _ONE = BigInt(1);const _TWO = BigInt(2);const eGcd = ${eGcd.toString()};const modInv = ${modInv.toString()};const modPow = ${modPow.toString()};const toZn = ${toZn.toString()};const randBits = ${randBits.toString()};const randBytes = ${randBytes.toString()};const randBetween = ${randBetween.toString()};const isProbablyPrime = ${_isProbablyPrime.toString()};${bitLength.toString()}${fromBuffer.toString()}`;
+    let workerCode = `'use strict';const _ZERO = BigInt(0);const _ONE = BigInt(1);const _TWO = BigInt(2);const eGcd = ${eGcd.toString()};const modInv = ${modInv.toString()};const modPow = ${modPow.toString()};const toZn = ${toZn.toString()};const randBits = ${randBits.toString()};const randBytesSync = ${randBytesSync.toString()};const randBetween = ${randBetween.toString()};const isProbablyPrime = ${_isProbablyPrime.toString()};${bitLength.toString()}${fromBuffer.toString()}`;
 
     const onmessage = async function (event) { // Let's start once we are called
         // event.data = {rnd: <bigint>, iterations: <number>}
@@ -353,7 +374,7 @@ function _isProbablyPrimeWorkerUrl() {
             'id': event.data.id
         });
     };
-    
+
     workerCode += `onmessage = ${onmessage.toString()};`;
 
     return _workerUrl(workerCode);
@@ -684,4 +705,4 @@ function _isProbablyPrime(w, iterations = 16) {
     return true;
 }
 
-export { abs, bitLength, eGcd, gcd, isProbablyPrime, lcm, modInv, modPow, prime, randBetween, randBits, randBytes, toZn };
+export { abs, bitLength, eGcd, gcd, isProbablyPrime, lcm, modInv, modPow, prime, randBetween, randBits, randBytes, randBytesSync, toZn };

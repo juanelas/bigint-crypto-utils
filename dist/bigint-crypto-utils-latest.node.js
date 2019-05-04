@@ -26,6 +26,8 @@ function abs(a) {
  * @returns {number} - the bit length
  */
 function bitLength(a) {
+    if (a === _ONE) 
+        return 1;
     let bits = 1;
     do {
         bits++;
@@ -167,7 +169,7 @@ function lcm(a, b) {
  * @returns {bigint} the inverse modulo n
  */
 function modInv(a, n) {
-    let egcd = eGcd(a, n);
+    let egcd = eGcd(toZn(a,n), n);
     if (egcd.b !== _ONE) {
         return null; // modular inverse does not exist
     } else {
@@ -222,7 +224,7 @@ function prime(bitLength, iterations = 16) {
     if (!_useWorkers) {
         let rnd = _ZERO;
         do {
-            rnd = fromBuffer(randBytes(bitLength / 8, true));
+            rnd = fromBuffer(randBytesSync(bitLength / 8, true));
         } while (!_isProbablyPrime(rnd, iterations));
         return new Promise((resolve) => { resolve(rnd); });
     }
@@ -302,7 +304,7 @@ function randBetween(max, min = _ONE) {
  */
 function randBits(bitLength, forceLength = false) {
     const byteLength = Math.ceil(bitLength / 8);
-    let rndBytes = randBytes(byteLength, false);
+    let rndBytes = randBytesSync(byteLength, false);
     // Fill with 0's the extra birs
     rndBytes[0] = rndBytes[0] & (2 ** (bitLength % 8) - 1);
     if (forceLength) {
@@ -318,9 +320,31 @@ function randBits(bitLength, forceLength = false) {
  * @param {number} byteLength The desired number of random bytes
  * @param {boolean} forceLength If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1
  * 
- * @returns {Buffer|Uint8Array} A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
+ * @returns {Promise} A promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
  */
 function randBytes(byteLength, forceLength = false) {
+    let buf;
+    {  // node
+        const crypto = require('crypto');
+        buf = Buffer.alloc(byteLength);
+        return crypto.randomFill(buf, function (resolve) {
+            // If fixed length is required we put the first bit to 1 -> to get the necessary bitLength
+            if (forceLength)
+                buf[0] = buf[0] | 128;
+            resolve(buf);
+        });
+    }
+}
+
+/**
+ * Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
+ * 
+ * @param {number} byteLength The desired number of random bytes
+ * @param {boolean} forceLength If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1
+ * 
+ * @returns {Buffer|Uint8Array} A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
+ */
+function randBytesSync(byteLength, forceLength = false) {
     let buf;
     {  // node
         const crypto = require('crypto');
@@ -724,4 +748,5 @@ exports.prime = prime;
 exports.randBetween = randBetween;
 exports.randBits = randBits;
 exports.randBytes = randBytes;
+exports.randBytesSync = randBytesSync;
 exports.toZn = toZn;

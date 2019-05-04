@@ -73,7 +73,7 @@ From a browser, you can just load the module in a html page as:
     alert(p.toString() + '\nIs prime?\n' + isPrime);
 
     // Get a cryptographically secure random number between 1 and 2**256 bits.
-    const rnd = await bigintCryptoUtils.randBetween(BigInt(2) ** BigInt(256));
+    const rnd = bigintCryptoUtils.randBetween(BigInt(2) ** BigInt(256));
     alert(rnd);
   })();
 </script>
@@ -123,7 +123,10 @@ and can be enabled at runtime executing node --experimental-worker with node &gt
 <dt><a href="#randBits">randBits(bitLength, forceLength)</a> ⇒ <code>Buffer</code> | <code>Uint8Array</code></dt>
 <dd><p>Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
 </dd>
-<dt><a href="#randBytes">randBytes(byteLength, forceLength)</a> ⇒ <code>Buffer</code> | <code>Uint8Array</code></dt>
+<dt><a href="#randBytes">randBytes(byteLength, forceLength)</a> ⇒ <code>Promise</code></dt>
+<dd><p>Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
+</dd>
+<dt><a href="#randBytesSync">randBytesSync(byteLength, forceLength)</a> ⇒ <code>Buffer</code> | <code>Uint8Array</code></dt>
 <dd><p>Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
 </dd>
 <dt><a href="#toZn">toZn(a, n)</a> ⇒ <code>bigint</code></dt>
@@ -288,7 +291,20 @@ Secure random bits for both node and browsers. Node version uses crypto.randomFi
 
 <a name="randBytes"></a>
 
-## randBytes(byteLength, forceLength) ⇒ <code>Buffer</code> \| <code>Uint8Array</code>
+## randBytes(byteLength, forceLength) ⇒ <code>Promise</code>
+Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
+
+**Kind**: global function  
+**Returns**: <code>Promise</code> - A promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| byteLength | <code>number</code> | The desired number of random bytes |
+| forceLength | <code>boolean</code> | If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1 |
+
+<a name="randBytesSync"></a>
+
+## randBytesSync(byteLength, forceLength) ⇒ <code>Buffer</code> \| <code>Uint8Array</code>
 Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
 
 **Kind**: global function  

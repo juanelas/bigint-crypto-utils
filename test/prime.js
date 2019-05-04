@@ -12,16 +12,13 @@ const bitLengths = [
     4096
 ];
 
-describe('Testing generation of prime numbers', function () {
+describe('prime', function () {
     for (const bitLength of bitLengths) {
-        describe(`Executing prime(${bitLength})`, function () {
+        describe(`prime(${bitLength})`, function () {
             it(`should return a random ${bitLength}-bits probable prime`, async function () {
                 let prime = await bigintCryptoUtils.prime(bitLength);
-                let bits = 1;
-                do {
-                    bits++;
-                } while ((prime >>= BigInt(1)) > BigInt(1));
-                chai.expect(bits).to.equal(bitLength);
+                let primeBitLength = bigintCryptoUtils.bitLength(prime);
+                chai.expect(primeBitLength).to.equal(bitLength);
             });
         });
     }

@@ -56,7 +56,7 @@ const numbers = [
     }
 ];
 
-describe('Testing validation of prime numbers', function () {
+describe('isProbablyPrime', function () {
     for (const num of numbers) {
         describe(`isProbablyPrime(${num.value})`, function () {
             it(`should return ${num.prime}`, async function () {
