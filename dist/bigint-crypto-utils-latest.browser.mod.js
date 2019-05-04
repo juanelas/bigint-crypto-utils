@@ -18,10 +18,11 @@ function abs(a) {
 /**
  * Returns the bitlength of a number
  * 
- * @param {bigint} a  
+ * @param {number|bigint} a  
  * @returns {number} - the bit length
  */
 function bitLength(a) {
+    a = BigInt(a);
     if (a === _ONE) 
         return 1;
     let bits = 1;
@@ -109,12 +110,15 @@ function gcd(a, b) {
  * The test first tries if any of the first 250 small primes are a factor of the input number and then passes several 
  * iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)
  * 
- * @param {bigint} w An integer to be tested for primality
+ * @param {number|bigint} w An integer to be tested for primality
  * @param {number} iterations The number of iterations for the primality test. The value shall be consistent with Table C.1, C.2 or C.3
  * 
  * @return {Promise} A promise that resolves to a boolean that is either true (a probably prime number) or false (definitely composite)
  */
 async function isProbablyPrime(w, iterations = 16) {
+    if (typeof w === 'number') {
+        w = BigInt(w);
+    }
     { // browser
         return new Promise((resolve, reject) => {
             let worker = new Worker(_isProbablyPrimeWorkerUrl());

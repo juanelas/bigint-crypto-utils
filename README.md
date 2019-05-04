@@ -164,7 +164,7 @@ Returns the bitlength of a number
 
 | Param | Type |
 | --- | --- |
-| a | <code>bigint</code> | 
+| a | <code>number</code> \| <code>bigint</code> | 
 
 <a name="eGcd"></a>
 
@@ -203,7 +203,7 @@ iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)
 
 | Param | Type | Description |
 | --- | --- | --- |
-| w | <code>bigint</code> | An integer to be tested for primality |
+| w | <code>number</code> \| <code>bigint</code> | An integer to be tested for primality |
 | iterations | <code>number</code> | The number of iterations for the primality test. The value shall be consistent with Table C.1, C.2 or C.3 |
 
 <a name="lcm"></a>
