@@ -20,16 +20,22 @@ const inputs = [
         a: BigInt(-2),
         n: BigInt(5),
         modInv: BigInt(2)
+    },
+    {
+        a: BigInt(2),
+        n: BigInt(4),
+        modInv: NaN
     }
 ];
 
 describe('modInv', function () {
+    let ret;
     for (const input of inputs) {
-        let ret;
         describe(`modInv(${input.a}, ${input.n})`, function () {
             it(`should return ${input.modInv}`, function () {
                 ret = bigintCryptoUtils.modInv(input.a, input.n);
-                chai.expect(ret).to.equal(input.modInv);
+                // chai.assert( String(ret) === String(input.modInv) );
+                chai.expect(String(ret)).to.be.equal(String(input.modInv));
             });
         });
     }

@@ -173,6 +173,7 @@ An iterative implementation of the extended euclidean algorithm or extended grea
 Take positive integers a, b as input, and return a triple (g, x, y), such that ax + by = g = gcd(a, b).
 
 **Kind**: global function  
+**Returns**: [<code>egcdReturn</code>](#egcdReturn) - A triple (g, x, y), such that ax + by = g = gcd(a, b).  
 
 | Param | Type |
 | --- | --- |
@@ -225,7 +226,7 @@ The least common multiple computed as abs(a*b)/gcd(a,b)
 Modular inverse.
 
 **Kind**: global function  
-**Returns**: <code>bigint</code> - the inverse modulo n  
+**Returns**: <code>bigint</code> - the inverse modulo n or NaN if it does not exist  
 
 | Param | Type | Description |
 | --- | --- | --- |

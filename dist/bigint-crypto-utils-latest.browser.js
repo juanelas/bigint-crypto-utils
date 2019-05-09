@@ -26,7 +26,7 @@ var bigintCryptoUtils = (function (exports) {
      */
     function bitLength(a) {
         a = BigInt(a);
-        if (a === _ONE) 
+        if (a === _ONE)
             return 1;
         let bits = 1;
         do {
@@ -48,11 +48,14 @@ var bigintCryptoUtils = (function (exports) {
      * @param {number|bigint} a 
      * @param {number|bigint} b 
      * 
-     * @returns {egcdReturn}
+     * @returns {egcdReturn} A triple (g, x, y), such that ax + by = g = gcd(a, b).
      */
     function eGcd(a, b) {
         a = BigInt(a);
         b = BigInt(b);
+        if (a <= _ZERO | b <= _ZERO)
+            return NaN; // a and b MUST be positive
+
         let x = _ZERO;
         let y = _ONE;
         let u = _ONE;
@@ -88,6 +91,11 @@ var bigintCryptoUtils = (function (exports) {
     function gcd(a, b) {
         a = abs(a);
         b = abs(b);
+        if (a === _ZERO)
+            return b;
+        else if (b === _ZERO)
+            return a;
+
         let shift = _ZERO;
         while (!((a | b) & _ONE)) {
             a >>= _ONE;
@@ -154,6 +162,8 @@ var bigintCryptoUtils = (function (exports) {
     function lcm(a, b) {
         a = BigInt(a);
         b = BigInt(b);
+        if (a === _ZERO && b === _ZERO)
+            return _ZERO;
         return abs(a * b) / gcd(a, b);
     }
 
@@ -163,12 +173,15 @@ var bigintCryptoUtils = (function (exports) {
      * @param {number|bigint} a The number to find an inverse for
      * @param {number|bigint} n The modulo
      * 
-     * @returns {bigint} the inverse modulo n
+     * @returns {bigint} the inverse modulo n or NaN if it does not exist
      */
     function modInv(a, n) {
-        let egcd = eGcd(toZn(a,n), n);
+        if (a == _ZERO | n <= _ZERO)
+            return NaN;
+
+        let egcd = eGcd(toZn(a, n), n);
         if (egcd.b !== _ONE) {
-            return null; // modular inverse does not exist
+            return NaN; // modular inverse does not exist
         } else {
             return toZn(egcd.x, n);
         }
@@ -185,6 +198,9 @@ var bigintCryptoUtils = (function (exports) {
     function modPow(a, b, n) {
         // See Knuth, volume 2, section 4.6.3.
         n = BigInt(n);
+        if (n === _ZERO)
+            return NaN;
+
         a = toZn(a, n);
         b = BigInt(b);
         if (b < _ZERO) {
@@ -218,6 +234,8 @@ var bigintCryptoUtils = (function (exports) {
      * @returns {Promise} A promise that resolves to a bigint probable prime of bitLength bits
      */
     function prime(bitLength, iterations = 16) {
+        if (bitLength < 1)
+            throw new RangeError(`bitLength MUST be > 0 and it is ${bitLength}`);
         return new Promise((resolve) => {
             let workerList = [];
             const _onmessage = (msg, newWorker) => {
@@ -292,9 +310,12 @@ var bigintCryptoUtils = (function (exports) {
      * @returns {Buffer|Uint8Array} A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bits
      */
     function randBits(bitLength, forceLength = false) {
+        if (bitLength < 1)
+            throw new RangeError(`bitLength MUST be > 0 and it is ${bitLength}`);
+
         const byteLength = Math.ceil(bitLength / 8);
         let rndBytes = randBytesSync(byteLength, false);
-        // Fill with 0's the extra birs
+        // Fill with 0's the extra bits
         rndBytes[0] = rndBytes[0] & (2 ** (bitLength % 8) - 1);
         if (forceLength) {
             let mask = (bitLength % 8) ? 2 ** ((bitLength % 8) - 1) : 128;
@@ -312,6 +333,9 @@ var bigintCryptoUtils = (function (exports) {
      * @returns {Promise} A promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
      */
     function randBytes(byteLength, forceLength = false) {
+        if (byteLength < 1)
+            throw new RangeError(`byteLength MUST be > 0 and it is ${byteLength}`);
+
         let buf;
         { // browser
             return new Promise(function (resolve) {
@@ -331,6 +355,9 @@ var bigintCryptoUtils = (function (exports) {
      * @returns {Buffer|Uint8Array} A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
      */
     function randBytesSync(byteLength, forceLength = false) {
+        if (byteLength < 1)
+            throw new RangeError(`byteLength MUST be > 0 and it is ${byteLength}`);
+
         let buf;
         { // browser
             buf = new Uint8Array(byteLength);
@@ -351,6 +378,9 @@ var bigintCryptoUtils = (function (exports) {
      */
     function toZn(a, n) {
         n = BigInt(n);
+        if (n <= 0)
+            return NaN;
+
         a = BigInt(a) % n;
         return (a < 0) ? a + n : a;
     }

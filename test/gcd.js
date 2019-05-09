@@ -12,6 +12,21 @@ const inputs = [
         gcd: BigInt(1)
     },
     {
+        a: BigInt(0),
+        b: BigInt(189),
+        gcd: BigInt(189)
+    },
+    {
+        a: BigInt(189),
+        b: BigInt(0),
+        gcd: BigInt(189)
+    },
+    {
+        a: BigInt(0),
+        b: BigInt(0),
+        gcd: BigInt(0)
+    },
+    {
         a: BigInt(1),
         b: BigInt('14546149867129487614601346814'),
         gcd: BigInt(1)
