@@ -6,6 +6,8 @@ const bigintCryptoUtils = require('../dist/bigint-crypto-utils-latest.node');
 const chai = require('chai');
 
 const bitLengths = [
+    256,
+    512,
     1024,
     2048,
     3072,

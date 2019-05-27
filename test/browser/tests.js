@@ -330,6 +330,8 @@ describe('modPow', function () {
 
 
 const bitLengths = [
+    256,
+    512,
     1024,
     2048,
     3072,
