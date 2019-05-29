@@ -18,8 +18,8 @@ describe('prime', function () {
     for (const bitLength of bitLengths) {
         describe(`prime(${bitLength})`, function () {
             it(`should return a random ${bitLength}-bits probable prime`, async function () {
-                let prime = await bigintCryptoUtils.prime(bitLength);
-                let primeBitLength = bigintCryptoUtils.bitLength(prime);
+                const prime = await bigintCryptoUtils.prime(bitLength);
+                const primeBitLength = bigintCryptoUtils.bitLength(prime);
                 chai.expect(primeBitLength).to.equal(bitLength);
             });
         });

@@ -26,10 +26,9 @@ const inputs = [
 
 describe('abs', function () {
     for (const input of inputs) {
-        let ret;
         describe(`abs(${input.value})`, function () {
             it(`should return ${input.abs}`, function () {
-                ret = bigintCryptoUtils.abs(input.value);
+                const ret = bigintCryptoUtils.abs(input.value);
                 chai.expect(ret).to.equal(input.abs);
             });
         });

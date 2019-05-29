@@ -128,7 +128,7 @@ async function isProbablyPrime(w, iterations = 16) {
     }
     { // browser
         return new Promise((resolve, reject) => {
-            let worker = new Worker(_isProbablyPrimeWorkerUrl());
+            const worker = new Worker(_isProbablyPrimeWorkerUrl());
 
             worker.onmessage = (event) => {
                 worker.terminate();
@@ -184,35 +184,36 @@ function modInv(a, n) {
 }
 
 /**
- * Modular exponentiation a**b mod n
- * @param {number|bigint} a base
- * @param {number|bigint} b exponent
+ * Modular exponentiation b**e mod n
+ * @param {number|bigint} b base
+ * @param {number|bigint} e exponent
  * @param {number|bigint} n modulo
  * 
- * @returns {bigint} a**b mod n
+ * @returns {bigint} b**e mod n
  */
-function modPow(a, b, n) {
-    // See Knuth, volume 2, section 4.6.3.
+function modPow(b, e, n) {
     n = BigInt(n);
     if (n === _ZERO)
         return NaN;
+    else if (n === _ONE)
+        return _ZERO;
 
-    a = toZn(a, n);
-    b = BigInt(b);
-    if (b < _ZERO) {
-        return modInv(modPow(a, abs(b), n), n);
+    b = toZn(b, n);
+
+    e = BigInt(e);
+    if (e < _ZERO) {
+        return modInv(modPow(b, abs(e), n), n);
     }
-    let result = _ONE;
-    let x = a;
-    while (b > 0) {
-        var leastSignificantBit = b & _ONE;
-        b = b / _TWO;
-        if (leastSignificantBit === _ONE) {
-            result = (result * x) % n;
+
+    let r = _ONE;
+    while (e > 0) {
+        if ((e % _TWO) === _ONE) {
+            r = (r * b) % n;
         }
-        x = (x * x) % n;
+        e = e / _TWO;
+        b = b**_TWO % n;
     }
-    return result;
+    return r;
 }
 
 /**
@@ -416,7 +417,7 @@ function _isProbablyPrimeWorkerUrl() {
 
 function _workerUrl(workerCode) {
     workerCode = `(() => {${workerCode}})()`; // encapsulate IIFE
-    var _blob = new Blob([workerCode], { type: 'text/javascript' });
+    const _blob = new Blob([workerCode], { type: 'text/javascript' });
     return window.URL.createObjectURL(_blob);
 }
 

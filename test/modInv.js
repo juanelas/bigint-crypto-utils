@@ -29,11 +29,10 @@ const inputs = [
 ];
 
 describe('modInv', function () {
-    let ret;
     for (const input of inputs) {
         describe(`modInv(${input.a}, ${input.n})`, function () {
             it(`should return ${input.modInv}`, function () {
-                ret = bigintCryptoUtils.modInv(input.a, input.n);
+                const ret = bigintCryptoUtils.modInv(input.a, input.n);
                 // chai.assert( String(ret) === String(input.modInv) );
                 chai.expect(String(ret)).to.be.equal(String(input.modInv));
             });

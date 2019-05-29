@@ -25,10 +25,9 @@ const inputs = [
 
 describe('toZn', function () {
     for (const input of inputs) {
-        let ret;
         describe(`toZn(${input.a}, ${input.n})`, function () {
             it(`should return ${input.toZn}`, function () {
-                ret = bigintCryptoUtils.toZn(input.a, input.n);
+                const ret = bigintCryptoUtils.toZn(input.a, input.n);
                 chai.expect(ret).to.equal(input.toZn);
             });
         });

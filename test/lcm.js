@@ -35,10 +35,9 @@ const inputs = [
 
 describe('lcm', function () {
     for (const input of inputs) {
-        let ret;
         describe(`lcm(${input.a}, ${input.b})`, function () {
             it(`should return ${input.lcm}`, function () {
-                ret = bigintCryptoUtils.lcm(input.a, input.b);
+                const ret = bigintCryptoUtils.lcm(input.a, input.b);
                 chai.expect(ret).to.equal(input.lcm);
             });
         });

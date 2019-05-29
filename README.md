@@ -107,8 +107,8 @@ iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)</p>
 <dt><a href="#modInv">modInv(a, n)</a> ⇒ <code>bigint</code></dt>
 <dd><p>Modular inverse.</p>
 </dd>
-<dt><a href="#modPow">modPow(a, b, n)</a> ⇒ <code>bigint</code></dt>
-<dd><p>Modular exponentiation a**b mod n</p>
+<dt><a href="#modPow">modPow(b, e, n)</a> ⇒ <code>bigint</code></dt>
+<dd><p>Modular exponentiation b**e mod n</p>
 </dd>
 <dt><a href="#prime">prime(bitLength, iterations)</a> ⇒ <code>Promise</code></dt>
 <dd><p>A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator. 
@@ -235,16 +235,16 @@ Modular inverse.
 
 <a name="modPow"></a>
 
-## modPow(a, b, n) ⇒ <code>bigint</code>
-Modular exponentiation a**b mod n
+## modPow(b, e, n) ⇒ <code>bigint</code>
+Modular exponentiation b**e mod n
 
 **Kind**: global function  
-**Returns**: <code>bigint</code> - a**b mod n  
+**Returns**: <code>bigint</code> - b**e mod n  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| a | <code>number</code> \| <code>bigint</code> | base |
-| b | <code>number</code> \| <code>bigint</code> | exponent |
+| b | <code>number</code> \| <code>bigint</code> | base |
+| e | <code>number</code> \| <code>bigint</code> | exponent |
 | n | <code>number</code> \| <code>bigint</code> | modulo |
 
 <a name="prime"></a>

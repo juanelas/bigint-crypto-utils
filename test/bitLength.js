@@ -23,10 +23,9 @@ const inputs = [
 
 describe('bitLength', function () {
     for (const input of inputs) {
-        let ret;
         describe(`bitLength(${input.value})`, function () {
             it(`should return ${input.bitLength}`, function () {
-                ret = bigintCryptoUtils.bitLength(input.value);
+                const ret = bigintCryptoUtils.bitLength(input.value);
                 chai.expect(ret).to.equal(input.bitLength);
             });
         });

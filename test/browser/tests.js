@@ -24,10 +24,9 @@ const inputs = [
 
 describe('abs', function () {
     for (const input of inputs) {
-        let ret;
         describe(`abs(${input.value})`, function () {
             it(`should return ${input.abs}`, function () {
-                ret = bigintCryptoUtils.abs(input.value);
+                const ret = bigintCryptoUtils.abs(input.value);
                 chai.expect(ret).to.equal(input.abs);
             });
         });
@@ -57,10 +56,9 @@ const inputs$1 = [
 
 describe('bitLength', function () {
     for (const input of inputs$1) {
-        let ret;
         describe(`bitLength(${input.value})`, function () {
             it(`should return ${input.bitLength}`, function () {
-                ret = bigintCryptoUtils.bitLength(input.value);
+                const ret = bigintCryptoUtils.bitLength(input.value);
                 chai.expect(ret).to.equal(input.bitLength);
             });
         });
@@ -117,10 +115,9 @@ const inputs$2 = [
 
 describe('gcd', function () {
     for (const input of inputs$2) {
-        let ret;
         describe(`gcd(${input.a}, ${input.b})`, function () {
             it(`should return ${input.gcd}`, function () {
-                ret = bigintCryptoUtils.gcd(input.a, input.b);
+                const ret = bigintCryptoUtils.gcd(input.a, input.b);
                 chai.expect(ret).to.equal(input.gcd);
             });
         });
@@ -229,10 +226,9 @@ const inputs$3 = [
 
 describe('lcm', function () {
     for (const input of inputs$3) {
-        let ret;
         describe(`lcm(${input.a}, ${input.b})`, function () {
             it(`should return ${input.lcm}`, function () {
-                ret = bigintCryptoUtils.lcm(input.a, input.b);
+                const ret = bigintCryptoUtils.lcm(input.a, input.b);
                 chai.expect(ret).to.equal(input.lcm);
             });
         });
@@ -268,11 +264,10 @@ const inputs$4 = [
 ];
 
 describe('modInv', function () {
-    let ret;
     for (const input of inputs$4) {
         describe(`modInv(${input.a}, ${input.n})`, function () {
             it(`should return ${input.modInv}`, function () {
-                ret = bigintCryptoUtils.modInv(input.a, input.n);
+                const ret = bigintCryptoUtils.modInv(input.a, input.n);
                 // chai.assert( String(ret) === String(input.modInv) );
                 chai.expect(String(ret)).to.be.equal(String(input.modInv));
             });
@@ -314,14 +309,26 @@ const inputs$5 = [
 
 describe('modPow', function () {
     for (const input of inputs$5) {
-        let ret;
         describe(`modPow(${input.a}, ${input.b}, ${input.n})`, function () {
             it(`should return ${input.modPow}`, function () {
-                ret = bigintCryptoUtils.modPow(input.a, input.b, input.n);
+                const ret = bigintCryptoUtils.modPow(input.a, input.b, input.n);
                 chai.expect(ret).to.equal(input.modPow);
             });
         });
     }
+    describe('Time profiling', function () {
+        let iterations = 3000;
+        it(`just testing ${iterations} iterations of a big modular exponentiation (1024 bits)`, function () {
+            const p = BigInt('103920301461718841589267304263845359224454055603847417021399996422142529929535423886894599506329362009085557636432288745748144369296043048325513558512136442971686130986388589421125262751724362880217790112013162815676017250234401214198365302142787009943498370856167174244675719638815809347261773472114842038647');
+            const b = BigInt('313632271690673451924314047671460131678794095260951233878123501752357966284491455239133687519908410656818506813151659324961829045286402303082891913186909806785080978448037486178337722667190743610785429936585699831407575170854873682955317589189564880931807976657385223632835801016017549762825562427694700595');
+            const e = BigInt('452149997592306202232720864363485824701879487303880767747217308770351197801836846325633986474037061753983278534192061455638289551714281047915315943771002615269860312318606105460307037327329178890486613832051027105330475852552183444938408408863970975090778239473049899109989825645608770309107015209564444316');
+            while (iterations > 0) {
+                bigintCryptoUtils.modPow(b, e, p);
+                iterations--;
+            }
+            chai.expect(true).to.be.true;
+        });
+    });
 });
 
 // For the browser test builder to work you MUST import them module in a variable that
@@ -342,8 +349,8 @@ describe('prime', function () {
     for (const bitLength of bitLengths) {
         describe(`prime(${bitLength})`, function () {
             it(`should return a random ${bitLength}-bits probable prime`, async function () {
-                let prime = await bigintCryptoUtils.prime(bitLength);
-                let primeBitLength = bigintCryptoUtils.bitLength(prime);
+                const prime = await bigintCryptoUtils.prime(bitLength);
+                const primeBitLength = bigintCryptoUtils.bitLength(prime);
                 chai.expect(primeBitLength).to.equal(bitLength);
             });
         });
@@ -375,10 +382,9 @@ const inputs$6 = [
 
 describe('toZn', function () {
     for (const input of inputs$6) {
-        let ret;
         describe(`toZn(${input.a}, ${input.n})`, function () {
             it(`should return ${input.toZn}`, function () {
-                ret = bigintCryptoUtils.toZn(input.a, input.n);
+                const ret = bigintCryptoUtils.toZn(input.a, input.n);
                 chai.expect(ret).to.equal(input.toZn);
             });
         });

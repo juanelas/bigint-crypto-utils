@@ -50,10 +50,9 @@ const inputs = [
 
 describe('gcd', function () {
     for (const input of inputs) {
-        let ret;
         describe(`gcd(${input.a}, ${input.b})`, function () {
             it(`should return ${input.gcd}`, function () {
-                ret = bigintCryptoUtils.gcd(input.a, input.b);
+                const ret = bigintCryptoUtils.gcd(input.a, input.b);
                 chai.expect(ret).to.equal(input.gcd);
             });
         });
