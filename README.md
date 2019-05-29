@@ -108,7 +108,7 @@ iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)</p>
 <dd><p>Modular inverse.</p>
 </dd>
 <dt><a href="#modPow">modPow(b, e, n)</a> ⇒ <code>bigint</code></dt>
-<dd><p>Modular exponentiation b**e mod n</p>
+<dd><p>Modular exponentiation b**e mod n. Currently using the right-to-left binary method</p>
 </dd>
 <dt><a href="#prime">prime(bitLength, iterations)</a> ⇒ <code>Promise</code></dt>
 <dd><p>A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator. 
@@ -236,7 +236,7 @@ Modular inverse.
 <a name="modPow"></a>
 
 ## modPow(b, e, n) ⇒ <code>bigint</code>
-Modular exponentiation b**e mod n
+Modular exponentiation b**e mod n. Currently using the right-to-left binary method
 
 **Kind**: global function  
 **Returns**: <code>bigint</code> - b**e mod n  

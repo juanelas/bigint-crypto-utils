@@ -187,7 +187,8 @@ var bigintCryptoUtils = (function (exports) {
     }
 
     /**
-     * Modular exponentiation b**e mod n
+     * Modular exponentiation b**e mod n. Currently using the right-to-left binary method
+     * 
      * @param {number|bigint} b base
      * @param {number|bigint} e exponent
      * @param {number|bigint} n modulo
