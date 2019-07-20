@@ -19,34 +19,6 @@ function abs(a) {
 }
 
 /**
- * Maximum. max(a,b)==a if a>=b. max(a,b)==b if a<=b
- *  
- * @param {number|bigint} a  
- * @param {number|bigint} b 
- * 
- * @returns {bigint} maximum of numbers a and b
- */
- function max(a, b) {
-    a = BigInt(a);
-	b = BigInt(b);
-    return (a >= b) ? a : b;
-}
-
-/**
- * Minimum. min(a,b)==b if a>=b. min(a,b)==a if a<=b
- *  
- * @param {number|bigint} a  
- * @param {number|bigint} b 
- * 
- * @returns {bigint} minimum of numbers a and b
- */
-function min(a, b) {
-    a = BigInt(a);
-	b = BigInt(b);
-    return (a >= b) ? b : a;
-}
-
-/**
  * Returns the bitlength of a number
  * 
  * @param {number|bigint} a  
@@ -202,6 +174,34 @@ function lcm(a, b) {
 }
 
 /**
+ * Maximum. max(a,b)==a if a>=b. max(a,b)==b if a<=b
+ *  
+ * @param {number|bigint} a  
+ * @param {number|bigint} b 
+ * 
+ * @returns {bigint} maximum of numbers a and b
+ */
+function max(a, b) {
+    a = BigInt(a);
+    b = BigInt(b);
+    return (a >= b) ? a : b;
+}
+
+/**
+ * Minimum. min(a,b)==b if a>=b. min(a,b)==a if a<=b
+ *  
+ * @param {number|bigint} a  
+ * @param {number|bigint} b 
+ * 
+ * @returns {bigint} minimum of numbers a and b
+ */
+function min(a, b) {
+    a = BigInt(a);
+    b = BigInt(b);
+    return (a >= b) ? b : a;
+}
+
+/**
  * Modular inverse.
  * 
  * @param {number|bigint} a The number to find an inverse for
@@ -250,7 +250,7 @@ function modPow(b, e, n) {
             r = (r * b) % n;
         }
         e = e / _TWO;
-        b = b**_TWO % n;
+        b = b ** _TWO % n;
     }
     return r;
 }
@@ -271,7 +271,7 @@ function prime(bitLength, iterations = 16) {
     if (bitLength < 1)
         throw new RangeError(`bitLength MUST be > 0 and it is ${bitLength}`);
 
-    if (!_useWorkers) {
+    if ( !_useWorkers) {
         let rnd = _ZERO;
         do {
             rnd = fromBuffer(randBytesSync(bitLength / 8, true));
@@ -783,7 +783,7 @@ This node version doesn't support worker_threads. You should enable them in orde
 
 
 
-if (_useWorkers) { // node.js with support for workers
+if ( _useWorkers) { // node.js with support for workers
     const { parentPort, isMainThread } = require('worker_threads');
     if (!isMainThread) { // worker
         parentPort.on('message', function (data) { // Let's start once we are called

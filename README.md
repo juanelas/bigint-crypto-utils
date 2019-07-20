@@ -104,6 +104,12 @@ iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)</p>
 <dt><a href="#lcm">lcm(a, b)</a> ⇒ <code>bigint</code></dt>
 <dd><p>The least common multiple computed as abs(a*b)/gcd(a,b)</p>
 </dd>
+<dt><a href="#max">max(a, b)</a> ⇒ <code>bigint</code></dt>
+<dd><p>Maximum. max(a,b)==a if a&gt;=b. max(a,b)==b if a&lt;=b</p>
+</dd>
+<dt><a href="#min">min(a, b)</a> ⇒ <code>bigint</code></dt>
+<dd><p>Minimum. min(a,b)==b if a&gt;=b. min(a,b)==a if a&lt;=b</p>
+</dd>
 <dt><a href="#modInv">modInv(a, n)</a> ⇒ <code>bigint</code></dt>
 <dd><p>Modular inverse.</p>
 </dd>
@@ -214,6 +220,32 @@ The least common multiple computed as abs(a*b)/gcd(a,b)
 
 **Kind**: global function  
 **Returns**: <code>bigint</code> - The least common multiple of a and b  
+
+| Param | Type |
+| --- | --- |
+| a | <code>number</code> \| <code>bigint</code> | 
+| b | <code>number</code> \| <code>bigint</code> | 
+
+<a name="max"></a>
+
+## max(a, b) ⇒ <code>bigint</code>
+Maximum. max(a,b)==a if a>=b. max(a,b)==b if a<=b
+
+**Kind**: global function  
+**Returns**: <code>bigint</code> - maximum of numbers a and b  
+
+| Param | Type |
+| --- | --- |
+| a | <code>number</code> \| <code>bigint</code> | 
+| b | <code>number</code> \| <code>bigint</code> | 
+
+<a name="min"></a>
+
+## min(a, b) ⇒ <code>bigint</code>
+Minimum. min(a,b)==b if a>=b. min(a,b)==a if a<=b
+
+**Kind**: global function  
+**Returns**: <code>bigint</code> - minimum of numbers a and b  
 
 | Param | Type |
 | --- | --- |
