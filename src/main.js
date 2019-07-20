@@ -17,20 +17,13 @@ export function abs(a) {
 }
 
 /**
- * Returns the bitlength of a number
+ * Returns the bitlength of a number. If it is signed it omits the sign. bitLength(-2) = bitLength(2)
  * 
  * @param {number|bigint} a  
  * @returns {number} - the bit length
  */
 export function bitLength(a) {
-    a = BigInt(a);
-    if (a === _ONE)
-        return 1;
-    let bits = 1;
-    do {
-        bits++;
-    } while ((a >>= _ONE) > _ONE);
-    return bits;
+    return wordLength(a, 1);
 }
 
 /**
@@ -211,37 +204,151 @@ export function modInv(a, n) {
 }
 
 /**
- * Modular exponentiation b**e mod n. Currently using the right-to-left binary method
+ * Modular exponentiation b**e mod n. 
+ * Several modular exponentiation algorithms have been developed for testing purposes. However, 
+ * with BigInt native, left-to-right binary exponentiation outperformns all the others: 
+ *  - k-ary is disappointingly slow, even with precomputed values for the powers of g. 
+ *  - Montgomery implementations are more than 4 times slower than their non-reduced counterparts
  * 
- * @param {number|bigint} b base
+ * @param {number|bigint} g base
  * @param {number|bigint} e exponent
- * @param {number|bigint} n modulo
+ * @param {number|bigint} m modulo
+ * @param {number} algorithm the algorithm to compute the exponentiation. It could be:
+ *  0 - left-to-right binary exponentiation;
+ *  1 - right-to-left binary exponentiation;
+ *  2 - left-to-right k-ary exponentiation;
+ *  3 - left-to-right binary exponentiation with Montgomery Multplication;
+ *  4 - right-to-left binary exponentiation with Montgomery Multplication;
+ *  5 - left-to-right binary exponentiation with Montgomery Redc;
+ *  6 - right-to-left binary exponentiation with Montgomery Redc;
+ * @param {number} baseBits bits for the montgomery base or k=2^baseBits in the k-ary method. Only for algorithm >= 2.
+ * @param {object} gPowers only for algorithm 2. An array with the precomputed powers of g. gPowers.length is 2^baseBits and gPowers[i] = g^i.
  * 
- * @returns {bigint} b**e mod n
+ * @returns {bigint} g^e mod m
  */
-export function modPow(b, e, n) {
-    n = BigInt(n);
-    if (n === _ZERO)
+export function modPow(g, e, m, algorithm = 0, baseBits = 64, gPowers) {
+    m = BigInt(m);
+    if (m === _ZERO)
         return NaN;
-    else if (n === _ONE)
+    else if (m === _ONE)
         return _ZERO;
 
-    b = toZn(b, n);
+    g = toZn(g, m);
 
     e = BigInt(e);
     if (e < _ZERO) {
-        return modInv(modPow(b, abs(e), n), n);
+        return modInv(modPow(g, abs(e), m, algorithm, baseBits), m);
     }
 
-    let r = _ONE;
-    while (e > 0) {
-        if ((e % _TWO) === _ONE) {
-            r = (r * b) % n;
-        }
-        e = e / _TWO;
-        b = b**_TWO % n;
+    switch (Number(algorithm)) {
+        case 0:
+            return _modPowLeftToRightBinary(g, e, m);
+        case 1:
+            return _modPowRightToLeftBinary(g, e, m);
+        case 2:
+            if (gPowers)
+                return _modPowLeftToRightKary(gPowers, e, m, baseBits);
+            else
+                return _modPowLeftToRightKary(g, e, m, baseBits);
+        case 3:
+            return _modPowLeftToRightBinaryMontgomery(g, e, m, baseBits);
+        case 4:
+            return _modPowRightToLeftBinaryMontgomery(g, e, m, baseBits);
+        case 5:
+            return _modPowLeftToRightBinaryRedc(g, e, m, baseBits);
+        case 6:
+            return _modPowRightToLeftBinaryRedc(g, e, m, baseBits);
+        default:
+            return _modPowLeftToRightBinary(g, e, m);
     }
-    return r;
+}
+
+/**
+ * Class representing a Montgomery domain
+ */
+export class Mont {
+    /**
+     * Creates a Montgomery domain where R is chosen as the smallest power of 2 s.t. R > m
+     * 
+     * @param {bigint} m modulo (MUST be odd) 
+     */
+    constructor(m, baseBits = 512) {
+        if (m % _TWO === _ZERO) { // as b is a power of 2, gcd(m,b) == 1 if m is odd
+            throw new Error('In a Montgomery domain with R a power of 2, the module MUST be odd');
+        }
+        this.m = m;
+        this.baseBits = BigInt(baseBits);
+        this.b = _TWO ** this.baseBits;
+        this.wLen = BigInt(wordLength(m, baseBits));
+        this.RBits = this.baseBits * this.wLen;
+        this.R = _TWO ** this.RBits;
+        this.Rsqr = (this.R ** _TWO) % m;
+        let mPrime = - modInv(m, this.R);
+        if (abs(mPrime) > (m / _TWO)) { // mPrime appears in products so its better to use the smallest version (either positive or negative)
+            mPrime = toZn(mPrime, this.R);
+        }
+        this.mPrime = mPrime;
+    }
+
+    /**
+     * Returns a representation of x in this Montgomery domain
+     * @param {bigint} x 
+     * 
+     * @returns {bigint} x·R mod m
+     */
+    toMont(x) {
+        return this.redc(x * this.Rsqr);
+    }
+
+    /**
+     * The Montgomery reduction
+     * @param {bigint} x
+     * 
+     * @returns {bigint} x R⁻¹ mod m 
+     */
+    redc(x) {
+        let y = (x * this.mPrime) % this.R;
+        if (y < _ZERO) {
+            y += this.R;
+        }
+        const ret = (x + y * this.m) >> this.RBits;
+        if (ret >= this.m) {
+            return ret - this.m;
+        }
+        return ret; // x * R^(-1) mod m
+    }
+
+    /**
+     * Montgomery multiplication. 
+     * Based on the Algorithm 14.36 from the book Handbook of applied cryptography by Menezes, Van Oorschot and Vanstone.
+     * It combines Montgomery reduction (Algorithm 14.32) and multiple-precision multiplication (Algorithm 14.12) to compute the Montgomery reduction of the product of two integers x, y modulo m.
+     * 
+     * @param {bigint} x 
+     * @param {bigint} y 
+     * 
+     * @returns {bigint} x*y*R^(-1) mod m
+     */
+    mul(x, y) {
+        let A = _ZERO;
+        const _mask = (this.b - _ONE);
+        const y_0 = y & _mask;
+        for (let i = 0; i < this.wLen; i++) {
+            const a_0 = A & _mask;
+            const x_i = x & _mask;
+            let u_i = (((a_0 + x_i * y_0) % this.b) * this.mPrime) % this.b;
+            if (u_i < _ZERO) {
+                u_i += this.base;
+            }
+            A = (A + x_i * y + u_i * this.m) >> this.baseBits;
+            if (x > _ZERO) {
+                x >>= this.baseBits;
+            }
+        }
+        if (A >= this.m) {
+            A -= this.m;
+        }
+        return A;
+    }
 }
 
 /**
@@ -263,7 +370,7 @@ export function prime(bitLength, iterations = 16) {
     if (!process.browser && !_useWorkers) {
         let rnd = _ZERO;
         do {
-            rnd = fromBuffer(randBytesSync(bitLength / 8, true));
+            rnd = _fromBuffer(randBytesSync(bitLength / 8, true));
         } while (!_isProbablyPrime(rnd, iterations));
         return new Promise((resolve) => { resolve(rnd); });
     }
@@ -281,7 +388,7 @@ export function prime(bitLength, iterations = 16) {
                 resolve(msg.value);
             } else { // if a composite is found, make the worker test another random number
                 let buf = randBits(bitLength, true);
-                let rnd = fromBuffer(buf);
+                let rnd = _fromBuffer(buf);
                 try {
                     newWorker.postMessage({
                         'rnd': rnd,
@@ -311,7 +418,7 @@ export function prime(bitLength, iterations = 16) {
         }
         for (let i = 0; i < workerList.length; i++) {
             let buf = randBits(bitLength, true);
-            let rnd = fromBuffer(buf);
+            let rnd = _fromBuffer(buf);
             workerList[i].postMessage({
                 'rnd': rnd,
                 'iterations': iterations,
@@ -335,7 +442,7 @@ export function randBetween(max, min = _ONE) {
     let rnd;
     do {
         let buf = randBits(bitLen);
-        rnd = fromBuffer(buf);
+        rnd = _fromBuffer(buf);
     } while (rnd > interval);
     return rnd + min;
 }
@@ -440,42 +547,31 @@ export function toZn(a, n) {
     return (a < 0) ? a + n : a;
 }
 
-
+/**
+ * Returns the the digits of a number in words of wordBits bits. If it is signed it omits the sign:
+ *  wordLength(-1461714354, 16) = wordLength(1461714354, 16) = 
+ * @param {*} a 
+ * @param {*} wordBits 
+ */
+export function wordLength(a, wordBits) { // Returns 
+    a = abs(a);
+    wordBits = BigInt(wordBits);
+    let digits = 1;
+    while ((a >>= wordBits) > _ZERO) {
+        digits++;
+    }
+    return digits;
+}
 
 /* HELPER FUNCTIONS */
 
-function fromBuffer(buf) {
+function _fromBuffer(buf) {
     let ret = _ZERO;
     for (let i of buf.values()) {
         let bi = BigInt(i);
         ret = (ret << BigInt(8)) + bi;
     }
     return ret;
-}
-
-function _isProbablyPrimeWorkerUrl() {
-    // Let's us first add all the required functions
-    let workerCode = `'use strict';const _ZERO = BigInt(0);const _ONE = BigInt(1);const _TWO = BigInt(2);const eGcd = ${eGcd.toString()};const modInv = ${modInv.toString()};const modPow = ${modPow.toString()};const toZn = ${toZn.toString()};const randBits = ${randBits.toString()};const randBytesSync = ${randBytesSync.toString()};const randBetween = ${randBetween.toString()};const isProbablyPrime = ${_isProbablyPrime.toString()};${bitLength.toString()}${fromBuffer.toString()}`;
-
-    const onmessage = async function (event) { // Let's start once we are called
-        // event.data = {rnd: <bigint>, iterations: <number>}
-        const isPrime = await isProbablyPrime(event.data.rnd, event.data.iterations);
-        postMessage({
-            'isPrime': isPrime,
-            'value': event.data.rnd,
-            'id': event.data.id
-        });
-    };
-
-    workerCode += `onmessage = ${onmessage.toString()};`;
-
-    return _workerUrl(workerCode);
-}
-
-function _workerUrl(workerCode) {
-    workerCode = `(() => {${workerCode}})()`; // encapsulate IIFE
-    const _blob = new Blob([workerCode], { type: 'text/javascript' });
-    return window.URL.createObjectURL(_blob);
 }
 
 function _isProbablyPrime(w, iterations = 16) {
@@ -797,6 +893,212 @@ function _isProbablyPrime(w, iterations = 16) {
     return true;
 }
 
+function _isProbablyPrimeWorkerUrl() {
+    // Let's us first add all the required functions
+    let workerCode = `'use strict';const _ZERO = BigInt(0);const _ONE = BigInt(1);const _TWO = BigInt(2);${abs};${bitLength};${eGcd};${modInv};${modPow};${Mont};${randBetween};${randBits};${randBytesSync};const isProbablyPrime = ${_isProbablyPrime};${toZn};${wordLength};${_fromBuffer.toString()};${_modPowLeftToRightBinary};${_modPowLeftToRightBinaryMontgomery};${_modPowLeftToRightKary};${_modPowRightToLeftBinary};${_modPowRightToLeftBinaryMontgomery};`;
+
+    const onmessage = async function (event) { // Let's start once we are called
+        // event.data = {rnd: <bigint>, iterations: <number>}
+        const isPrime = await isProbablyPrime(event.data.rnd, event.data.iterations);
+        postMessage({
+            'isPrime': isPrime,
+            'value': event.data.rnd,
+            'id': event.data.id
+        });
+    };
+
+    workerCode += `onmessage = ${onmessage.toString()};`;
+
+    return _workerUrl(workerCode);
+}
+
+
+// Handbook for applied cryptography 
+// 14.79 Algorithm Left-to-right binary exponentiation
+function _modPowLeftToRightBinary(g, e, m, eIsPowerOfTwo = false) {
+    if (eIsPowerOfTwo) {
+        while ((e >>= _ONE) > _ZERO) {
+            g = g ** _TWO % m;
+        }
+        return g;
+    } else {
+        let r = _ONE;
+        const e_i = [];
+        let i = 0;
+        do {
+            e_i[i] = e & _ONE;
+            i++;
+        } while ((e >>= _ONE) > _ZERO);
+        for (let j = i - 1; j >= 0; j--) {
+            r = r ** _TWO % m;
+            if (e_i[j] === _ONE) {
+                r = (r * g) % m;
+            }
+        }
+        return r;
+    }
+}
+
+
+// Handbook for applied cryptography 
+// 14.82 Left-to-right k-ary exponentiation
+function _modPowLeftToRightKary(g, e, m, baseBits) {
+    Array.prototype.isArray = true;
+    baseBits = BigInt(baseBits);
+    const base = _TWO ** baseBits;
+
+    let gPowers;
+    if (g.isArray && g.length == base) {
+        gPowers = g;
+    } else {
+        gPowers = new Array(base);
+        gPowers[0] = _ONE;
+        gPowers[1] = g;
+
+        for (let i = 2; i < base; i++) {
+            gPowers[i] = (gPowers[i - 1] * g) % m;
+        }
+
+    }
+
+    const _mask = (base - _ONE);
+
+    const e_i = [];
+    let i = 0;
+    do {
+        e_i[i] = e & _mask;
+        i++;
+    } while ((e >>= baseBits) > _ZERO);
+
+    let r = _ONE;
+    for (let j = i - 1; j >= 0; j--) {
+        r = _modPowLeftToRightBinary(r, base, m, true);
+        if (e_i[j] > _ZERO) {
+            r = (r * gPowers[e_i[j]]) % m;
+        }
+    }
+    return r;
+}
+
+// Handbook for applied cryptography 
+// 14.94 Montgomery exponentiation
+function _modPowLeftToRightBinaryMontgomery(g, e, m, baseBits = 512) {
+    if (m % _TWO === _ZERO) { // as montBase is a power of 2, gcd(m,montBase) == 1 => m is odd
+        return NaN;
+    }
+    const mont = new Mont(m, baseBits);
+
+    let gMont = mont.mul(g, mont.Rsqr); // g*R mod m
+    let ret = mont.R - m; // R mod m
+
+    const e_i = [];
+    let i = 0;
+    do {
+        e_i[i] = e & _ONE;
+        i++;
+    } while ((e >>= _ONE) > _ZERO);
+    for (let j = i - 1; j >= 0; j--) {
+        ret = mont.mul(ret, ret);
+        if (e_i[j] === _ONE) {
+            ret = mont.mul(ret, gMont);
+        }
+    }
+
+    return mont.mul(ret, _ONE);
+}
+
+function _modPowLeftToRightBinaryRedc(g, e, m, baseBits = 512) {
+    if (m % _TWO === _ZERO) { // as montBase is a power of 2, gcd(m,montBase) == 1 => m is odd
+        return NaN;
+    }
+    const mont = new Mont(m, baseBits);
+
+    let gMont = mont.redc(g * mont.Rsqr); // g*R mod m
+    let ret = mont.R - m; // R mod m
+
+    const e_i = [];
+    let i = 0;
+    do {
+        e_i[i] = e & _ONE;
+        i++;
+    } while ((e >>= _ONE) > _ZERO);
+    for (let j = i - 1; j >= 0; j--) {
+        ret = mont.redc(ret ** _TWO);
+        if (e_i[j] === _ONE) {
+            ret = mont.redc(ret * gMont);
+        }
+    }
+
+    return mont.redc(ret);
+}
+
+// Handbook for applied cryptography 
+// 14.76 Algorithm Right-to-left binary exponentiation
+function _modPowRightToLeftBinary(g, e, m) {
+    let r = _ONE;
+    while (e > _ZERO) {
+        if ((e % _TWO) === _ONE) {
+            r = (r * g) % m;
+        }
+        e = e >> _ONE;
+        if (e !== _ZERO) {
+            g = g ** _TWO % m;
+        }
+    }
+    return r;
+}
+
+function _modPowRightToLeftBinaryMontgomery(g, e, m, baseBits = 512) {
+    if (m % _TWO === _ZERO) { // as b is a power of 2, gcd(m,b) == 1 => m is odd
+        return NaN;
+    }
+    const mont = new Mont(m, baseBits);
+
+    let gMont = mont.mul(g, mont.Rsqr); // g*R mod m
+    let ret = mont.R - m; // R mod m
+
+    while (e > _ZERO) {
+        if ((e % _TWO) === _ONE) {
+            ret = mont.mul(ret, gMont);
+        }
+        e = e / _TWO;
+        if (e !== _ZERO) {
+            gMont = mont.mul(gMont, gMont);
+        }
+    }
+
+    return mont.mul(ret, _ONE); // ret * R^(-1) mod m
+}
+
+function _modPowRightToLeftBinaryRedc(g, e, m, baseBits = 512) {
+    if (m % _TWO === _ZERO) { // as R is a power of 2, gcd(m,R) == 1 <=> m is odd
+        return NaN;
+    }
+
+    const mont = new Mont(m, baseBits);
+
+    let gMont = mont.redc(g * mont.Rsqr); // g*R mod m
+    let ret = mont.R - m; // R mod m
+
+    while (e > _ZERO) {
+        if ((e % _TWO) === _ONE) {
+            ret = mont.redc(ret * gMont);
+        }
+        e = e / _TWO;
+        if (e !== _ZERO) {
+            gMont = mont.redc(gMont ** _TWO);
+        }
+    }
+
+    return mont.redc(ret); // ret * R^(-1) mod m
+}
+
+
+function _workerUrl(workerCode) {
+    workerCode = `(() => {${workerCode}})()`; // encapsulate IIFE
+    const _blob = new Blob([workerCode], { type: 'text/javascript' });
+    return window.URL.createObjectURL(_blob);
+}
 
 let _useWorkers = true; // The following is just to check whether Node.js can use workers
 if (!process.browser) { // Node.js

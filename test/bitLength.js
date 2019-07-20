@@ -11,12 +11,19 @@ const inputs = [
         bitLength: 1
     },
     {
+        value: BigInt(7),
+        bitLength: 3
+    },
+    {
+        value: BigInt(8),
+        bitLength: 4
+    },
+    {
         value: BigInt(-2),
         bitLength: 2
     },
     {
         value: BigInt(11592217955149597331),
-        abs: BigInt(11592217955149597331),
         bitLength: 64
     }
 ];

@@ -88,7 +88,7 @@ From a browser, you can just load the module in a html page as:
 <dd><p>Absolute value. abs(a)==a if a&gt;=0. abs(a)==-a if a&lt;0</p>
 </dd>
 <dt><a href="#bitLength">bitLength(a)</a> ⇒ <code>number</code></dt>
-<dd><p>Returns the bitlength of a number</p>
+<dd><p>Returns the bitlength of a number. If it is signed it omits the sign. bitLength(-2) = bitLength(2)</p>
 </dd>
 <dt><a href="#eGcd">eGcd(a, b)</a> ⇒ <code><a href="#egcdReturn">egcdReturn</a></code></dt>
 <dd><p>An iterative implementation of the extended euclidean algorithm or extended greatest common divisor algorithm. 
@@ -107,8 +107,14 @@ iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)</p>
 <dt><a href="#modInv">modInv(a, n)</a> ⇒ <code>bigint</code></dt>
 <dd><p>Modular inverse.</p>
 </dd>
-<dt><a href="#modPow">modPow(b, e, n)</a> ⇒ <code>bigint</code></dt>
-<dd><p>Modular exponentiation b**e mod n. Currently using the right-to-left binary method</p>
+<dt><a href="#modPow">modPow(g, e, m, algorithm, baseBits, gPowers)</a> ⇒ <code>bigint</code></dt>
+<dd><p>Modular exponentiation b**e mod n. 
+Several modular exponentiation algorithms have been developed for testing purposes. However, 
+with BigInt native, left-to-right binary exponentiation outperformns all the others: </p>
+<ul>
+<li>k-ary is disappointingly slow, even with precomputed values for the powers of g. </li>
+<li>Montgomery implementations are more than 4 times slower than their non-reduced counterparts</li>
+</ul>
 </dd>
 <dt><a href="#prime">prime(bitLength, iterations)</a> ⇒ <code>Promise</code></dt>
 <dd><p>A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator. 
@@ -131,6 +137,10 @@ and can be enabled at runtime executing node --experimental-worker with node &gt
 </dd>
 <dt><a href="#toZn">toZn(a, n)</a> ⇒ <code>bigint</code></dt>
 <dd><p>Finds the smallest positive element that is congruent to a in modulo n</p>
+</dd>
+<dt><a href="#wordLength">wordLength(a, wordBits)</a></dt>
+<dd><p>Returns the the digits of a number in words of wordBits bits. If it is signed it omits the sign:
+ wordLength(-1461714354, 16) = wordLength(1461714354, 16) =</p>
 </dd>
 </dl>
 
@@ -157,7 +167,7 @@ Absolute value. abs(a)==a if a>=0. abs(a)==-a if a<0
 <a name="bitLength"></a>
 
 ## bitLength(a) ⇒ <code>number</code>
-Returns the bitlength of a number
+Returns the bitlength of a number. If it is signed it omits the sign. bitLength(-2) = bitLength(2)
 
 **Kind**: global function  
 **Returns**: <code>number</code> - - the bit length  
@@ -235,17 +245,24 @@ Modular inverse.
 
 <a name="modPow"></a>
 
-## modPow(b, e, n) ⇒ <code>bigint</code>
-Modular exponentiation b**e mod n. Currently using the right-to-left binary method
+## modPow(g, e, m, algorithm, baseBits, gPowers) ⇒ <code>bigint</code>
+Modular exponentiation b**e mod n. 
+Several modular exponentiation algorithms have been developed for testing purposes. However, 
+with BigInt native, left-to-right binary exponentiation outperformns all the others: 
+ - k-ary is disappointingly slow, even with precomputed values for the powers of g. 
+ - Montgomery implementations are more than 4 times slower than their non-reduced counterparts
 
 **Kind**: global function  
-**Returns**: <code>bigint</code> - b**e mod n  
+**Returns**: <code>bigint</code> - g^e mod m  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| b | <code>number</code> \| <code>bigint</code> | base |
+| g | <code>number</code> \| <code>bigint</code> | base |
 | e | <code>number</code> \| <code>bigint</code> | exponent |
-| n | <code>number</code> \| <code>bigint</code> | modulo |
+| m | <code>number</code> \| <code>bigint</code> | modulo |
+| algorithm | <code>number</code> | the algorithm to compute the exponentiation. It could be:  0 - left-to-right binary exponentiation;  1 - right-to-left binary exponentiation;  2 - left-to-right k-ary exponentiation;  3 - left-to-right binary exponentiation with Montgomery Multplication;  4 - right-to-left binary exponentiation with Montgomery Multplication;  5 - left-to-right binary exponentiation with Montgomery Redc;  6 - right-to-left binary exponentiation with Montgomery Redc; |
+| baseBits | <code>number</code> | bits for the montgomery base or k=2^baseBits in the k-ary method. Only for algorithm >= 2. |
+| gPowers | <code>object</code> | only for algorithm 2. An array with the precomputed powers of g. gPowers.length is 2^baseBits and gPowers[i] = g^i. |
 
 <a name="prime"></a>
 
@@ -328,6 +345,19 @@ Finds the smallest positive element that is congruent to a in modulo n
 | --- | --- | --- |
 | a | <code>number</code> \| <code>bigint</code> | An integer |
 | n | <code>number</code> \| <code>bigint</code> | The modulo |
+
+<a name="wordLength"></a>
+
+## wordLength(a, wordBits)
+Returns the the digits of a number in words of wordBits bits. If it is signed it omits the sign:
+ wordLength(-1461714354, 16) = wordLength(1461714354, 16) =
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| a | <code>\*</code> | 
+| wordBits | <code>\*</code> | 
 
 <a name="egcdReturn"></a>
 
