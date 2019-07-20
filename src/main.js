@@ -26,7 +26,7 @@ export function abs(a) {
  */
  export function max(a, b) {
     a = BigInt(a);
-	b = BigInt(b);
+    b = BigInt(b);
     return (a >= b) ? a : b;
 }
 
@@ -40,7 +40,7 @@ export function abs(a) {
  */
 export function min(a, b) {
     a = BigInt(a);
-	b = BigInt(b);
+    b = BigInt(b);
     return (a >= b) ? b : a;
 }
 
