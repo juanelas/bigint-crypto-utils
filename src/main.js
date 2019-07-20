@@ -17,6 +17,34 @@ export function abs(a) {
 }
 
 /**
+ * Maximum. max(a,b)==a if a>=b. max(a,b)==b if a<=b
+ *  
+ * @param {number|bigint} a  
+ * @param {number|bigint} b 
+ * 
+ * @returns {bigint} maximum of numbers a and b
+ */
+ export function max(a, b) {
+    a = BigInt(a);
+    b = BigInt(b);
+    return (a >= b) ? a : b;
+}
+
+/**
+ * Minimum. min(a,b)==b if a>=b. min(a,b)==a if a<=b
+ *  
+ * @param {number|bigint} a  
+ * @param {number|bigint} b 
+ * 
+ * @returns {bigint} minimum of numbers a and b
+ */
+export function min(a, b) {
+    a = BigInt(a);
+    b = BigInt(b);
+    return (a >= b) ? b : a;
+}
+
+/**
  * Returns the bitlength of a number
  * 
  * @param {number|bigint} a  
