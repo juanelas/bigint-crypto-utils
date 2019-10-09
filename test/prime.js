@@ -24,4 +24,11 @@ describe('prime', function () {
             });
         });
     }
+    describe('Testing sync (NOT-RECOMMENDED) version of prime', function() {
+        it('should return a random 1024-bits probable prime', function () {
+            const prime = bigintCryptoUtils.prime(1024, 16, true);
+            const primeBitLength = bigintCryptoUtils.bitLength(prime);
+            chai.expect(primeBitLength).to.equal(1024);
+        });
+    });
 });
