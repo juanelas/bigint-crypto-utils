@@ -259,21 +259,11 @@ var bigintCryptoUtils = (function (exports) {
      * @param {number} iterations The number of iterations for the Miller-Rabin Probabilistic Primality Test
      * @param {boolean} sync NOT RECOMMENDED. Invoke the function synchronously. It won't use workers so it'll be slower and may freeze thw window in browser's javascript.
      * 
-     * @returns {Promise|bigint} A promise that resolves to a bigint probable prime of bitLength bits or a bigint if called in synchronous mode.
+     * @returns {Promise} A promise that resolves to a bigint probable prime of bitLength bits.
      */
-    function prime(bitLength, iterations = 16, sync = false) {
+    function prime(bitLength, iterations = 16) {
         if (bitLength < 1)
             throw new RangeError(`bitLength MUST be > 0 and it is ${bitLength}`);
-
-        if ( sync) {
-            let rnd = _ZERO;
-            do {
-                rnd = fromBuffer(randBytesSync(bitLength / 8, true));
-            } while (!_isProbablyPrime(rnd, iterations));
-            if(sync)
-                return rnd;
-            return new Promise((resolve) => { resolve(rnd); });
-        }
         return new Promise((resolve) => {
             let workerList = [];
             const _onmessage = (msg, newWorker) => {
@@ -318,6 +308,25 @@ var bigintCryptoUtils = (function (exports) {
                 });
             }
         });
+    }
+
+    /**
+     * A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator. 
+     * The sync version is NOT RECOMMENDED since it won't use workers and thus it'll be slower and may freeze thw window in browser's javascript. Please consider using prime() instead.
+     * 
+     * @param {number} bitLength The required bit length for the generated prime
+     * @param {number} iterations The number of iterations for the Miller-Rabin Probabilistic Primality Test
+     * 
+     * @returns {bigint} A bigint probable prime of bitLength bits.
+     */
+    function primeSync(bitLength, iterations = 16) {
+        if (bitLength < 1)
+            throw new RangeError(`bitLength MUST be > 0 and it is ${bitLength}`);
+        let rnd = _ZERO;
+        do {
+            rnd = fromBuffer(randBytesSync(bitLength / 8, true));
+        } while (!_isProbablyPrime(rnd, iterations));
+        return rnd;
     }
 
     /**
@@ -794,6 +803,7 @@ var bigintCryptoUtils = (function (exports) {
     exports.modInv = modInv;
     exports.modPow = modPow;
     exports.prime = prime;
+    exports.primeSync = primeSync;
     exports.randBetween = randBetween;
     exports.randBits = randBits;
     exports.randBytes = randBytes;

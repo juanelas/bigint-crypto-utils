@@ -116,12 +116,16 @@ iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)</p>
 <dt><a href="#modPow">modPow(b, e, n)</a> ⇒ <code>bigint</code></dt>
 <dd><p>Modular exponentiation b**e mod n. Currently using the right-to-left binary method</p>
 </dd>
-<dt><a href="#prime">prime(bitLength, iterations, sync)</a> ⇒ <code>Promise</code> | <code>bigint</code></dt>
+<dt><a href="#prime">prime(bitLength, iterations, sync)</a> ⇒ <code>Promise</code></dt>
 <dd><p>A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator. 
 The browser version uses web workers to parallelise prime look up. Therefore, it does not lock the UI 
 main process, and it can be much faster (if several cores or cpu are available). 
 The node version can also use worker_threads if they are available (enabled by default with Node 11 and 
 and can be enabled at runtime executing node --experimental-worker with node &gt;=10.5.0).</p>
+</dd>
+<dt><a href="#primeSync">primeSync(bitLength, iterations)</a> ⇒ <code>bigint</code></dt>
+<dd><p>A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator. 
+The sync version is NOT RECOMMENDED since it won&#39;t use workers and thus it&#39;ll be slower and may freeze thw window in browser&#39;s javascript. Please consider using prime() instead.</p>
 </dd>
 <dt><a href="#randBetween">randBetween(max, min)</a> ⇒ <code>bigint</code></dt>
 <dd><p>Returns a cryptographically secure random integer between [min,max]</p>
@@ -281,7 +285,7 @@ Modular exponentiation b**e mod n. Currently using the right-to-left binary meth
 
 <a name="prime"></a>
 
-## prime(bitLength, iterations, sync) ⇒ <code>Promise</code> \| <code>bigint</code>
+## prime(bitLength, iterations, sync) ⇒ <code>Promise</code>
 A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator. 
 The browser version uses web workers to parallelise prime look up. Therefore, it does not lock the UI 
 main process, and it can be much faster (if several cores or cpu are available). 
@@ -289,13 +293,27 @@ The node version can also use worker_threads if they are available (enabled by d
 and can be enabled at runtime executing node --experimental-worker with node >=10.5.0).
 
 **Kind**: global function  
-**Returns**: <code>Promise</code> \| <code>bigint</code> - A promise that resolves to a bigint probable prime of bitLength bits or a bigint if called in synchronous mode.  
+**Returns**: <code>Promise</code> - A promise that resolves to a bigint probable prime of bitLength bits.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | bitLength | <code>number</code> | The required bit length for the generated prime |
 | iterations | <code>number</code> | The number of iterations for the Miller-Rabin Probabilistic Primality Test |
 | sync | <code>boolean</code> | NOT RECOMMENDED. Invoke the function synchronously. It won't use workers so it'll be slower and may freeze thw window in browser's javascript. |
+
+<a name="primeSync"></a>
+
+## primeSync(bitLength, iterations) ⇒ <code>bigint</code>
+A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator. 
+The sync version is NOT RECOMMENDED since it won't use workers and thus it'll be slower and may freeze thw window in browser's javascript. Please consider using prime() instead.
+
+**Kind**: global function  
+**Returns**: <code>bigint</code> - A bigint probable prime of bitLength bits.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| bitLength | <code>number</code> | The required bit length for the generated prime |
+| iterations | <code>number</code> | The number of iterations for the Miller-Rabin Probabilistic Primality Test |
 
 <a name="randBetween"></a>
 
