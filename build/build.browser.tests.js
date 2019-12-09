@@ -1,7 +1,7 @@
 'use strict';
 
 const rollup = require('rollup');
-const replace = require('rollup-plugin-replace');
+const replace = require('@rollup/plugin-replace');
 const resolve = require('rollup-plugin-node-resolve');
 const commonjs = require('rollup-plugin-commonjs');
 const multiEntry = require('rollup-plugin-multi-entry');

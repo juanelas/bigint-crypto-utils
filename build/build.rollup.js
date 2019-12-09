@@ -1,7 +1,7 @@
 'use strict';
 
 const rollup = require('rollup');
-const replace = require('rollup-plugin-replace');
+const replace = require('@rollup/plugin-replace');
 const minify = require('rollup-plugin-babel-minify');
 const fs = require('fs');
 const path = require('path');

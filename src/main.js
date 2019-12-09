@@ -280,7 +280,7 @@ export function modPow(b, e, n) {
  * and can be enabled at runtime executing node --experimental-worker with node >=10.5.0).
  * 
  * @param {number} bitLength The required bit length for the generated prime
- * @param {number} iterations The number of iterations for the Miller-Rabin Probabilistic Primality Test
+ * @param {number} [iterations = 16] The number of iterations for the Miller-Rabin Probabilistic Primality Test
  * @param {boolean} sync NOT RECOMMENDED. Invoke the function synchronously. It won't use workers so it'll be slower and may freeze thw window in browser's javascript.
  * 
  * @returns {Promise} A promise that resolves to a bigint probable prime of bitLength bits.
@@ -355,7 +355,7 @@ export function prime(bitLength, iterations = 16) {
  * The sync version is NOT RECOMMENDED since it won't use workers and thus it'll be slower and may freeze thw window in browser's javascript. Please consider using prime() instead.
  * 
  * @param {number} bitLength The required bit length for the generated prime
- * @param {number} iterations The number of iterations for the Miller-Rabin Probabilistic Primality Test
+ * @param {number} [iterations = 16] The number of iterations for the Miller-Rabin Probabilistic Primality Test
  * 
  * @returns {bigint} A bigint probable prime of bitLength bits.
  */
@@ -372,7 +372,7 @@ export function primeSync(bitLength, iterations = 16) {
 /**
  * Returns a cryptographically secure random integer between [min,max]
  * @param {bigint} max Returned value will be <= max
- * @param {bigint} min Returned value will be >= min
+ * @param {bigint} [min = BigInt(1)] Returned value will be >= min
  * 
  * @returns {bigint} A cryptographically secure random bigint between [min,max]
  */
@@ -392,7 +392,7 @@ export function randBetween(max, min = _ONE) {
  * Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
  * 
  * @param {number} bitLength The desired number of random bits
- * @param {boolean} forceLength If we want to force the output to have a specific bit length. It basically forces the msb to be 1
+ * @param {boolean} [forceLength = false] If we want to force the output to have a specific bit length. It basically forces the msb to be 1
  * 
  * @returns {Buffer|Uint8Array} A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bits
  */
@@ -415,7 +415,7 @@ export function randBits(bitLength, forceLength = false) {
  * Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
  * 
  * @param {number} byteLength The desired number of random bytes
- * @param {boolean} forceLength If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1
+ * @param {boolean} [forceLength = false] If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1
  * 
  * @returns {Promise} A promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
  */
@@ -449,7 +449,7 @@ export function randBytes(byteLength, forceLength = false) {
  * Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
  * 
  * @param {number} byteLength The desired number of random bytes
- * @param {boolean} forceLength If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1
+ * @param {boolean} [forceLength = false] If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1
  * 
  * @returns {Buffer|Uint8Array} A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
  */
