@@ -27,24 +27,24 @@ const buildOptions = [
             name: camelise(pkgJson.name)
         }
     },
-    { // Browser minified
-        input: {
-            input: path.join(srcDir, 'main.js'),
-            plugins: [
-                replace({
-                    'process.browser': true
-                }),
-                minify({
-                    'comments': false
-                })
-            ],
-        },
-        output: {
-            file: path.join(dstDir, `${pkgJson.name}-${pkgJson.version}.browser.min.js`),
-            format: 'iife',
-            name: camelise(pkgJson.name)
-        }
-    },
+    // { // Browser minified
+    //     input: {
+    //         input: path.join(srcDir, 'main.js'),
+    //         plugins: [
+    //             replace({
+    //                 'process.browser': true
+    //             }),
+    //             minify({
+    //                 'comments': false
+    //             })
+    //         ],
+    //     },
+    //     output: {
+    //         file: path.join(dstDir, `${pkgJson.name}-${pkgJson.version}.browser.min.js`),
+    //         format: 'iife',
+    //         name: camelise(pkgJson.name)
+    //     }
+    // },
     { // Browser esm
         input: {
             input: path.join(srcDir, 'main.js'),
