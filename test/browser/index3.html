@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Primes</title>
+	<meta charset="UTF-8" />
+</head>
+
+<body>
+	<div id="syncPrime">result of primeSync() will show up here</div>
+	<div id="asyncPrime">result of prime() will show up here</div>
+	<script type="module">
+		import * as bigintCryptoUtils from '../../dist/bigint-crypto-utils-latest.browser.mod.min.js'
+		(async () => {
+			document.getElementById(
+				"syncPrime"
+			).innerHTML = bigintCryptoUtils.primeSync(123);
+			document.getElementById(
+				"asyncPrime"
+			).innerHTML = await bigintCryptoUtils.prime(123);
+		})();
+	</script>
+</body>
+
+</html>
