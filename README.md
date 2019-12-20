@@ -1,6 +1,6 @@
 # bigint-crypto-utils
 
-Utils for working with cryptography using native JS (stage 3) implementation of BigInt. It includes some extra functions to work with modular arithmetics along with secure random numbers and a fast strong probable prime generator/tester (parallelised multi-threaded Miller-Rabin primality test). It can be used by any [Web Browser or webview supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility) and with Node.js (>=10.4.0). In the latter case, for multi-threaded primality tests, you should use Node.js 11 or enable at runtime with `node --experimental-worker` with Node.js >=10.5.0.
+Utils for working with cryptography using native JS (stage 3) implementation of BigInt. It includes some extra functions to work with modular arithmetics along with secure random numbers and a fast strong probable prime generator/tester (parallelised multi-threaded Miller-Rabin primality test). It can be used by any [Web Browser or webview supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility) and with Node.js (>=10.4.0). In the latter case, for multi-threaded primality tests, you should use Node.js v11 or newer or enable at runtime with `node --experimental-worker` with Node.js version >= 10.5.0 and < 11.
 
 _The operations supported on BigInts are not constant time. BigInt can be therefore **[unsuitable for use in cryptography](https://www.chosenplaintext.ca/articles/beginners-guide-constant-time-cryptography.html).** Many platforms provide native support for cryptography, such as [Web Cryptography API](https://w3c.github.io/webcrypto/) or [Node.js Crypto](https://nodejs.org/dist/latest/docs/api/crypto.html)._
 
@@ -97,7 +97,7 @@ Take positive integers a, b as input, and return a triple (g, x, y), such that a
 <dt><a href="#gcd">gcd(a, b)</a> ⇒ <code>bigint</code></dt>
 <dd><p>Greatest-common divisor of two integers based on the iterative binary algorithm.</p>
 </dd>
-<dt><a href="#isProbablyPrime">isProbablyPrime(w, iterations)</a> ⇒ <code>Promise</code></dt>
+<dt><a href="#isProbablyPrime">isProbablyPrime(w, [iterations])</a> ⇒ <code>Promise</code></dt>
 <dd><p>The test first tries if any of the first 250 small primes are a factor of the input number and then passes several 
 iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)</p>
 </dd>
@@ -205,17 +205,17 @@ Greatest-common divisor of two integers based on the iterative binary algorithm.
 
 <a name="isProbablyPrime"></a>
 
-## isProbablyPrime(w, iterations) ⇒ <code>Promise</code>
+## isProbablyPrime(w, [iterations]) ⇒ <code>Promise</code>
 The test first tries if any of the first 250 small primes are a factor of the input number and then passes several 
 iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)
 
 **Kind**: global function  
 **Returns**: <code>Promise</code> - A promise that resolves to a boolean that is either true (a probably prime number) or false (definitely composite)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| w | <code>number</code> \| <code>bigint</code> | An integer to be tested for primality |
-| iterations | <code>number</code> | The number of iterations for the primality test. The value shall be consistent with Table C.1, C.2 or C.3 |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| w | <code>number</code> \| <code>bigint</code> |  | An integer to be tested for primality |
+| [iterations] | <code>number</code> | <code>16</code> | The number of iterations for the primality test. The value shall be consistent with Table C.1, C.2 or C.3 |
 
 <a name="lcm"></a>
 
