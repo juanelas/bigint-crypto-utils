@@ -1,4 +1,4 @@
-// For the browser test builder to work you MUST import them module in a variable that
+// For the browser test builder to work you MUST import the module in a variable that
 // is the camelised version of the package name.
 
 
@@ -33,7 +33,7 @@ describe('abs', function () {
     }
 });
 
-// For the browser test builder to work you MUST import them module in a variable that
+// For the browser test builder to work you MUST import the module in a variable that
 // is the camelised version of the package name.
 
 
@@ -65,7 +65,7 @@ describe('bitLength', function () {
     }
 });
 
-// For the browser test builder to work you MUST import them module in a variable that
+// For the browser test builder to work you MUST import the module in a variable that
 // is the camelised version of the package name.
 
 
@@ -124,7 +124,7 @@ describe('gcd', function () {
     }
 });
 
-// For the browser test builder to work you MUST import them module in a variable that
+// For the browser test builder to work you MUST import the module in a variable that
 // is the camelised version of the package name.
 
 
@@ -191,7 +191,7 @@ describe('isProbablyPrime', function () {
     }
 });
 
-// For the browser test builder to work you MUST import them module in a variable that
+// For the browser test builder to work you MUST import the module in a variable that
 // is the camelised version of the package name.
 
 
@@ -235,7 +235,7 @@ describe('lcm', function () {
     }
 });
 
-// For the browser test builder to work you MUST import them module in a variable that
+// For the browser test builder to work you MUST import the module in a variable that
 // is the camelised version of the package name.
 
 
@@ -326,7 +326,7 @@ describe('max', function () {
     }
 });
 
-// For the browser test builder to work you MUST import them module in a variable that
+// For the browser test builder to work you MUST import the module in a variable that
 // is the camelised version of the package name.
 
 
@@ -417,7 +417,7 @@ describe('min', function () {
     }
 });
 
-// For the browser test builder to work you MUST import them module in a variable that
+// For the browser test builder to work you MUST import the module in a variable that
 // is the camelised version of the package name.
 
 
@@ -457,7 +457,7 @@ describe('modInv', function () {
     }
 });
 
-// For the browser test builder to work you MUST import them module in a variable that
+// For the browser test builder to work you MUST import the module in a variable that
 // is the camelised version of the package name.
 
 
@@ -513,7 +513,7 @@ describe('modPow', function () {
     });
 });
 
-// For the browser test builder to work you MUST import them module in a variable that
+// For the browser test builder to work you MUST import the module in a variable that
 // is the camelised version of the package name.
 
 
@@ -546,7 +546,7 @@ describe('prime', function () {
     });
 });
 
-// For the browser test builder to work you MUST import them module in a variable that
+// For the browser test builder to work you MUST import the module in a variable that
 // is the camelised version of the package name.
 
 

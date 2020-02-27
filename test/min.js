@@ -1,6 +1,6 @@
 'use strict';
 
-// For the browser test builder to work you MUST import them module in a variable that
+// For the browser test builder to work you MUST import the module in a variable that
 // is the camelised version of the package name.
 const bigintCryptoUtils = require('../dist/bigint-crypto-utils-latest.node');
 const chai = require('chai');

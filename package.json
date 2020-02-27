@@ -36,12 +36,12 @@
     "prepublishOnly": "npm run build && npm run build:docs"
   },
   "devDependencies": {
-    "@rollup/plugin-replace": "^2.2.1",
+    "@rollup/plugin-replace": "^2.3.1",
     "chai": ">=4.2.0",
-    "eslint": "^6.5.1",
+    "eslint": "^6.8.0",
     "jsdoc-to-markdown": "^5.0.3",
     "mocha": "^6.2.1",
-    "rollup": "^1.27.13",
+    "rollup": "^1.31.1",
     "rollup-plugin-babel-minify": "^9.1.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-multi-entry": ">=2.1.0",
