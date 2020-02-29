@@ -9,6 +9,9 @@ const multiEntry = require('rollup-plugin-multi-entry');
 const fs = require('fs');
 const path = require('path');
 const pkgJson = require('../package.json');
+const pkg_name = pkgJson.name;
+const mocha_version = pkgJson.devDependencies.mocha.replace(/[\^~*><=]/g, '');
+const chai_version = pkgJson.devDependencies.chai.replace(/[\^~*><=]/g, '');
 
 const rootDir = path.join(__dirname, '..');
 
@@ -21,13 +24,16 @@ const dstFileName = path.join(dstDir, 'index.html');
 const template = fs.readFileSync(templatePath, 'utf-8');
 const testsJs = `
 <script type="module">
-    import * as ${camelise(pkgJson.name)} from '${path.relative(templatePath, pkgJson.browser)}'
-    window.${camelise(pkgJson.name)} = ${camelise(pkgJson.name)};
+    import * as ${camelise(pkg_name)} from '${path.relative(templatePath, pkgJson.browser)}'
+    window.${camelise(pkg_name)} = ${camelise(pkg_name)};
     import './tests.js';
     mocha.run();
 </script>
 `;
-fs.writeFileSync(dstFileName, template.replace('{{TESTS}}', testsJs).replace('{{PKG_NAME}}', pkgJson.name));
+
+fs.writeFileSync(dstFileName,
+    template.replace(/{{TESTS}}/g, testsJs).replace(/{{PKG_NAME}}/g, pkgJson.name).replace(/{{MOCHA_VERSION}}/g, mocha_version).replace(/{{CHAI_VERSION}}/g, chai_version)
+);
 
 /*
 Now we create a bundle of all the tests called test.js
