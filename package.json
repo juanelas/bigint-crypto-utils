@@ -28,20 +28,21 @@
     "test": "./test"
   },
   "scripts": {
-    "test": "node --experimental-worker node_modules/mocha/bin/_mocha --timeout 600000",
-    "build": "node build/build.rollup.js",
+    "test": "mocha --timeout 600000",
+    "build:js": "node build/build.rollup.js",
     "build:browserTests": "node build/build.browser.tests.js",
-    "build:docs": "jsdoc2md --template=README.hbs --files ./src/main.js > README.md",
-    "build:all": "npm run build && npm run build:browserTests && npm run build:docs",
-    "prepublishOnly": "npm run build && npm run build:docs"
+    "build:docs": "jsdoc2md --template=./src/readme-template.hbs --files ./src/main.js > README.md",
+    "build": "run-s build:**",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^2.3.1",
     "chai": ">=4.2.0",
     "eslint": "^6.8.0",
     "jsdoc-to-markdown": "^5.0.3",
-    "mocha": "^6.2.1",
-    "rollup": "^1.31.1",
+    "mocha": "^7.1.0",
+    "npm-run-all": "^4.1.5",
+    "rollup": "^1.32.0",
     "rollup-plugin-babel-minify": "^9.1.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-multi-entry": ">=2.1.0",
