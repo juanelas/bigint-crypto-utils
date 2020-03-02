@@ -1,6 +1,6 @@
 {
   "name": "bigint-crypto-utils",
-  "version": "2.4.5",
+  "version": "2.4.6",
   "description": "Utils for working with cryptography using native JS implementation of BigInt. It includes arbitrary precision modular arithmetics, cryptographically secure random numbers and strong probable prime generation/testing.",
   "keywords": [
     "modular arithmetics",
