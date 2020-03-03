@@ -20,18 +20,21 @@
   },
   "repository": "github:juanelas/bigint-crypto-utils",
   "main": "./dist/bigint-crypto-utils-latest.node.js",
-  "browser": "./dist/bigint-crypto-utils-latest.browser.mod.js",
+  "browser": "./dist/bigint-crypto-utils-latest.browser.mod.min.js",
+  "types": "./types/bigint-crypto-utils.d.ts",
   "directories": {
     "build": "./build",
     "dist": "./dist",
     "src": "./src",
-    "test": "./test"
+    "test": "./test",
+    "types": "/types"
   },
   "scripts": {
     "test": "mocha --timeout 600000",
     "build:js": "node build/build.rollup.js",
     "build:browserTests": "node build/build.browser.tests.js",
     "build:docs": "jsdoc2md --template=./src/readme-template.hbs --files ./src/main.js > README.md",
+    "build:dts": "node build/build.dts.js",
     "build": "run-s build:**",
     "prepublishOnly": "npm run build"
   },
@@ -46,6 +49,7 @@
     "rollup-plugin-babel-minify": "^9.1.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-multi-entry": ">=2.1.0",
-    "rollup-plugin-node-resolve": ">=5.2.0"
+    "rollup-plugin-node-resolve": ">=5.2.0",
+    "typescript": "^3.8.3"
   }
 }
