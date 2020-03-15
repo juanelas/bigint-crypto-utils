@@ -2,7 +2,7 @@
 
 const rollup = require('rollup');
 const replace = require('@rollup/plugin-replace');
-const minify = require('rollup-plugin-babel-minify');
+const terser = require('rollup-plugin-terser');
 const fs = require('fs');
 const path = require('path');
 const pkgJson = require('../package.json');
@@ -27,24 +27,26 @@ const buildOptions = [
             name: camelise(pkgJson.name)
         }
     },
-    // { // Browser minified
-    //     input: {
-    //         input: path.join(srcDir, 'main.js'),
-    //         plugins: [
-    //             replace({
-    //                 'process.browser': true
-    //             }),
-    //             minify({
-    //                 'comments': false
-    //             })
-    //         ],
-    //     },
-    //     output: {
-    //         file: path.join(dstDir, `${pkgJson.name}-${pkgJson.version}.browser.min.js`),
-    //         format: 'iife',
-    //         name: camelise(pkgJson.name)
-    //     }
-    // },
+    { // Browser minified
+        input: {
+            input: path.join(srcDir, 'main.js'),
+            plugins: [
+                replace({
+                    'process.browser': true
+                })
+            ],
+        },
+        output: {
+            file: path.join(dstDir, `${pkgJson.name}-${pkgJson.version}.browser.min.js`),
+            format: 'iife',
+            name: camelise(pkgJson.name),
+            plugins: [
+                terser.terser({
+                    'mangle': false
+                })
+            ]
+        }
+    },
     { // Browser esm
         input: {
             input: path.join(srcDir, 'main.js'),
@@ -65,15 +67,17 @@ const buildOptions = [
             plugins: [
                 replace({
                     'process.browser': true
-                }),
-                minify({
-                    'comments': false
                 })
             ],
         },
         output: {
             file: path.join(dstDir, `${pkgJson.name}-${pkgJson.version}.browser.mod.min.js`),
-            format: 'esm'
+            format: 'esm',
+            plugins: [
+                terser.terser({
+                    'mangle': false
+                })
+            ]
         }
     },
     { // Node

@@ -4,7 +4,7 @@ const path = require('path');
 const pkgJson = require('../package.json');
 
 const rootDir = path.join(__dirname, '..');
-const jsFile = path.join(rootDir, 'src', 'main.js');
+const jsFile = path.join(rootDir, pkgJson.browser);
 const dtsFile = path.join(rootDir, 'types', `${pkgJson.name}.d.ts`);
 
 
