@@ -15,19 +15,19 @@
   "license": "MIT",
   "author": {
     "name": "Juan Hernández Serrano",
-    "email": "jserrano@entel.upc.edu",
+    "email": "j.hernandez@upc.edu",
     "url": "https://github.com/juanelas"
   },
   "repository": "github:juanelas/bigint-crypto-utils",
   "main": "./dist/bigint-crypto-utils-latest.node.js",
-  "browser": "./dist/bigint-crypto-utils-latest.browser.mod.min.js",
+  "browser": "./dist/bigint-crypto-utils-latest.browser.mod.js",
   "types": "./types/bigint-crypto-utils.d.ts",
   "directories": {
     "build": "./build",
     "dist": "./dist",
     "src": "./src",
     "test": "./test",
-    "types": "/types"
+    "types": "./types"
   },
   "scripts": {
     "test": "mocha --timeout 600000",
@@ -46,10 +46,13 @@
     "chai": ">=4.2.0",
     "eslint": "^6.8.0",
     "jsdoc-to-markdown": "^5.0.3",
-    "mocha": "^7.1.0",
+    "mocha": "^7.1.1",
     "npm-run-all": "^4.1.5",
-    "rollup": "^2.0.6",
+    "rollup": "^2.2.0",
     "rollup-plugin-terser": "^5.3.0",
     "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "@types/node": "^13.9.3"
   }
 }

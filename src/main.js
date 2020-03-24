@@ -7,7 +7,7 @@ const _TWO = BigInt(2);
 /**
  * Absolute value. abs(a)==a if a>=0. abs(a)==-a if a<0
  *  
- * @param {number|bigint} a 
+ * @param {number | bigint} a 
  * 
  * @returns {bigint} the absolute value of a
  */
@@ -122,7 +122,7 @@ export function gcd(a, b) {
  * @param {number|bigint} w An integer to be tested for primality
  * @param {number} [iterations = 16] The number of iterations for the primality test. The value shall be consistent with Table C.1, C.2 or C.3
  * 
- * @return {Promise} A promise that resolves to a boolean that is either true (a probably prime number) or false (definitely composite)
+ * @returns {Promise<boolean>} A promise that resolves to a boolean that is either true (a probably prime number) or false (definitely composite)
  */
 export async function isProbablyPrime(w, iterations = 16) {
     if (typeof w === 'number') {
@@ -282,7 +282,7 @@ export function modPow(b, e, n) {
  * @param {number} bitLength The required bit length for the generated prime
  * @param {number} [iterations = 16] The number of iterations for the Miller-Rabin Probabilistic Primality Test
  * 
- * @returns {Promise} A promise that resolves to a bigint probable prime of bitLength bits.
+ * @returns {Promise<bigint>} A promise that resolves to a bigint probable prime of bitLength bits.
  */
 export function prime(bitLength, iterations = 16) {
     if (bitLength < 1)
@@ -419,7 +419,7 @@ export function randBits(bitLength, forceLength = false) {
  * @param {number} byteLength The desired number of random bytes
  * @param {boolean} [forceLength = false] If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1
  * 
- * @returns {Promise} A promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
+ * @returns {Promise<Buffer|Uint8Array>} A promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
  */
 export function randBytes(byteLength, forceLength = false) {
     if (byteLength < 1)

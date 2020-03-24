@@ -107,7 +107,7 @@ Take positive integers a, b as input, and return a triple (g, x, y), such that a
 <dt><a href="#gcd">gcd(a, b)</a> ⇒ <code>bigint</code></dt>
 <dd><p>Greatest-common divisor of two integers based on the iterative binary algorithm.</p>
 </dd>
-<dt><a href="#isProbablyPrime">isProbablyPrime(w, [iterations])</a> ⇒ <code>Promise</code></dt>
+<dt><a href="#isProbablyPrime">isProbablyPrime(w, [iterations])</a> ⇒ <code>Promise.&lt;boolean&gt;</code></dt>
 <dd><p>The test first tries if any of the first 250 small primes are a factor of the input number and then passes several 
 iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)</p>
 </dd>
@@ -126,7 +126,7 @@ iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)</p>
 <dt><a href="#modPow">modPow(b, e, n)</a> ⇒ <code>bigint</code></dt>
 <dd><p>Modular exponentiation b**e mod n. Currently using the right-to-left binary method</p>
 </dd>
-<dt><a href="#prime">prime(bitLength, [iterations])</a> ⇒ <code>Promise</code></dt>
+<dt><a href="#prime">prime(bitLength, [iterations])</a> ⇒ <code>Promise.&lt;bigint&gt;</code></dt>
 <dd><p>A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator. 
 The browser version uses web workers to parallelise prime look up. Therefore, it does not lock the UI 
 main process, and it can be much faster (if several cores or cpu are available). 
@@ -143,7 +143,7 @@ The sync version is NOT RECOMMENDED since it won&#39;t use workers and thus it&#
 <dt><a href="#randBits">randBits(bitLength, [forceLength])</a> ⇒ <code>Buffer</code> | <code>Uint8Array</code></dt>
 <dd><p>Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
 </dd>
-<dt><a href="#randBytes">randBytes(byteLength, [forceLength])</a> ⇒ <code>Promise</code></dt>
+<dt><a href="#randBytes">randBytes(byteLength, [forceLength])</a> ⇒ <code>Promise.&lt;(Buffer|Uint8Array)&gt;</code></dt>
 <dd><p>Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
 </dd>
 <dt><a href="#randBytesSync">randBytesSync(byteLength, [forceLength])</a> ⇒ <code>Buffer</code> | <code>Uint8Array</code></dt>
@@ -215,12 +215,12 @@ Greatest-common divisor of two integers based on the iterative binary algorithm.
 
 <a name="isProbablyPrime"></a>
 
-## isProbablyPrime(w, [iterations]) ⇒ <code>Promise</code>
+## isProbablyPrime(w, [iterations]) ⇒ <code>Promise.&lt;boolean&gt;</code>
 The test first tries if any of the first 250 small primes are a factor of the input number and then passes several 
 iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)
 
 **Kind**: global function  
-**Returns**: <code>Promise</code> - A promise that resolves to a boolean that is either true (a probably prime number) or false (definitely composite)  
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - A promise that resolves to a boolean that is either true (a probably prime number) or false (definitely composite)  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -295,7 +295,7 @@ Modular exponentiation b**e mod n. Currently using the right-to-left binary meth
 
 <a name="prime"></a>
 
-## prime(bitLength, [iterations]) ⇒ <code>Promise</code>
+## prime(bitLength, [iterations]) ⇒ <code>Promise.&lt;bigint&gt;</code>
 A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator. 
 The browser version uses web workers to parallelise prime look up. Therefore, it does not lock the UI 
 main process, and it can be much faster (if several cores or cpu are available). 
@@ -303,7 +303,7 @@ The node version can also use worker_threads if they are available (enabled by d
 and can be enabled at runtime executing node --experimental-worker with node >=10.5.0).
 
 **Kind**: global function  
-**Returns**: <code>Promise</code> - A promise that resolves to a bigint probable prime of bitLength bits.  
+**Returns**: <code>Promise.&lt;bigint&gt;</code> - A promise that resolves to a bigint probable prime of bitLength bits.  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -352,11 +352,11 @@ Secure random bits for both node and browsers. Node version uses crypto.randomFi
 
 <a name="randBytes"></a>
 
-## randBytes(byteLength, [forceLength]) ⇒ <code>Promise</code>
+## randBytes(byteLength, [forceLength]) ⇒ <code>Promise.&lt;(Buffer\|Uint8Array)&gt;</code>
 Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
 
 **Kind**: global function  
-**Returns**: <code>Promise</code> - A promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes  
+**Returns**: <code>Promise.&lt;(Buffer\|Uint8Array)&gt;</code> - A promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
