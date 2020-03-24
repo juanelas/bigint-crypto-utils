@@ -401,8 +401,10 @@ export function randBits(bitLength, forceLength = false) {
 
     const byteLength = Math.ceil(bitLength / 8);
     let rndBytes = randBytesSync(byteLength, false);
-    // Fill with 0's the extra bits
-    rndBytes[0] = rndBytes[0] & (2 ** (bitLength % 8) - 1);
+    if (bitLength % 8) {
+        // Fill with 0's the extra bits
+        rndBytes[0] = rndBytes[0] & (2 ** (bitLength % 8) - 1);
+    }
     if (forceLength) {
         let mask = (bitLength % 8) ? 2 ** ((bitLength % 8) - 1) : 128;
         rndBytes[0] = rndBytes[0] | mask;
