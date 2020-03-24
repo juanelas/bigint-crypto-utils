@@ -376,11 +376,14 @@ function randBits(bitLength, forceLength = false) {
         throw new RangeError(`bitLength MUST be > 0 and it is ${bitLength}`);
 
     const byteLength = Math.ceil(bitLength / 8);
-    let rndBytes = randBytesSync(byteLength, false);
-    // Fill with 0's the extra bits
-    rndBytes[0] = rndBytes[0] & (2 ** (bitLength % 8) - 1);
+    const rndBytes = randBytesSync(byteLength, false);
+    const bitLengthMod8 = bitLength % 8;
+    if (bitLengthMod8) {
+        // Fill with 0's the extra bits
+        rndBytes[0] = rndBytes[0] & (2 ** bitLengthMod8 - 1);
+    }
     if (forceLength) {
-        let mask = (bitLength % 8) ? 2 ** ((bitLength % 8) - 1) : 128;
+        const mask = bitLengthMod8 ? 2 ** (bitLengthMod8 - 1) : 128;
         rndBytes[0] = rndBytes[0] | mask;
     }
     return rndBytes;
