@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <title>bigint-crypto-utils - Mocha Tests</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/7.1.1/mocha.min.css">
-  </head>
-  <body>
-    <div id="mocha"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/7.1.1/mocha.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.2.0/chai.min.js"></script>
-    <script>mocha.setup('bdd'); mocha.setup({ timeout: 90000 });</script>
-    
-    
-<script type="module">
-    import * as bigintCryptoUtils from '../../dist/bigint-crypto-utils-latest.browser.mod.min.js'
-    window.bigintCryptoUtils = bigintCryptoUtils;
-    import './tests.js';
-    mocha.run();
-</script>
+</head>
 
-  </body>
+<body>
+    <div id="mocha"></div>
+    <script>mocha.setup('bdd'); mocha.setup({ timeout: 90000 });</script>
+
+    <script type="module">
+        import * as _pkg from '../../../lib/index.browser.bundle.mod.js'
+        window._pkg = _pkg;
+        import './tests.js';
+        mocha.run();
+    </script>
+</body>
+
 </html>

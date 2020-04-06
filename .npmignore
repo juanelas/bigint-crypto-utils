@@ -1,6 +1,3 @@
-# Project specific files
-dist/bigint-crypto-utils-?.?.?.*
-
 # Build scripts
 build/*
 
@@ -9,7 +6,6 @@ src/*
 
 # Test files
 test/*
-
 
 # Logs
 logs
@@ -21,6 +17,3 @@ npm-debug.log*
 
 # Visual Studio Code
 .vscode
-
-# EsLint Config
-.eslintrc.json

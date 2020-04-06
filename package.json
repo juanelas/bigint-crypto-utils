@@ -1,6 +1,6 @@
 {
   "name": "bigint-crypto-utils",
-  "version": "2.5.2",
+  "version": "2.5.0",
   "description": "Utils for working with cryptography using native JS implementation of BigInt. It includes arbitrary precision modular arithmetics, cryptographically secure random numbers and strong probable prime generation/testing.",
   "keywords": [
     "modular arithmetics",
@@ -15,44 +15,59 @@
   "license": "MIT",
   "author": {
     "name": "Juan Hernández Serrano",
-    "email": "j.hernandez@upc.edu",
+    "email": "jserrano@entel.upc.edu",
     "url": "https://github.com/juanelas"
   },
   "repository": "github:juanelas/bigint-crypto-utils",
-  "main": "./dist/bigint-crypto-utils-latest.node.js",
-  "browser": "./dist/bigint-crypto-utils-latest.browser.mod.js",
-  "types": "./types/bigint-crypto-utils.d.ts",
+  "main": "./lib/index.node.js",
+  "browser": "./lib/index.browser.mod.js",
+  "types": "./types/index.d.ts",
   "directories": {
     "build": "./build",
-    "dist": "./dist",
+    "lib": "./lib",
     "src": "./src",
     "test": "./test",
     "types": "./types"
   },
   "scripts": {
-    "test": "mocha --timeout 600000",
-    "build:js": "node build/build.rollup.js",
-    "build:browserTests": "node build/build.browser.tests.js",
-    "build:docs": "jsdoc2md --template=./src/readme-template.hbs --files ./src/main.js > README.md",
+    "test": "mocha",
+    "build:js": "rollup -c build/rollup.config.js",
+    "build:standard": "standard --fix",
+    "build:browserTests": "rollup -c build/rollup.tests.config.js",
+    "build:docs": "jsdoc2md --template=./src/doc/readme-template.md --files ./lib/index.browser.mod.js -d 3 > README.md",
     "build:dts": "node build/build.dts.js",
     "build": "run-s build:**",
     "prepublishOnly": "npm run build"
+  },
+  "standard": {
+    "env": [
+      "mocha"
+    ],
+    "globals": [
+      "BigInt",
+      "Blob",
+      "postMessage",
+      "self",
+      "Worker"
+    ],
+    "ignore": [
+      "/test/browser/",
+      "/lib/index.browser.bundle.js",
+      "/lib/index.browser.bundle.mod.js"
+    ]
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.2",
     "@rollup/plugin-multi-entry": "^3.0.0",
     "@rollup/plugin-node-resolve": "^7.1.1",
     "@rollup/plugin-replace": "^2.3.1",
-    "chai": ">=4.2.0",
-    "eslint": "^6.8.0",
+    "chai": "^4.2.0",
     "jsdoc-to-markdown": "^5.0.3",
     "mocha": "^7.1.1",
     "npm-run-all": "^4.1.5",
-    "rollup": "^2.2.0",
+    "rollup": "^2.3.3",
     "rollup-plugin-terser": "^5.3.0",
+    "standard": "^14.3.3",
     "typescript": "^3.8.3"
-  },
-  "dependencies": {
-    "@types/node": "^13.9.3"
   }
 }

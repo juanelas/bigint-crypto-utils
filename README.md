@@ -1,3 +1,5 @@
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
 # bigint-crypto-utils
 
 Utils for working with cryptography using native JS ([ES-2020](https://tc39.es/ecma262/#sec-bigint-objects)) implementation of BigInt. It includes some extra functions to work with modular arithmetics along with secure random numbers and a fast strong probable prime generator/tester (parallelised multi-threaded Miller-Rabin primality test). It can be used by any [Web Browser or webview supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility) and with Node.js (>=10.4.0). In the latter case, for multi-threaded primality tests, you should use Node.js v11 or newer or enable at runtime with `node --experimental-worker` with Node.js version >= 10.5.0 and < 11.
@@ -89,9 +91,9 @@ You can just load the module in a html page as:
 
 BigInt is [ES-2020](https://tc39.es/ecma262/#sec-bigint-objects). In order to use it with TypeScript you should set `lib` (and probably also `target` and `module`) to `esnext` in `tsconfig.json`.
 
-# bigint-crypto-utils JS Doc
+## bigint-crypto-utils JS Doc
 
-## Functions
+### Functions
 
 <dl>
 <dt><a href="#abs">abs(a)</a> ⇒ <code>bigint</code></dt>
@@ -101,14 +103,14 @@ BigInt is [ES-2020](https://tc39.es/ecma262/#sec-bigint-objects). In order to us
 <dd><p>Returns the bitlength of a number</p>
 </dd>
 <dt><a href="#eGcd">eGcd(a, b)</a> ⇒ <code><a href="#egcdReturn">egcdReturn</a></code></dt>
-<dd><p>An iterative implementation of the extended euclidean algorithm or extended greatest common divisor algorithm. 
+<dd><p>An iterative implementation of the extended euclidean algorithm or extended greatest common divisor algorithm.
 Take positive integers a, b as input, and return a triple (g, x, y), such that ax + by = g = gcd(a, b).</p>
 </dd>
 <dt><a href="#gcd">gcd(a, b)</a> ⇒ <code>bigint</code></dt>
 <dd><p>Greatest-common divisor of two integers based on the iterative binary algorithm.</p>
 </dd>
-<dt><a href="#isProbablyPrime">isProbablyPrime(w, [iterations])</a> ⇒ <code>Promise.&lt;boolean&gt;</code></dt>
-<dd><p>The test first tries if any of the first 250 small primes are a factor of the input number and then passes several 
+<dt><a href="#isProbablyPrime">isProbablyPrime(w, [iterations])</a> ⇒ <code>Promise</code></dt>
+<dd><p>The test first tries if any of the first 250 small primes are a factor of the input number and then passes several
 iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)</p>
 </dd>
 <dt><a href="#lcm">lcm(a, b)</a> ⇒ <code>bigint</code></dt>
@@ -126,15 +128,15 @@ iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)</p>
 <dt><a href="#modPow">modPow(b, e, n)</a> ⇒ <code>bigint</code></dt>
 <dd><p>Modular exponentiation b**e mod n. Currently using the right-to-left binary method</p>
 </dd>
-<dt><a href="#prime">prime(bitLength, [iterations])</a> ⇒ <code>Promise.&lt;bigint&gt;</code></dt>
-<dd><p>A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator. 
-The browser version uses web workers to parallelise prime look up. Therefore, it does not lock the UI 
-main process, and it can be much faster (if several cores or cpu are available). 
-The node version can also use worker_threads if they are available (enabled by default with Node 11 and 
+<dt><a href="#prime">prime(bitLength, [iterations])</a> ⇒ <code>Promise</code></dt>
+<dd><p>A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator.
+The browser version uses web workers to parallelise prime look up. Therefore, it does not lock the UI
+main process, and it can be much faster (if several cores or cpu are available).
+The node version can also use worker_threads if they are available (enabled by default with Node 11 and
 and can be enabled at runtime executing node --experimental-worker with node &gt;=10.5.0).</p>
 </dd>
 <dt><a href="#primeSync">primeSync(bitLength, [iterations])</a> ⇒ <code>bigint</code></dt>
-<dd><p>A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator. 
+<dd><p>A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator.
 The sync version is NOT RECOMMENDED since it won&#39;t use workers and thus it&#39;ll be slower and may freeze thw window in browser&#39;s javascript. Please consider using prime() instead.</p>
 </dd>
 <dt><a href="#randBetween">randBetween(max, [min])</a> ⇒ <code>bigint</code></dt>
@@ -143,7 +145,7 @@ The sync version is NOT RECOMMENDED since it won&#39;t use workers and thus it&#
 <dt><a href="#randBits">randBits(bitLength, [forceLength])</a> ⇒ <code>Buffer</code> | <code>Uint8Array</code></dt>
 <dd><p>Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
 </dd>
-<dt><a href="#randBytes">randBytes(byteLength, [forceLength])</a> ⇒ <code>Promise.&lt;(Buffer|Uint8Array)&gt;</code></dt>
+<dt><a href="#randBytes">randBytes(byteLength, [forceLength])</a> ⇒ <code>Promise</code></dt>
 <dd><p>Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
 </dd>
 <dt><a href="#randBytesSync">randBytesSync(byteLength, [forceLength])</a> ⇒ <code>Buffer</code> | <code>Uint8Array</code></dt>
@@ -154,7 +156,7 @@ The sync version is NOT RECOMMENDED since it won&#39;t use workers and thus it&#
 </dd>
 </dl>
 
-## Typedefs
+### Typedefs
 
 <dl>
 <dt><a href="#egcdReturn">egcdReturn</a> : <code>Object</code></dt>
@@ -164,7 +166,7 @@ The sync version is NOT RECOMMENDED since it won&#39;t use workers and thus it&#
 
 <a name="abs"></a>
 
-## abs(a) ⇒ <code>bigint</code>
+### abs(a) ⇒ <code>bigint</code>
 Absolute value. abs(a)==a if a>=0. abs(a)==-a if a<0
 
 **Kind**: global function  
@@ -176,7 +178,7 @@ Absolute value. abs(a)==a if a>=0. abs(a)==-a if a<0
 
 <a name="bitLength"></a>
 
-## bitLength(a) ⇒ <code>number</code>
+### bitLength(a) ⇒ <code>number</code>
 Returns the bitlength of a number
 
 **Kind**: global function  
@@ -188,8 +190,8 @@ Returns the bitlength of a number
 
 <a name="eGcd"></a>
 
-## eGcd(a, b) ⇒ [<code>egcdReturn</code>](#egcdReturn)
-An iterative implementation of the extended euclidean algorithm or extended greatest common divisor algorithm. 
+### eGcd(a, b) ⇒ [<code>egcdReturn</code>](#egcdReturn)
+An iterative implementation of the extended euclidean algorithm or extended greatest common divisor algorithm.
 Take positive integers a, b as input, and return a triple (g, x, y), such that ax + by = g = gcd(a, b).
 
 **Kind**: global function  
@@ -202,7 +204,7 @@ Take positive integers a, b as input, and return a triple (g, x, y), such that a
 
 <a name="gcd"></a>
 
-## gcd(a, b) ⇒ <code>bigint</code>
+### gcd(a, b) ⇒ <code>bigint</code>
 Greatest-common divisor of two integers based on the iterative binary algorithm.
 
 **Kind**: global function  
@@ -215,12 +217,12 @@ Greatest-common divisor of two integers based on the iterative binary algorithm.
 
 <a name="isProbablyPrime"></a>
 
-## isProbablyPrime(w, [iterations]) ⇒ <code>Promise.&lt;boolean&gt;</code>
-The test first tries if any of the first 250 small primes are a factor of the input number and then passes several 
+### isProbablyPrime(w, [iterations]) ⇒ <code>Promise</code>
+The test first tries if any of the first 250 small primes are a factor of the input number and then passes several
 iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)
 
 **Kind**: global function  
-**Returns**: <code>Promise.&lt;boolean&gt;</code> - A promise that resolves to a boolean that is either true (a probably prime number) or false (definitely composite)  
+**Returns**: <code>Promise</code> - A promise that resolves to a boolean that is either true (a probably prime number) or false (definitely composite)  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -229,7 +231,7 @@ iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)
 
 <a name="lcm"></a>
 
-## lcm(a, b) ⇒ <code>bigint</code>
+### lcm(a, b) ⇒ <code>bigint</code>
 The least common multiple computed as abs(a*b)/gcd(a,b)
 
 **Kind**: global function  
@@ -242,7 +244,7 @@ The least common multiple computed as abs(a*b)/gcd(a,b)
 
 <a name="max"></a>
 
-## max(a, b) ⇒ <code>bigint</code>
+### max(a, b) ⇒ <code>bigint</code>
 Maximum. max(a,b)==a if a>=b. max(a,b)==b if a<=b
 
 **Kind**: global function  
@@ -255,7 +257,7 @@ Maximum. max(a,b)==a if a>=b. max(a,b)==b if a<=b
 
 <a name="min"></a>
 
-## min(a, b) ⇒ <code>bigint</code>
+### min(a, b) ⇒ <code>bigint</code>
 Minimum. min(a,b)==b if a>=b. min(a,b)==a if a<=b
 
 **Kind**: global function  
@@ -268,7 +270,7 @@ Minimum. min(a,b)==b if a>=b. min(a,b)==a if a<=b
 
 <a name="modInv"></a>
 
-## modInv(a, n) ⇒ <code>bigint</code>
+### modInv(a, n) ⇒ <code>bigint</code>
 Modular inverse.
 
 **Kind**: global function  
@@ -281,7 +283,7 @@ Modular inverse.
 
 <a name="modPow"></a>
 
-## modPow(b, e, n) ⇒ <code>bigint</code>
+### modPow(b, e, n) ⇒ <code>bigint</code>
 Modular exponentiation b**e mod n. Currently using the right-to-left binary method
 
 **Kind**: global function  
@@ -295,15 +297,15 @@ Modular exponentiation b**e mod n. Currently using the right-to-left binary meth
 
 <a name="prime"></a>
 
-## prime(bitLength, [iterations]) ⇒ <code>Promise.&lt;bigint&gt;</code>
-A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator. 
-The browser version uses web workers to parallelise prime look up. Therefore, it does not lock the UI 
-main process, and it can be much faster (if several cores or cpu are available). 
-The node version can also use worker_threads if they are available (enabled by default with Node 11 and 
+### prime(bitLength, [iterations]) ⇒ <code>Promise</code>
+A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator.
+The browser version uses web workers to parallelise prime look up. Therefore, it does not lock the UI
+main process, and it can be much faster (if several cores or cpu are available).
+The node version can also use worker_threads if they are available (enabled by default with Node 11 and
 and can be enabled at runtime executing node --experimental-worker with node >=10.5.0).
 
 **Kind**: global function  
-**Returns**: <code>Promise.&lt;bigint&gt;</code> - A promise that resolves to a bigint probable prime of bitLength bits.  
+**Returns**: <code>Promise</code> - A promise that resolves to a bigint probable prime of bitLength bits.  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -312,8 +314,8 @@ and can be enabled at runtime executing node --experimental-worker with node >=1
 
 <a name="primeSync"></a>
 
-## primeSync(bitLength, [iterations]) ⇒ <code>bigint</code>
-A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator. 
+### primeSync(bitLength, [iterations]) ⇒ <code>bigint</code>
+A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator.
 The sync version is NOT RECOMMENDED since it won't use workers and thus it'll be slower and may freeze thw window in browser's javascript. Please consider using prime() instead.
 
 **Kind**: global function  
@@ -326,7 +328,7 @@ The sync version is NOT RECOMMENDED since it won't use workers and thus it'll be
 
 <a name="randBetween"></a>
 
-## randBetween(max, [min]) ⇒ <code>bigint</code>
+### randBetween(max, [min]) ⇒ <code>bigint</code>
 Returns a cryptographically secure random integer between [min,max]
 
 **Kind**: global function  
@@ -339,7 +341,7 @@ Returns a cryptographically secure random integer between [min,max]
 
 <a name="randBits"></a>
 
-## randBits(bitLength, [forceLength]) ⇒ <code>Buffer</code> \| <code>Uint8Array</code>
+### randBits(bitLength, [forceLength]) ⇒ <code>Buffer</code> \| <code>Uint8Array</code>
 Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
 
 **Kind**: global function  
@@ -352,11 +354,11 @@ Secure random bits for both node and browsers. Node version uses crypto.randomFi
 
 <a name="randBytes"></a>
 
-## randBytes(byteLength, [forceLength]) ⇒ <code>Promise.&lt;(Buffer\|Uint8Array)&gt;</code>
+### randBytes(byteLength, [forceLength]) ⇒ <code>Promise</code>
 Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
 
 **Kind**: global function  
-**Returns**: <code>Promise.&lt;(Buffer\|Uint8Array)&gt;</code> - A promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes  
+**Returns**: <code>Promise</code> - A promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -365,7 +367,7 @@ Secure random bytes for both node and browsers. Node version uses crypto.randomF
 
 <a name="randBytesSync"></a>
 
-## randBytesSync(byteLength, [forceLength]) ⇒ <code>Buffer</code> \| <code>Uint8Array</code>
+### randBytesSync(byteLength, [forceLength]) ⇒ <code>Buffer</code> \| <code>Uint8Array</code>
 Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
 
 **Kind**: global function  
@@ -378,7 +380,7 @@ Secure random bytes for both node and browsers. Node version uses crypto.randomF
 
 <a name="toZn"></a>
 
-## toZn(a, n) ⇒ <code>bigint</code>
+### toZn(a, n) ⇒ <code>bigint</code>
 Finds the smallest positive element that is congruent to a in modulo n
 
 **Kind**: global function  
@@ -391,7 +393,7 @@ Finds the smallest positive element that is congruent to a in modulo n
 
 <a name="egcdReturn"></a>
 
-## egcdReturn : <code>Object</code>
+### egcdReturn : <code>Object</code>
 A triple (g, x, y), such that ax + by = g = gcd(a, b).
 
 **Kind**: global typedef  
@@ -403,5 +405,3 @@ A triple (g, x, y), such that ax + by = g = gcd(a, b).
 | x | <code>bigint</code> | 
 | y | <code>bigint</code> | 
 
-
-* * *
