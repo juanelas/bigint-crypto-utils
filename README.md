@@ -60,7 +60,7 @@ You can just load the module in a html page as:
 
 ```html
 <script type="module">
-  import * as bigintCryptoUtils from "bigint-utils-latest.browser.mod.min.js";
+  import * as bigintCryptoUtils from "<path to the downloaded index.browser.bundle.mod.js>";
 
   let a = BigInt("5");
   let b = BigInt("2");
