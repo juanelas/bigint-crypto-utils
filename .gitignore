@@ -1,6 +1,3 @@
-# Project specific files
-dist/bigint-crypto-utils-?.?.?.*
-
 # Logs
 logs
 *.log
