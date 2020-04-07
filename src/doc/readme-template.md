@@ -16,9 +16,9 @@ bigint-crypto-utils can be imported to your project with `npm`:
 npm install bigint-crypto-utils
 ```
 
-NPM installation defaults to the minified ES6 module for browsers and the CJS one for Node.js.
+NPM installation defaults to the ES6 module for browsers and the CJS one for Node.js.
 
-For web browsers, you can also directly download the [IIFE file](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/lib/index.browser.bundle.js) or the [ES6 module](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/lib/index.browser.bundle.mod.js) from GitHub.
+For web browsers, you can also directly download the [IIFE bundle](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/lib/index.browser.bundle.js) or the [ES6 bundle module](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/lib/index.browser.bundle.mod.js) from GitHub.
 
 ## Usage examples
 
@@ -29,32 +29,33 @@ Import your module as :
    const bigintCryptoUtils = require('bigint-crypto-utils')
    ... // your code here
    ```
- - Javascript native project
+ - JavaScript native project
    ```javascript
    import * as bigintCryptoUtils from 'bigint-crypto-utils'
    ... // your code here
    ```
- - Javascript native browser ES6 mod
+ - JavaScript native browser ES6 mod
    ```html
    <script type="module">
       import * as bigintCryptoUtils from 'lib/index.browser.bundle.mod.js'  // Use you actual path to the broser mod bundle
       ... // your code here
     </script>
-   import as bcu from 'bigint-crypto-utils'
-   ... // your code here
    ```
- - Javascript native browser IIFE
+ - JavaScript native browser IIFE
    ```html
-   <script src="../../lib/index.browser.bundle.js"></script>
+   <script src="../../lib/index.browser.bundle.js"></script> <!-- Use you actual path to the browser bundle -->
    <script>
      ... // your code here
    </script>
+   ```
  - TypeScript
    ```typescript
    import * as bigintCryptoUtils from 'bigint-crypto-utils'
    ... // your code here
    ```
    > BigInt is [ES-2020](https://tc39.es/ecma262/#sec-bigint-objects). In order to use it with TypeScript you should set `lib` (and probably also `target` and `module`) to `esnext` in `tsconfig.json`.
+
+And you could use it like in the following:
 
 ```javascript
 /* Stage 3 BigInts with value 666 can be declared as BigInt('666')
@@ -65,22 +66,22 @@ be raised.
 */
 const a = BigInt('5')
 const b = BigInt('2')
-const n = BigInt('19')
+const n = 19n
 
 console.log(bigintCryptoUtils.modPow(a, b, n)) // prints 6
 
-console.log(bigintCryptoUtils.modInv(BigInt('2'), BigInt('5'))) // prints 3
+console.log(bigintCryptoUtils.modInv(2n, 5n)) // prints 3
 
 console.log(bigintCryptoUtils.modInv(BigInt('3'), BigInt('5'))) // prints 2
 
-console.log(bigintCryptoUtils.randBetween(BigInt(2) ** BigInt(256))) // Prints a cryptographically secure random number between 1 and 2**256 bits.
+console.log(bigintCryptoUtils.randBetween(2n ** 256n)) // Prints a cryptographically secure random number between 1 and 2**256 bits.
 
 async function primeTesting () {
   // Output of a probable prime of 2048 bits
   console.log(await bigintCryptoUtils.prime(2048))
 
   // Testing if a number is a probable prime (Miller-Rabin)
-  const number = 27
+  const number = 27n
   const isPrime = await bigintCryptoUtils.isProbablyPrime(number)
   if (isPrime) {
     console.log(`${number} is prime`)
@@ -93,6 +94,6 @@ primeTesting()
 
 ```
 
-## bigint-crypto-utils JS Doc
+## API reference documentation
 
 {{>main}}

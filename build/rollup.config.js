@@ -37,8 +37,8 @@ module.exports = [
       replace({
         'process.browser': true
       })
-    ]
-    // external: ['bigint-crypto-utils']
+    ],
+    external: ['bigint-mod-arith']
   },
   { // Browser bundles
     input: input,
@@ -61,8 +61,8 @@ module.exports = [
         browser: true
       }),
       terser({
-        mangle: false,
-        compress: false
+        // mangle: false,
+        // compress: false
       })
     ]
   },
@@ -76,7 +76,7 @@ module.exports = [
     output: {
       file: path.join(dstDir, 'index.node.js'),
       format: 'cjs'
-    }
-    // external: ['bigint-crypto-utils']
+    },
+    external: ['bigint-mod-arith']
   }
 ]
