@@ -148,7 +148,10 @@ The sync version is NOT RECOMMENDED since it won&#39;t use workers and thus it&#
 <dt><a href="#randBetween">randBetween(max, [min])</a> ⇒ <code>bigint</code></dt>
 <dd><p>Returns a cryptographically secure random integer between [min,max]</p>
 </dd>
-<dt><a href="#randBits">randBits(bitLength, [forceLength])</a> ⇒ <code>Buffer</code> | <code>Uint8Array</code></dt>
+<dt><a href="#randBits">randBits(bitLength, [forceLength])</a> ⇒ <code>Promise.&lt;(Buffer|Uint8Array)&gt;</code></dt>
+<dd><p>Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
+</dd>
+<dt><a href="#randBitsSync">randBitsSync(bitLength, [forceLength])</a> ⇒ <code>Buffer</code> | <code>Uint8Array</code></dt>
 <dd><p>Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
 </dd>
 <dt><a href="#randBytes">randBytes(byteLength, [forceLength])</a> ⇒ <code>Promise.&lt;(Buffer|Uint8Array)&gt;</code></dt>

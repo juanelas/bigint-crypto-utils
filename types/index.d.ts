@@ -53,7 +53,7 @@ export function gcd(a: number | bigint, b: number | bigint): bigint;
  * @param {number | bigint} w An integer to be tested for primality
  * @param {number} [iterations = 16] The number of iterations for the primality test. The value shall be consistent with Table C.1, C.2 or C.3
  *
- * @return {Promise<boolean>} A promise that resolves to a boolean that is either true (a probably prime number) or false (definitely composite)
+ * @returns {Promise<boolean>} A promise that resolves to a boolean that is either true (a probably prime number) or false (definitely composite)
  */
 export function isProbablyPrime(w: number | bigint, iterations?: number): Promise<boolean>;
 /**
