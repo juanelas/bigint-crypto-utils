@@ -18,7 +18,7 @@ npm install bigint-crypto-utils
 
 NPM installation defaults to the ES6 module for browsers and the CJS one for Node.js.
 
-For web browsers, you can also directly download the [IIFE bundle](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/lib/index.browser.bundle.js) or the [ES6 bundle module](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/lib/index.browser.bundle.mod.js) from GitHub.
+For web browsers, you can also directly download the [IIFE bundle](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/lib/index.browser.bundle.js) or the [ES6 bundle module](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/lib/index.browser.bundle.min.mod.js) from GitHub.
 
 ## Usage examples
 
@@ -95,6 +95,77 @@ primeTesting()
 ```
 
 ## API reference documentation
+
+### Functions
+
+<dl>
+<dt><a href="#abs">abs(a)</a> ⇒ <code>bigint</code></dt>
+<dd><p>Absolute value. abs(a)==a if a&gt;=0. abs(a)==-a if a&lt;0</p>
+</dd>
+<dt><a href="#bitLength">bitLength(a)</a> ⇒ <code>number</code></dt>
+<dd><p>Returns the bitlength of a number</p>
+</dd>
+<dt><a href="#eGcd">eGcd(a, b)</a> ⇒ <code><a href="#egcdReturn">egcdReturn</a></code></dt>
+<dd><p>An iterative implementation of the extended euclidean algorithm or extended greatest common divisor algorithm.
+Take positive integers a, b as input, and return a triple (g, x, y), such that ax + by = g = gcd(a, b).</p>
+</dd>
+<dt><a href="#gcd">gcd(a, b)</a> ⇒ <code>bigint</code></dt>
+<dd><p>Greatest-common divisor of two integers based on the iterative binary algorithm.</p>
+</dd>
+<dt><a href="#lcm">lcm(a, b)</a> ⇒ <code>bigint</code></dt>
+<dd><p>The least common multiple computed as abs(a*b)/gcd(a,b)</p>
+</dd>
+<dt><a href="#max">max(a, b)</a> ⇒ <code>bigint</code></dt>
+<dd><p>Maximum. max(a,b)==a if a&gt;=b. max(a,b)==b if a&lt;=b</p>
+</dd>
+<dt><a href="#min">min(a, b)</a> ⇒ <code>bigint</code></dt>
+<dd><p>Minimum. min(a,b)==b if a&gt;=b. min(a,b)==a if a&lt;=b</p>
+</dd>
+<dt><a href="#modInv">modInv(a, n)</a> ⇒ <code>bigint</code></dt>
+<dd><p>Modular inverse.</p>
+</dd>
+<dt><a href="#modPow">modPow(b, e, n)</a> ⇒ <code>bigint</code></dt>
+<dd><p>Modular exponentiation b**e mod n. Currently using the right-to-left binary method</p>
+</dd>
+<dt><a href="#toZn">toZn(a, n)</a> ⇒ <code>bigint</code></dt>
+<dd><p>Finds the smallest positive element that is congruent to a in modulo n</p>
+</dd>
+<dt><a href="#isProbablyPrime">isProbablyPrime(w, [iterations])</a> ⇒ <code>Promise.&lt;boolean&gt;</code></dt>
+<dd><p>The test first tries if any of the first 250 small primes are a factor of the input number and then passes several
+iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)</p>
+</dd>
+<dt><a href="#prime">prime(bitLength, [iterations])</a> ⇒ <code>Promise.&lt;bigint&gt;</code></dt>
+<dd><p>A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator.
+The browser version uses web workers to parallelise prime look up. Therefore, it does not lock the UI
+main process, and it can be much faster (if several cores or cpu are available).
+The node version can also use worker_threads if they are available (enabled by default with Node 11 and
+and can be enabled at runtime executing node --experimental-worker with node &gt;=10.5.0).</p>
+</dd>
+<dt><a href="#primeSync">primeSync(bitLength, [iterations])</a> ⇒ <code>bigint</code></dt>
+<dd><p>A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator.
+The sync version is NOT RECOMMENDED since it won&#39;t use workers and thus it&#39;ll be slower and may freeze thw window in browser&#39;s javascript. Please consider using prime() instead.</p>
+</dd>
+<dt><a href="#randBetween">randBetween(max, [min])</a> ⇒ <code>bigint</code></dt>
+<dd><p>Returns a cryptographically secure random integer between [min,max]</p>
+</dd>
+<dt><a href="#randBits">randBits(bitLength, [forceLength])</a> ⇒ <code>Buffer</code> | <code>Uint8Array</code></dt>
+<dd><p>Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
+</dd>
+<dt><a href="#randBytes">randBytes(byteLength, [forceLength])</a> ⇒ <code>Promise.&lt;(Buffer|Uint8Array)&gt;</code></dt>
+<dd><p>Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
+</dd>
+<dt><a href="#randBytesSync">randBytesSync(byteLength, [forceLength])</a> ⇒ <code>Buffer</code> | <code>Uint8Array</code></dt>
+<dd><p>Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
+</dd>
+</dl>
+
+### Typedefs
+
+<dl>
+<dt><a href="#egcdReturn">egcdReturn</a> : <code>Object</code></dt>
+<dd><p>A triple (g, x, y), such that ax + by = g = gcd(a, b).</p>
+</dd>
+</dl>
 
 <a name="abs"></a>
 

@@ -4,7 +4,7 @@ const path = require('path')
 const pkgJson = require('../package.json')
 
 const rootDir = path.join(__dirname, '..')
-const jsFile = path.join(rootDir, pkgJson.browser)
+const jsFile = path.join(rootDir, pkgJson.directories.lib, 'index.browser.bundle.mod.js')
 const dtsFile = path.join(rootDir, pkgJson.types)
 
 const compilerOptions = {

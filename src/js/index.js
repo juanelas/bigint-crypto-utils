@@ -81,7 +81,7 @@ export function prime (bitLength, iterations = 16) {
   if (!process.browser && !_useWorkers) {
     let rnd = 0n
     do {
-      rnd = fromBuffer(randBytesSync(bitLength / 8, true))
+      rnd = fromBuffer(randBits(bitLength, true))
     } while (!_isProbablyPrime(rnd, iterations))
     return new Promise((resolve) => { resolve(rnd) })
   }
@@ -154,7 +154,7 @@ export function primeSync (bitLength, iterations = 16) {
   if (bitLength < 1) { throw new RangeError(`bitLength MUST be > 0 and it is ${bitLength}`) }
   let rnd = 0n
   do {
-    rnd = fromBuffer(randBytesSync(bitLength / 8, true))
+    rnd = fromBuffer(randBits(bitLength, true))
   } while (!_isProbablyPrime(rnd, iterations))
   return rnd
 }

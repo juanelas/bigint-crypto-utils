@@ -14,8 +14,8 @@ const source = fs.readFileSync(input, { encoding: 'UTF-8' }).replace(/([0-9]+)n(
 const options = {
   source, // we need to use this instead of files in order to avoid issues with esnext features
   template: fs.readFileSync(template, { encoding: 'UTF-8' }),
-  'heading-depth': 3, // The initial heading depth. For example, with a value of 2 the top-level markdown headings look like "## The heading"
-  'global-index-format': 'none' // none, grouped, table, dl.
+  'heading-depth': 3 // The initial heading depth. For example, with a value of 2 the top-level markdown headings look like "## The heading"
+  // 'global-index-format': 'none' // none, grouped, table, dl.
 }
 
 jsdoc2md.clear().then(() => {
