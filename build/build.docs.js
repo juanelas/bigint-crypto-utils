@@ -8,7 +8,7 @@ const pkgJson = require('../package.json')
 const rootDir = path.join(__dirname, '..')
 
 const template = path.join(rootDir, pkgJson.directories.src, 'doc', 'readme-template.md')
-const input = path.join(rootDir, pkgJson.directories.lib, 'index.browser.bundle.mod.js')
+const input = path.join(rootDir, pkgJson.browser)
 const source = fs.readFileSync(input, { encoding: 'UTF-8' }).replace(/([0-9]+)n([,\s\n)])/g, '$1$2')
 
 const options = {

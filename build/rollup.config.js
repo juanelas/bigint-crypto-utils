@@ -25,38 +25,17 @@ const pkgCamelisedName = camelise(pkgName)
 const input = path.join(srcDir, 'js', 'index.js')
 
 module.exports = [
-  { // ESM native module
+  { // Browser
     input: input,
     output: [
       {
         file: path.join(rootDir, pkgJson.browser),
-        format: 'esm'
-      }
-    ],
-    plugins: [
-      replace({
-        'process.browser': true
-      })
-    ],
-    external: ['bigint-mod-arith']
-  },
-  { // Browser bundles
-    input: input,
-    output: [
-      {
-        file: path.join(dstDir, 'index.browser.bundle.js'),
-        format: 'iife',
-        name: pkgCamelisedName,
-        plugins: [
-          terser()
-        ]
+        format: 'es'
       },
       {
-        file: path.join(dstDir, 'index.browser.bundle.min.mod.js'),
-        format: 'es',
-        plugins: [
-          terser()
-        ]
+        file: path.join(dstDir, 'index.browser.bundle.iife.js'),
+        format: 'iife',
+        name: pkgCamelisedName
       },
       {
         file: path.join(dstDir, 'index.browser.bundle.mod.js'),
@@ -69,20 +48,26 @@ module.exports = [
       }),
       resolve({
         browser: true
+        // ignore: ['index.browser.mod.js']
+      }),
+      terser({
+        exclude: ['index.browser.mod.js']
       })
     ]
   },
   { // Node
     input: input,
-    plugins: [
-      replace({
-        'process.browser': false
-      })
-    ],
     output: {
       file: path.join(dstDir, 'index.node.js'),
       format: 'cjs'
     },
-    external: ['bigint-mod-arith']
+    plugins: [
+      replace({
+        'process.browser': false
+      }),
+      resolve({
+        browser: true
+      })
+    ]
   }
 ]

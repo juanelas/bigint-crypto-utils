@@ -18,7 +18,7 @@ npm install bigint-crypto-utils
 
 NPM installation defaults to the ES6 module for browsers and the CJS one for Node.js.
 
-For web browsers, you can also directly download the [IIFE bundle](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/lib/index.browser.bundle.js) or the [ES6 bundle module](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/lib/index.browser.bundle.min.mod.js) from GitHub.
+For web browsers, you can also directly download the [IIFE bundle](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/lib/index.browser.bundle.iife.js) or the [ES6 bundle module](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/lib/index.browser.bundle.mod.js) from GitHub.
 
 ## Usage examples
 
@@ -29,11 +29,12 @@ Import your module as :
    const bigintCryptoUtils = require('bigint-crypto-utils')
    ... // your code here
    ```
- - JavaScript native project
+ - JavaScript native or TypeScript project
    ```javascript
    import * as bigintCryptoUtils from 'bigint-crypto-utils'
    ... // your code here
    ```
+   > BigInt is [ES-2020](https://tc39.es/ecma262/#sec-bigint-objects). In order to use it with TypeScript you should set `lib` (and probably also `target` and `module`) to `esnext` in `tsconfig.json`.
  - JavaScript native browser ES6 mod
    ```html
    <script type="module">
@@ -43,17 +44,17 @@ Import your module as :
    ```
  - JavaScript native browser IIFE
    ```html
-   <script src="../../lib/index.browser.bundle.js"></script> <!-- Use you actual path to the browser bundle -->
-   <script>
-     ... // your code here
-   </script>
+   <head>
+     ...
+     <script src="../../lib/index.browser.bundle.js"></script> <!-- Use you actual path to the browser bundle -->
+   </head>
+   <body>
+     ...
+     <script>
+       ... // your code here
+     </script>
+   </body>
    ```
- - TypeScript
-   ```typescript
-   import * as bigintCryptoUtils from 'bigint-crypto-utils'
-   ... // your code here
-   ```
-   > BigInt is [ES-2020](https://tc39.es/ecma262/#sec-bigint-objects). In order to use it with TypeScript you should set `lib` (and probably also `target` and `module`) to `esnext` in `tsconfig.json`.
 
 And you could use it like in the following:
 
