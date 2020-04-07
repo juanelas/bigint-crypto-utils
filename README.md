@@ -226,6 +226,116 @@ Finds the smallest positive element that is congruent to a in modulo n
 | a | <code>number</code> \| <code>bigint</code> | An integer |
 | n | <code>number</code> \| <code>bigint</code> | The modulo |
 
+<a name="isProbablyPrime"></a>
+
+### isProbablyPrime(w, [iterations]) ⇒ <code>Promise.&lt;boolean&gt;</code>
+The test first tries if any of the first 250 small primes are a factor of the input number and then passes several
+iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - A promise that resolves to a boolean that is either true (a probably prime number) or false (definitely composite)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| w | <code>number</code> \| <code>bigint</code> |  | An integer to be tested for primality |
+| [iterations] | <code>number</code> | <code>16</code> | The number of iterations for the primality test. The value shall be consistent with Table C.1, C.2 or C.3 |
+
+<a name="prime"></a>
+
+### prime(bitLength, [iterations]) ⇒ <code>Promise.&lt;bigint&gt;</code>
+A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator.
+The browser version uses web workers to parallelise prime look up. Therefore, it does not lock the UI
+main process, and it can be much faster (if several cores or cpu are available).
+The node version can also use worker_threads if they are available (enabled by default with Node 11 and
+and can be enabled at runtime executing node --experimental-worker with node >=10.5.0).
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;bigint&gt;</code> - A promise that resolves to a bigint probable prime of bitLength bits.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| bitLength | <code>number</code> |  | The required bit length for the generated prime |
+| [iterations] | <code>number</code> | <code>16</code> | The number of iterations for the Miller-Rabin Probabilistic Primality Test |
+
+<a name="primeSync"></a>
+
+### primeSync(bitLength, [iterations]) ⇒ <code>bigint</code>
+A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator.
+The sync version is NOT RECOMMENDED since it won't use workers and thus it'll be slower and may freeze thw window in browser's javascript. Please consider using prime() instead.
+
+**Kind**: global function  
+**Returns**: <code>bigint</code> - A bigint probable prime of bitLength bits.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| bitLength | <code>number</code> |  | The required bit length for the generated prime |
+| [iterations] | <code>number</code> | <code>16</code> | The number of iterations for the Miller-Rabin Probabilistic Primality Test |
+
+<a name="randBetween"></a>
+
+### randBetween(max, [min]) ⇒ <code>bigint</code>
+Returns a cryptographically secure random integer between [min,max]
+
+**Kind**: global function  
+**Returns**: <code>bigint</code> - A cryptographically secure random bigint between [min,max]  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| max | <code>bigint</code> |  | Returned value will be <= max |
+| [min] | <code>bigint</code> | <code>BigInt(1)</code> | Returned value will be >= min |
+
+<a name="randBits"></a>
+
+### randBits(bitLength, [forceLength]) ⇒ <code>Promise.&lt;(Buffer\|Uint8Array)&gt;</code>
+Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;(Buffer\|Uint8Array)&gt;</code> - A Promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bits  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| bitLength | <code>number</code> |  | The desired number of random bits |
+| [forceLength] | <code>boolean</code> | <code>false</code> | If we want to force the output to have a specific bit length. It basically forces the msb to be 1 |
+
+<a name="randBitsSync"></a>
+
+### randBitsSync(bitLength, [forceLength]) ⇒ <code>Buffer</code> \| <code>Uint8Array</code>
+Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
+
+**Kind**: global function  
+**Returns**: <code>Buffer</code> \| <code>Uint8Array</code> - A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bits  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| bitLength | <code>number</code> |  | The desired number of random bits |
+| [forceLength] | <code>boolean</code> | <code>false</code> | If we want to force the output to have a specific bit length. It basically forces the msb to be 1 |
+
+<a name="randBytes"></a>
+
+### randBytes(byteLength, [forceLength]) ⇒ <code>Promise.&lt;(Buffer\|Uint8Array)&gt;</code>
+Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;(Buffer\|Uint8Array)&gt;</code> - A promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| byteLength | <code>number</code> |  | The desired number of random bytes |
+| [forceLength] | <code>boolean</code> | <code>false</code> | If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1 |
+
+<a name="randBytesSync"></a>
+
+### randBytesSync(byteLength, [forceLength]) ⇒ <code>Buffer</code> \| <code>Uint8Array</code>
+Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
+
+**Kind**: global function  
+**Returns**: <code>Buffer</code> \| <code>Uint8Array</code> - A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| byteLength | <code>number</code> |  | The desired number of random bytes |
+| [forceLength] | <code>boolean</code> | <code>false</code> | If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1 |
+
 <a name="egcdReturn"></a>
 
 ### egcdReturn : <code>Object</code>

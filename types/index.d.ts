@@ -45,9 +45,18 @@ export function randBetween(max: bigint, min?: bigint): bigint;
  * @param {number} bitLength The desired number of random bits
  * @param {boolean} [forceLength = false] If we want to force the output to have a specific bit length. It basically forces the msb to be 1
  *
+ * @returns {Promise<Buffer | Uint8Array>} A Promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bits
+ */
+export function randBits(bitLength: number, forceLength?: boolean): Promise<Uint8Array | Buffer>;
+/**
+ * Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
+ *
+ * @param {number} bitLength The desired number of random bits
+ * @param {boolean} [forceLength = false] If we want to force the output to have a specific bit length. It basically forces the msb to be 1
+ *
  * @returns {Buffer | Uint8Array} A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bits
  */
-export function randBits(bitLength: number, forceLength?: boolean): Uint8Array | Buffer;
+export function randBitsSync(bitLength: number, forceLength?: boolean): Uint8Array | Buffer;
 /**
  * Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
  *

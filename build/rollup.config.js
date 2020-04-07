@@ -29,7 +29,7 @@ module.exports = [
     input: input,
     output: [
       {
-        file: path.join(dstDir, 'index.browser.mod.js'),
+        file: path.join(rootDir, pkgJson.browser),
         format: 'esm'
       }
     ],
@@ -46,7 +46,17 @@ module.exports = [
       {
         file: path.join(dstDir, 'index.browser.bundle.js'),
         format: 'iife',
-        name: pkgCamelisedName
+        name: pkgCamelisedName,
+        plugins: [
+          terser()
+        ]
+      },
+      {
+        file: path.join(dstDir, 'index.browser.bundle.min.mod.js'),
+        format: 'es',
+        plugins: [
+          terser()
+        ]
       },
       {
         file: path.join(dstDir, 'index.browser.bundle.mod.js'),
@@ -59,10 +69,6 @@ module.exports = [
       }),
       resolve({
         browser: true
-      }),
-      terser({
-        // mangle: false,
-        // compress: false
       })
     ]
   },
