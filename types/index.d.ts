@@ -135,6 +135,8 @@ export function randBetween(max: bigint, min?: bigint): bigint;
 /**
  * Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
  *
+ * Since version 3.0.0 this is an async function and a new randBitsSync function has been added. If you are migrating from version 2 call randBitsSync instead.
+ * @since 3.0.0
  * @param {number} bitLength The desired number of random bits
  * @param {boolean} [forceLength = false] If we want to force the output to have a specific bit length. It basically forces the msb to be 1
  *
@@ -143,7 +145,7 @@ export function randBetween(max: bigint, min?: bigint): bigint;
 export function randBits(bitLength: number, forceLength?: boolean): Promise<Uint8Array | Buffer>;
 /**
  * Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
- *
+ * @since 3.0.0
  * @param {number} bitLength The desired number of random bits
  * @param {boolean} [forceLength = false] If we want to force the output to have a specific bit length. It basically forces the msb to be 1
  *

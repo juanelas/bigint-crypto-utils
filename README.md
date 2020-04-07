@@ -150,6 +150,7 @@ The sync version is NOT RECOMMENDED since it won&#39;t use workers and thus it&#
 </dd>
 <dt><a href="#randBits">randBits(bitLength, [forceLength])</a> ⇒ <code>Promise.&lt;(Buffer|Uint8Array)&gt;</code></dt>
 <dd><p>Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
+<p>Since version 3.0.0 this is an async function and a new randBitsSync function has been added. If you are migrating from version 2 call randBitsSync instead.</p>
 </dd>
 <dt><a href="#randBitsSync">randBitsSync(bitLength, [forceLength])</a> ⇒ <code>Buffer</code> | <code>Uint8Array</code></dt>
 <dd><p>Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
@@ -363,8 +364,11 @@ Returns a cryptographically secure random integer between [min,max]
 ### randBits(bitLength, [forceLength]) ⇒ <code>Promise.&lt;(Buffer\|Uint8Array)&gt;</code>
 Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
 
+Since version 3.0.0 this is an async function and a new randBitsSync function has been added. If you are migrating from version 2 call randBitsSync instead.
+
 **Kind**: global function  
 **Returns**: <code>Promise.&lt;(Buffer\|Uint8Array)&gt;</code> - A Promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bits  
+**Since**: 3.0.0  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -378,6 +382,7 @@ Secure random bits for both node and browsers. Node version uses crypto.randomFi
 
 **Kind**: global function  
 **Returns**: <code>Buffer</code> \| <code>Uint8Array</code> - A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bits  
+**Since**: 3.0.0  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
