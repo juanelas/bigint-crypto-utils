@@ -21,7 +21,7 @@ const dstDir = path.join(rootDir, pkgJson.directories.test, 'browser')
 const dstFileName = path.join(dstDir, 'index.html')
 
 const template = fs.readFileSync(templatePath, 'utf-8')
-const bundleFile = path.join(rootDir, pkgJson.directories.lib, 'index.browser.bundle.mod.js')
+const bundleFile = path.join(rootDir, pkgJson.directories.lib, 'index.browser.bundle.min.mod.js')
 const testsJs = `
     <script type="module">
         import * as _pkg from '${path.relative(templatePath, bundleFile)}'
