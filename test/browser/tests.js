@@ -74,7 +74,10 @@ describe('isProbablyPrime', function () {
 // <--
 
 const bitLengths = [
+  8,
+  255,
   256,
+  258,
   512,
   1024,
   2048,
