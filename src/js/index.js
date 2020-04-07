@@ -81,7 +81,7 @@ export function prime (bitLength, iterations = 16) {
   if (!process.browser && !_useWorkers) {
     let rnd = 0n
     do {
-      rnd = fromBuffer(randBytesSync(bitLength / 8, true))
+      rnd = fromBuffer(randBits(bitLength, true))
     } while (!_isProbablyPrime(rnd, iterations))
     return new Promise((resolve) => { resolve(rnd) })
   }
@@ -154,7 +154,7 @@ export function primeSync (bitLength, iterations = 16) {
   if (bitLength < 1) { throw new RangeError(`bitLength MUST be > 0 and it is ${bitLength}`) }
   let rnd = 0n
   do {
-    rnd = fromBuffer(randBytesSync(bitLength / 8, true))
+    rnd = fromBuffer(randBits(bitLength, true))
   } while (!_isProbablyPrime(rnd, iterations))
   return rnd
 }
@@ -216,11 +216,10 @@ export function randBits (bitLength, forceLength = false) {
 export function randBytes (byteLength, forceLength = false) {
   if (byteLength < 1) { throw new RangeError(`byteLength MUST be > 0 and it is ${byteLength}`) }
 
-  let buf
   /* eslint-disable no-lone-blocks */
   if (!process.browser) { // node
     const crypto = require('crypto')
-    buf = Buffer.alloc(byteLength)
+    const buf = Buffer.alloc(byteLength)
     return crypto.randomFill(buf, function (resolve) {
       // If fixed length is required we put the first bit to 1 -> to get the necessary bitLength
       if (forceLength) { buf[0] = buf[0] | 128 }
@@ -228,14 +227,14 @@ export function randBytes (byteLength, forceLength = false) {
     })
   } else { // browser
     return new Promise(function (resolve) {
-      buf = new Uint8Array(byteLength)
+      const buf = new Uint8Array(byteLength)
       self.crypto.getRandomValues(buf)
       // If fixed length is required we put the first bit to 1 -> to get the necessary bitLength
       if (forceLength) { buf[0] = buf[0] | 128 }
       resolve(buf)
     })
   }
-  /* eslint-disable no-lone-blocks */
+  /* eslint-enable no-lone-blocks */
 }
 
 /**
@@ -250,6 +249,7 @@ export function randBytesSync (byteLength, forceLength = false) {
   if (byteLength < 1) { throw new RangeError(`byteLength MUST be > 0 and it is ${byteLength}`) }
 
   let buf
+  /* eslint-disable no-lone-blocks */
   if (!process.browser) { // node
     const crypto = require('crypto')
     buf = Buffer.alloc(byteLength)
@@ -258,6 +258,7 @@ export function randBytesSync (byteLength, forceLength = false) {
     buf = new Uint8Array(byteLength)
     self.crypto.getRandomValues(buf)
   }
+  /* eslint-enable no-lone-blocks */
   // If fixed length is required we put the first bit to 1 -> to get the necessary bitLength
   if (forceLength) { buf[0] = buf[0] | 128 }
   return buf
@@ -635,6 +636,7 @@ function _isProbablyPrime (w, iterations = 16) {
 }
 
 let _useWorkers = true // The following is just to check whether Node.js can use workers
+/* eslint-disable no-lone-blocks */
 if (!process.browser) { // Node.js
   _useWorkers = (function _workers () {
     try {
@@ -649,6 +651,7 @@ This node version doesn't support worker_threads. You should enable them in orde
     }
   })()
 }
+/* eslint-enable no-lone-blocks */
 
 if (!process.browser && _useWorkers) { // node.js with support for workers
   const { parentPort, isMainThread } = require('worker_threads')
