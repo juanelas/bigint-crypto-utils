@@ -258,7 +258,7 @@ export function randBytes (byteLength, forceLength = false) {
   } else { // browser
     return new Promise(function (resolve) {
       const buf = new Uint8Array(byteLength)
-      crypto.getRandomValues(buf)
+      self.crypto.getRandomValues(buf)
       // If fixed length is required we put the first bit to 1 -> to get the necessary bitLength
       if (forceLength) buf[0] = buf[0] | 128
       resolve(buf)
@@ -288,7 +288,7 @@ export function randBytesSync (byteLength, forceLength = false) {
     return buf
   } else { // browser
     const buf = new Uint8Array(byteLength)
-    crypto.getRandomValues(buf)
+    self.crypto.getRandomValues(buf)
     // If fixed length is required we put the first bit to 1 -> to get the necessary bitLength
     if (forceLength) { buf[0] = buf[0] | 128 }
     return buf

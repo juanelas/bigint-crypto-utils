@@ -15,7 +15,7 @@
   "license": "MIT",
   "author": {
     "name": "Juan Hernández Serrano",
-    "email": "jserrano@entel.upc.edu",
+    "email": "j.hernandez@upc.edu",
     "url": "https://github.com/juanelas"
   },
   "repository": "github:juanelas/bigint-crypto-utils",
@@ -47,7 +47,6 @@
       "BigInt",
       "Blob",
       "postMessage",
-      "crypto",
       "self",
       "Worker"
     ],
