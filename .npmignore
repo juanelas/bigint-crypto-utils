@@ -7,6 +7,9 @@ src/*
 # Test files
 test/*
 
+# Example files
+examples/*
+
 # Logs
 logs
 *.log
