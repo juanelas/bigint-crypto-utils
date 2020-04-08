@@ -12,7 +12,6 @@ const srcDir = path.join(rootDir, pkgJson.directories.src)
 const dstDir = path.join(rootDir, pkgJson.directories.lib)
 
 function camelise (str) {
-  console.log('camelise', str)
   return str.replace(/-([a-z])/g,
     function (m, w) {
       return w.toUpperCase()
@@ -48,17 +47,16 @@ module.exports = [
       }),
       resolve({
         browser: true
-        // ignore: ['index.browser.mod.js']
       }),
       terser({
-        exclude: ['index.browser.mod.js']
+        exclude: [path.basename(pkgJson.browser)]
       })
     ]
   },
   { // Node
     input: input,
     output: {
-      file: path.join(dstDir, 'index.node.js'),
+      file: path.join(rootDir, pkgJson.main),
       format: 'cjs'
     },
     plugins: [
