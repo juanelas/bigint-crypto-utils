@@ -2,7 +2,7 @@
 
 # bigint-crypto-utils
 
-Utils for working with cryptography using native JS ([ES-2020](https://tc39.es/ecma262/#sec-bigint-objects)) implementation of BigInt. It includes some extra functions to work with modular arithmetic along with secure random numbers and a fast strong probable prime generator/tester (parallelized multi-threaded Miller-Rabin primality test). It can be used by any [Web Browser or webview supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility) and with Node.js (>=10.4.0). In the latter case, for multi-threaded primality tests, you should use Node.js v11 or newer or enable at runtime with `node --experimental-worker` with Node.js version >= 10.5.0 and < 11.
+Utils for working with cryptography using native JS ([ES-2020](https://tc39.es/ecma262/#sec-bigint-objects)) implementation of BigInt. It includes some extra functions to work with modular arithmetic along with secure random numbers and a fast strong probable prime generator/tester (parallelized multi-threaded Miller-Rabin primality tests if workers are supported). It can be used by any [Web Browser or webview supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility) and with Node.js (>=10.4.0).
 
 > The operations supported on BigInts are not constant time. BigInt can be therefore **[unsuitable for use in cryptography](https://www.chosenplaintext.ca/articles/beginners-guide-constant-time-cryptography.html).** Many platforms provide native support for cryptography, such as [Web Cryptography API](https://w3c.github.io/webcrypto/) or [Node.js Crypto](https://nodejs.org/dist/latest/docs/api/crypto.html).
 
@@ -56,14 +56,14 @@ Import your module as :
    </body>
    ```
 
-And you could use it like in the following:
+An example of usage could be:
 
 ```javascript
-/* Stage 3 BigInts with value 666 can be declared as BigInt('666')
-or the shorter new no-so-linter-friendly syntax 666n.
-Notice that you can also pass a number, e.g. BigInt(666), but it is not
-recommended since values over 2**53 - 1 won't be safe but no warning will
-be raised.
+/* A BigInt with value 666 can be declared calling the bigint constructor as 
+BigInt('666') or with the shorter 666n.
+Notice that you can also pass a number to the constructor, e.g. BigInt(666). 
+However, it is not recommended since values over 2**53 - 1 won't be safe but 
+no warning will be raised.
 */
 const a = BigInt('5')
 const b = BigInt('2')
@@ -94,6 +94,9 @@ async function primeTesting () {
 primeTesting()
 
 ```
+
+You can find examples in the [examples folder of the repository](https://github.com/juanelas/bigint-crypto-utils/tree/master/examples).
+
 
 ## API reference documentation
 
