@@ -49,15 +49,19 @@ if (repoProvider && repoProvider === 'github') {
   template = template.replace(/\{\{GITHUB_ACTIONS_BADGES\}\}/g, workflowBadget + '\n' + coverallsBadge)
 }
 
-const input = path.join(rootDir, pkgJson.browser)
+const input1 = path.join(rootDir, 'node_modules', 'bigint-mod-arith', pkgJson.browser) // bigint-mod-arith
+const input2 = path.join(rootDir, pkgJson.browser) // this module
+
 // Let us replace bigint literals by standard numbers to avoid issues with bigint
-const source = fs.readFileSync(input, { encoding: 'UTF-8' }).replace(/([0-9]+)n([,\s\n)])/g, '$1$2')
+const source1 = fs.readFileSync(input1, { encoding: 'UTF-8' }).replace(/([0-9]+)n([,\s\n)])/g, '$1$2')
+const source2 = fs.readFileSync(input2, { encoding: 'UTF-8' }).replace(/([0-9]+)n([,\s\n)])/g, '$1$2')
+const source = (source1 + '\n' + source2).replace(/^.*bigint-mod-arith.*$/mg, '') // remove import/export of bigint-mod-arith
 
 const options = {
   source,
   template,
-  'heading-depth': 3, // The initial heading depth. For example, with a value of 2 the top-level markdown headings look like "## The heading"
-  'global-index-format': 'none' // none, grouped, table, dl.
+  'heading-depth': 3 // The initial heading depth. For example, with a value of 2 the top-level markdown headings look like "## The heading"
+  // 'global-index-format': 'none' // none, grouped, table, dl.
 }
 
 jsdoc2md.clear().then(() => {

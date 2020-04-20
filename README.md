@@ -15,8 +15,6 @@ Secure random numbers are generated using the native crypto implementation of th
 
 ## Installation
 
-bigint-crypto-utils is distributed for [web browsers and/or webviews supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility) as an ES6 module or an IIFE file; and for Node.js (>=10.4.0), as a CJS module.
-
 bigint-crypto-utils can be imported to your project with `npm`:
 
 ```bash
@@ -121,6 +119,210 @@ You can find examples in the [examples folder of the repository](https://github.
 
 
 ## API reference documentation
+
+### Functions
+
+<dl>
+<dt><a href="#abs">abs(a)</a> ⇒ <code>bigint</code></dt>
+<dd><p>Absolute value. abs(a)==a if a&gt;=0. abs(a)==-a if a&lt;0</p>
+</dd>
+<dt><a href="#bitLength">bitLength(a)</a> ⇒ <code>number</code></dt>
+<dd><p>Returns the bitlength of a number</p>
+</dd>
+<dt><a href="#eGcd">eGcd(a, b)</a> ⇒ <code><a href="#egcdReturn">egcdReturn</a></code></dt>
+<dd><p>An iterative implementation of the extended euclidean algorithm or extended greatest common divisor algorithm.
+Take positive integers a, b as input, and return a triple (g, x, y), such that ax + by = g = gcd(a, b).</p>
+</dd>
+<dt><a href="#gcd">gcd(a, b)</a> ⇒ <code>bigint</code></dt>
+<dd><p>Greatest-common divisor of two integers based on the iterative binary algorithm.</p>
+</dd>
+<dt><a href="#lcm">lcm(a, b)</a> ⇒ <code>bigint</code></dt>
+<dd><p>The least common multiple computed as abs(a*b)/gcd(a,b)</p>
+</dd>
+<dt><a href="#max">max(a, b)</a> ⇒ <code>bigint</code></dt>
+<dd><p>Maximum. max(a,b)==a if a&gt;=b. max(a,b)==b if a&lt;=b</p>
+</dd>
+<dt><a href="#min">min(a, b)</a> ⇒ <code>bigint</code></dt>
+<dd><p>Minimum. min(a,b)==b if a&gt;=b. min(a,b)==a if a&lt;=b</p>
+</dd>
+<dt><a href="#modInv">modInv(a, n)</a> ⇒ <code>bigint</code> | <code>NaN</code></dt>
+<dd><p>Modular inverse.</p>
+</dd>
+<dt><a href="#modPow">modPow(b, e, n)</a> ⇒ <code>bigint</code></dt>
+<dd><p>Modular exponentiation b**e mod n. Currently using the right-to-left binary method</p>
+</dd>
+<dt><a href="#toZn">toZn(a, n)</a> ⇒ <code>bigint</code></dt>
+<dd><p>Finds the smallest positive element that is congruent to a in modulo n</p>
+</dd>
+<dt><a href="#isProbablyPrime">isProbablyPrime(w, [iterations], [disableWorkers])</a> ⇒ <code>Promise.&lt;boolean&gt;</code></dt>
+<dd><p>The test first tries if any of the first 250 small primes are a factor of the input number and then passes several
+iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)</p>
+</dd>
+<dt><a href="#prime">prime(bitLength, [iterations])</a> ⇒ <code>Promise.&lt;bigint&gt;</code></dt>
+<dd><p>A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator.
+The browser version uses web workers to parallelise prime look up. Therefore, it does not lock the UI
+main process, and it can be much faster (if several cores or cpu are available).
+The node version can also use worker_threads if they are available (enabled by default with Node 11 and
+and can be enabled at runtime executing node --experimental-worker with node &gt;=10.5.0).</p>
+</dd>
+<dt><a href="#primeSync">primeSync(bitLength, [iterations])</a> ⇒ <code>bigint</code></dt>
+<dd><p>A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator.
+The sync version is NOT RECOMMENDED since it won&#39;t use workers and thus it&#39;ll be slower and may freeze thw window in browser&#39;s javascript. Please consider using prime() instead.</p>
+</dd>
+<dt><a href="#randBetween">randBetween(max, [min])</a> ⇒ <code>bigint</code></dt>
+<dd><p>Returns a cryptographically secure random integer between [min,max]. Both numbers must be &gt;=0</p>
+</dd>
+<dt><a href="#randBits">randBits(bitLength, [forceLength])</a> ⇒ <code>Promise.&lt;(Buffer|Uint8Array)&gt;</code></dt>
+<dd><p>Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
+</dd>
+<dt><a href="#randBitsSync">randBitsSync(bitLength, [forceLength])</a> ⇒ <code>Buffer</code> | <code>Uint8Array</code></dt>
+<dd><p>Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
+</dd>
+<dt><a href="#randBytes">randBytes(byteLength, [forceLength])</a> ⇒ <code>Promise.&lt;(Buffer|Uint8Array)&gt;</code></dt>
+<dd><p>Secure random bytes for both node and browsers. Node version uses crypto.randomBytes() and browser one self.crypto.getRandomValues()</p>
+</dd>
+<dt><a href="#randBytesSync">randBytesSync(byteLength, [forceLength])</a> ⇒ <code>Buffer</code> | <code>Uint8Array</code></dt>
+<dd><p>Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
+</dd>
+</dl>
+
+### Typedefs
+
+<dl>
+<dt><a href="#egcdReturn">egcdReturn</a> : <code>Object</code></dt>
+<dd><p>A triple (g, x, y), such that ax + by = g = gcd(a, b).</p>
+</dd>
+</dl>
+
+<a name="abs"></a>
+
+### abs(a) ⇒ <code>bigint</code>
+Absolute value. abs(a)==a if a>=0. abs(a)==-a if a<0
+
+**Kind**: global function  
+**Returns**: <code>bigint</code> - the absolute value of a  
+
+| Param | Type |
+| --- | --- |
+| a | <code>number</code> \| <code>bigint</code> | 
+
+<a name="bitLength"></a>
+
+### bitLength(a) ⇒ <code>number</code>
+Returns the bitlength of a number
+
+**Kind**: global function  
+**Returns**: <code>number</code> - - the bit length  
+
+| Param | Type |
+| --- | --- |
+| a | <code>number</code> \| <code>bigint</code> | 
+
+<a name="eGcd"></a>
+
+### eGcd(a, b) ⇒ [<code>egcdReturn</code>](#egcdReturn)
+An iterative implementation of the extended euclidean algorithm or extended greatest common divisor algorithm.
+Take positive integers a, b as input, and return a triple (g, x, y), such that ax + by = g = gcd(a, b).
+
+**Kind**: global function  
+**Returns**: [<code>egcdReturn</code>](#egcdReturn) - A triple (g, x, y), such that ax + by = g = gcd(a, b).  
+
+| Param | Type |
+| --- | --- |
+| a | <code>number</code> \| <code>bigint</code> | 
+| b | <code>number</code> \| <code>bigint</code> | 
+
+<a name="gcd"></a>
+
+### gcd(a, b) ⇒ <code>bigint</code>
+Greatest-common divisor of two integers based on the iterative binary algorithm.
+
+**Kind**: global function  
+**Returns**: <code>bigint</code> - The greatest common divisor of a and b  
+
+| Param | Type |
+| --- | --- |
+| a | <code>number</code> \| <code>bigint</code> | 
+| b | <code>number</code> \| <code>bigint</code> | 
+
+<a name="lcm"></a>
+
+### lcm(a, b) ⇒ <code>bigint</code>
+The least common multiple computed as abs(a*b)/gcd(a,b)
+
+**Kind**: global function  
+**Returns**: <code>bigint</code> - The least common multiple of a and b  
+
+| Param | Type |
+| --- | --- |
+| a | <code>number</code> \| <code>bigint</code> | 
+| b | <code>number</code> \| <code>bigint</code> | 
+
+<a name="max"></a>
+
+### max(a, b) ⇒ <code>bigint</code>
+Maximum. max(a,b)==a if a>=b. max(a,b)==b if a<=b
+
+**Kind**: global function  
+**Returns**: <code>bigint</code> - maximum of numbers a and b  
+
+| Param | Type |
+| --- | --- |
+| a | <code>number</code> \| <code>bigint</code> | 
+| b | <code>number</code> \| <code>bigint</code> | 
+
+<a name="min"></a>
+
+### min(a, b) ⇒ <code>bigint</code>
+Minimum. min(a,b)==b if a>=b. min(a,b)==a if a<=b
+
+**Kind**: global function  
+**Returns**: <code>bigint</code> - minimum of numbers a and b  
+
+| Param | Type |
+| --- | --- |
+| a | <code>number</code> \| <code>bigint</code> | 
+| b | <code>number</code> \| <code>bigint</code> | 
+
+<a name="modInv"></a>
+
+### modInv(a, n) ⇒ <code>bigint</code> \| <code>NaN</code>
+Modular inverse.
+
+**Kind**: global function  
+**Returns**: <code>bigint</code> \| <code>NaN</code> - the inverse modulo n or NaN if it does not exist  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| a | <code>number</code> \| <code>bigint</code> | The number to find an inverse for |
+| n | <code>number</code> \| <code>bigint</code> | The modulo |
+
+<a name="modPow"></a>
+
+### modPow(b, e, n) ⇒ <code>bigint</code>
+Modular exponentiation b**e mod n. Currently using the right-to-left binary method
+
+**Kind**: global function  
+**Returns**: <code>bigint</code> - b**e mod n  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| b | <code>number</code> \| <code>bigint</code> | base |
+| e | <code>number</code> \| <code>bigint</code> | exponent |
+| n | <code>number</code> \| <code>bigint</code> | modulo |
+
+<a name="toZn"></a>
+
+### toZn(a, n) ⇒ <code>bigint</code>
+Finds the smallest positive element that is congruent to a in modulo n
+
+**Kind**: global function  
+**Returns**: <code>bigint</code> - The smallest positive representation of a in modulo n  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| a | <code>number</code> \| <code>bigint</code> | An integer |
+| n | <code>number</code> \| <code>bigint</code> | The modulo |
 
 <a name="isProbablyPrime"></a>
 
@@ -232,4 +434,18 @@ Secure random bytes for both node and browsers. Node version uses crypto.randomF
 | --- | --- | --- | --- |
 | byteLength | <code>number</code> |  | The desired number of random bytes |
 | [forceLength] | <code>boolean</code> | <code>false</code> | If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1 |
+
+<a name="egcdReturn"></a>
+
+### egcdReturn : <code>Object</code>
+A triple (g, x, y), such that ax + by = g = gcd(a, b).
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| g | <code>bigint</code> | 
+| x | <code>bigint</code> | 
+| y | <code>bigint</code> | 
 

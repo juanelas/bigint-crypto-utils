@@ -14,8 +14,6 @@ Secure random numbers are generated using the native crypto implementation of th
 
 ## Installation
 
-{{PKG_NAME}} is distributed for [web browsers and/or webviews supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility) as an ES6 module or an IIFE file; and for Node.js (>=10.4.0), as a CJS module.
-
 {{PKG_NAME}} can be imported to your project with `npm`:
 
 ```bash
