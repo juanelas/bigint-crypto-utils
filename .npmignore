@@ -20,3 +20,16 @@ npm-debug.log*
 
 # Visual Studio Code
 .vscode
+
+# IntelliJ
+.idea
+
+# MYC output
+.nyc_output
+coverage/*
+
+# Travis
+.travis.yml
+
+# GitHub
+.github

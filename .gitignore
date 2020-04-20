@@ -13,4 +13,8 @@ node_modules/
 .vscode
 
 # IntelliJ
-.idea/
+.idea
+
+# MYC output
+.nyc_output
+coverage/*

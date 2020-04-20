@@ -1,5 +1,6 @@
 import { bitLength, eGcd, modInv, modPow, toZn } from 'bigint-mod-arith'
-export { abs, bitLength, eGcd, gcd, lcm, max, min, modInv, modPow, toZn } from 'bigint-mod-arith'
+/* istanbul ignore next */
+export { abs, bitLength, eGcd, gcd, lcm, max, min, modInv, modPow, toZn } from 'bigint-mod-arith' // already tested for coverage
 
 /**
  * The test first tries if any of the first 250 small primes are a factor of the input number and then passes several
@@ -7,16 +8,18 @@ export { abs, bitLength, eGcd, gcd, lcm, max, min, modInv, modPow, toZn } from '
  *
  * @param {number | bigint} w An integer to be tested for primality
  * @param {number} [iterations = 16] The number of iterations for the primality test. The value shall be consistent with Table C.1, C.2 or C.3
+ * @param {boolean} [disableWorkers = false] Disable the use of workers for the primality test
  *
  * @returns {Promise<boolean>} A promise that resolves to a boolean that is either true (a probably prime number) or false (definitely composite)
  */
-export function isProbablyPrime (w, iterations = 16) {
+export function isProbablyPrime (w, iterations = 16, disableWorkers = false) {
   if (typeof w === 'number') {
     w = BigInt(w)
   }
   /* eslint-disable no-lone-blocks */
   if (!process.browser) { // Node.js
-    if (_useWorkers) {
+    /* istanbul ignore else */
+    if (!disableWorkers && _useWorkers) {
       const { Worker } = require('worker_threads')
       return new Promise((resolve, reject) => {
         const worker = new Worker(__filename)
@@ -32,7 +35,6 @@ export function isProbablyPrime (w, iterations = 16) {
           rnd: w,
           iterations: iterations,
           id: 0
-
         })
       })
     } else {
@@ -76,8 +78,9 @@ export function isProbablyPrime (w, iterations = 16) {
  * @returns {Promise<bigint>} A promise that resolves to a bigint probable prime of bitLength bits.
  */
 export function prime (bitLength, iterations = 16) {
-  if (bitLength < 1) { throw new RangeError(`bitLength MUST be > 0 and it is ${bitLength}`) }
+  if (bitLength < 1) throw new RangeError('bitLength MUST be > 0')
 
+  /* istanbul ignore if */
   if (!_useWorkers) { // If there is no support for workers
     let rnd = 0n
     do {
@@ -130,12 +133,13 @@ export function prime (bitLength, iterations = 16) {
     }
     /* eslint-enable no-lone-blocks */
     for (let i = 0; i < workerList.length; i++) {
-      const buf = randBitsSync(bitLength, true)
-      const rnd = fromBuffer(buf)
-      workerList[i].postMessage({
-        rnd: rnd,
-        iterations: iterations,
-        id: i
+      randBits(bitLength, true).then(function (buf) {
+        const rnd = fromBuffer(buf)
+        workerList[i].postMessage({
+          rnd: rnd,
+          iterations: iterations,
+          id: i
+        })
       })
     }
   })
@@ -151,7 +155,7 @@ export function prime (bitLength, iterations = 16) {
  * @returns {bigint} A bigint probable prime of bitLength bits.
  */
 export function primeSync (bitLength, iterations = 16) {
-  if (bitLength < 1) throw new RangeError(`bitLength MUST be > 0 and it is ${bitLength}`)
+  if (bitLength < 1) throw new RangeError('bitLength MUST be > 0')
   let rnd = 0n
   do {
     rnd = fromBuffer(randBitsSync(bitLength, true))
@@ -160,14 +164,14 @@ export function primeSync (bitLength, iterations = 16) {
 }
 
 /**
- * Returns a cryptographically secure random integer between [min,max]
+ * Returns a cryptographically secure random integer between [min,max]. Both numbers must be >=0
  * @param {bigint} max Returned value will be <= max
  * @param {bigint} [min = BigInt(1)] Returned value will be >= min
  *
  * @returns {bigint} A cryptographically secure random bigint between [min,max]
  */
 export function randBetween (max, min = 1n) {
-  if (max <= min) throw new Error('max must be > min')
+  if (max <= 0n || min < 0n || max <= min) throw new Error('inputs should be max > 0, min >= 0; max > min')
   const interval = max - min
   const bitLen = bitLength(interval)
   let rnd
@@ -181,8 +185,6 @@ export function randBetween (max, min = 1n) {
 /**
  * Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
  *
- * Since version 3.0.0 this is an async function and a new randBitsSync function has been added. If you are migrating from version 2 call randBitsSync instead.
- * @since 3.0.0
  * @param {number} bitLength The desired number of random bits
  * @param {boolean} [forceLength = false] If we want to force the output to have a specific bit length. It basically forces the msb to be 1
  *
@@ -190,7 +192,7 @@ export function randBetween (max, min = 1n) {
  */
 export async function randBits (bitLength, forceLength = false) {
   if (bitLength < 1) {
-    throw new RangeError(`bitLength MUST be > 0 and it is ${bitLength}`)
+    throw new RangeError('bitLength MUST be > 0')
   }
 
   const byteLength = Math.ceil(bitLength / 8)
@@ -210,7 +212,6 @@ export async function randBits (bitLength, forceLength = false) {
 
 /**
  * Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
- * @since 3.0.0
  * @param {number} bitLength The desired number of random bits
  * @param {boolean} [forceLength = false] If we want to force the output to have a specific bit length. It basically forces the msb to be 1
  *
@@ -218,7 +219,7 @@ export async function randBits (bitLength, forceLength = false) {
  */
 export function randBitsSync (bitLength, forceLength = false) {
   if (bitLength < 1) {
-    throw new RangeError(`bitLength MUST be > 0 and it is ${bitLength}`)
+    throw new RangeError('bitLength MUST be > 0')
   }
 
   const byteLength = Math.ceil(bitLength / 8)
@@ -236,7 +237,7 @@ export function randBitsSync (bitLength, forceLength = false) {
 }
 
 /**
- * Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
+ * Secure random bytes for both node and browsers. Node version uses crypto.randomBytes() and browser one self.crypto.getRandomValues()
  *
  * @param {number} byteLength The desired number of random bytes
  * @param {boolean} [forceLength = false] If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1
@@ -244,27 +245,28 @@ export function randBitsSync (bitLength, forceLength = false) {
  * @returns {Promise<Buffer | Uint8Array>} A promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
  */
 export function randBytes (byteLength, forceLength = false) {
-  if (byteLength < 1) { throw new RangeError(`byteLength MUST be > 0 and it is ${byteLength}`) }
+  if (byteLength < 1) throw new RangeError('byteLength MUST be > 0')
 
-  /* eslint-disable no-lone-blocks */
-  if (!process.browser) { // node
-    const crypto = require('crypto')
-    const buf = Buffer.alloc(byteLength)
-    return crypto.randomFill(buf, function (resolve) {
-      // If fixed length is required we put the first bit to 1 -> to get the necessary bitLength
-      if (forceLength) buf[0] = buf[0] | 128
-      resolve(buf)
-    })
-  } else { // browser
-    return new Promise(function (resolve) {
+  return new Promise(function (resolve, reject) {
+    /* eslint-disable no-lone-blocks */
+    if (!process.browser) {
+      const crypto = require('crypto')
+      crypto.randomBytes(byteLength, function (err, buf) {
+        /* istanbul ignore if */
+        if (err) reject(err)
+        // If fixed length is required we put the first bit to 1 -> to get the necessary bitLength
+        if (forceLength) buf[0] = buf[0] | 128
+        resolve(buf)
+      })
+    } else { // browser
       const buf = new Uint8Array(byteLength)
       self.crypto.getRandomValues(buf)
       // If fixed length is required we put the first bit to 1 -> to get the necessary bitLength
       if (forceLength) buf[0] = buf[0] | 128
       resolve(buf)
-    })
-  }
-  /* eslint-enable no-lone-blocks */
+    }
+    /* eslint-enable no-lone-blocks */
+  })
 }
 
 /**
@@ -276,21 +278,20 @@ export function randBytes (byteLength, forceLength = false) {
  * @returns {Buffer | Uint8Array} A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
  */
 export function randBytesSync (byteLength, forceLength = false) {
-  if (byteLength < 1) { throw new RangeError(`byteLength MUST be > 0 and it is ${byteLength}`) }
+  if (byteLength < 1) throw new RangeError('byteLength MUST be > 0')
 
   /* eslint-disable no-lone-blocks */
   if (!process.browser) { // node
     const crypto = require('crypto')
-    const buf = Buffer.alloc(byteLength)
-    crypto.randomFillSync(buf)
+    const buf = crypto.randomBytes(byteLength)
     // If fixed length is required we put the first bit to 1 -> to get the necessary bitLength
-    if (forceLength) { buf[0] = buf[0] | 128 }
+    if (forceLength) buf[0] = buf[0] | 128
     return buf
   } else { // browser
     const buf = new Uint8Array(byteLength)
     self.crypto.getRandomValues(buf)
     // If fixed length is required we put the first bit to 1 -> to get the necessary bitLength
-    if (forceLength) { buf[0] = buf[0] | 128 }
+    if (forceLength) buf[0] = buf[0] | 128
     return buf
   }
   /* eslint-enable no-lone-blocks */
@@ -655,10 +656,12 @@ if (!process.browser) { // Node.js
     require.resolve('worker_threads')
     _useWorkers = true
   } catch (e) {
+    /* istanbul ignore next */
     console.log(`[bigint-crypto-utils] WARNING:
 This node version doesn't support worker_threads. You should enable them in order to greatly speedup the generation of big prime numbers.
   · With Node >=11 it is enabled by default (consider upgrading).
   · With Node 10, starting with 10.5.0, you can enable worker_threads at runtime executing node --experimental-worker `)
+    /* istanbul ignore next */
     _useWorkers = true
   }
 } else { // Native JS
@@ -668,6 +671,7 @@ This node version doesn't support worker_threads. You should enable them in orde
 
 if (!process.browser && _useWorkers) { // node.js with support for workers
   const { parentPort, isMainThread } = require('worker_threads')
+  /* istanbul ignore if */
   if (!isMainThread) { // worker
     parentPort.on('message', function (data) { // Let's start once we are called
       // data = {rnd: <bigint>, iterations: <number>}

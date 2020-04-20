@@ -7,6 +7,7 @@ const chai = require('chai')
 // <--
 
 const bitLengths = [
+  0,
   8,
   255,
   256,
@@ -14,8 +15,7 @@ const bitLengths = [
   512,
   1024,
   2048,
-  3072,
-  4096
+  3072
 ]
 
 describe('prime', function () {
@@ -23,8 +23,11 @@ describe('prime', function () {
   for (const bitLength of bitLengths) {
     describe(`prime(${bitLength})`, function () {
       it(`should return a random ${bitLength}-bits probable prime`, async function () {
-        const prime = await _pkg.prime(bitLength)
-        const primeBitLength = _pkg.bitLength(prime)
+        let primeBitLength = bitLength
+        try {
+          const prime = await _pkg.prime(bitLength)
+          primeBitLength = _pkg.bitLength(prime)
+        } catch {}
         chai.expect(primeBitLength).to.equal(bitLength)
       })
     })
@@ -34,6 +37,11 @@ describe('prime', function () {
       const prime = _pkg.primeSync(1024, 16)
       const primeBitLength = _pkg.bitLength(prime)
       chai.expect(primeBitLength).to.equal(1024)
+      try {
+        _pkg.primeSync(0)
+      } catch (error) {
+        chai.expect(true).to.equal(true)
+      }
     })
   })
 })

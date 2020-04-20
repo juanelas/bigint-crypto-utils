@@ -24,13 +24,24 @@ const pkgCamelisedName = camelise(pkgName)
 const input = path.join(srcDir, 'js', 'index.js')
 
 module.exports = [
-  { // Browser
+  { // Native JS
     input: input,
     output: [
       {
         file: path.join(rootDir, pkgJson.browser),
         format: 'es'
-      },
+      }
+    ],
+    plugins: [
+      replace({
+        'process.browser': true
+      })
+    ],
+    external: ['bigint-mod-arith']
+  },
+  { // Browser bundles
+    input: input,
+    output: [
       {
         file: path.join(dstDir, 'index.browser.bundle.iife.js'),
         format: 'iife',
@@ -48,24 +59,22 @@ module.exports = [
       resolve({
         browser: true
       }),
-      terser({
-        exclude: [path.basename(pkgJson.browser)]
-      })
+      terser()
     ]
   },
   { // Node
     input: input,
     output: {
       file: path.join(rootDir, pkgJson.main),
-      format: 'cjs'
+      format: 'cjs',
+      esModule: false,
+      externalLiveBindings: false
     },
     plugins: [
       replace({
         'process.browser': false
-      }),
-      resolve({
-        browser: true
       })
-    ]
+    ],
+    external: ['bigint-mod-arith']
   }
 ]
