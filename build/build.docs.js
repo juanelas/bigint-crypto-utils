@@ -53,18 +53,21 @@ const input1 = path.join(rootDir, 'node_modules', 'bigint-mod-arith', pkgJson.br
 const input2 = path.join(rootDir, pkgJson.browser) // this module
 
 // Let us replace bigint literals by standard numbers to avoid issues with bigint
-const source1 = fs.readFileSync(input1, { encoding: 'UTF-8' }).replace(/([0-9]+)n([,\s\n)])/g, '$1$2')
-const source2 = fs.readFileSync(input2, { encoding: 'UTF-8' }).replace(/([0-9]+)n([,\s\n)])/g, '$1$2')
-const source = (source1 + '\n' + source2).replace(/^.*bigint-mod-arith.*$/mg, '') // remove import/export of bigint-mod-arith
-
-const options = {
-  source,
-  template,
-  'heading-depth': 3 // The initial heading depth. For example, with a value of 2 the top-level markdown headings look like "## The heading"
-  // 'global-index-format': 'none' // none, grouped, table, dl.
-}
+const source1 = fs.readFileSync(input1, { encoding: 'UTF-8' })
+const source2 = fs.readFileSync(input2, { encoding: 'UTF-8' })
+const source = (source1 + '\n' + source2)
+  .replace(/^.*bigint-mod-arith.*$/mg, '') // remove import/export of bigint-mod-arith
+  .replace(/([0-9]+)n([,\s\n)])/g, '$1$2') // replace bigint literals by standard numbers to avoid issues with bigint
 
 jsdoc2md.clear().then(() => {
+  const data = jsdoc2md.getTemplateDataSync({ source })
+  data.sort((fn1, fn2) => (fn1.id > fn2.id) ? 1 : -1)
+  const options = {
+    data,
+    template,
+    'heading-depth': 3 // The initial heading depth. For example, with a value of 2 the top-level markdown headings look like "## The heading"
+    // 'global-index-format': 'none' // none, grouped, table, dl.
+  }
   const readmeContents = jsdoc2md.renderSync(options)
 
   const readmeFile = path.join(rootDir, 'README.md')

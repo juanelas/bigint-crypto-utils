@@ -135,6 +135,10 @@ Take positive integers a, b as input, and return a triple (g, x, y), such that a
 <dt><a href="#gcd">gcd(a, b)</a> ⇒ <code>bigint</code></dt>
 <dd><p>Greatest-common divisor of two integers based on the iterative binary algorithm.</p>
 </dd>
+<dt><a href="#isProbablyPrime">isProbablyPrime(w, [iterations], [disableWorkers])</a> ⇒ <code>Promise.&lt;boolean&gt;</code></dt>
+<dd><p>The test first tries if any of the first 250 small primes are a factor of the input number and then passes several
+iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)</p>
+</dd>
 <dt><a href="#lcm">lcm(a, b)</a> ⇒ <code>bigint</code></dt>
 <dd><p>The least common multiple computed as abs(a*b)/gcd(a,b)</p>
 </dd>
@@ -149,13 +153,6 @@ Take positive integers a, b as input, and return a triple (g, x, y), such that a
 </dd>
 <dt><a href="#modPow">modPow(b, e, n)</a> ⇒ <code>bigint</code></dt>
 <dd><p>Modular exponentiation b**e mod n. Currently using the right-to-left binary method</p>
-</dd>
-<dt><a href="#toZn">toZn(a, n)</a> ⇒ <code>bigint</code></dt>
-<dd><p>Finds the smallest positive element that is congruent to a in modulo n</p>
-</dd>
-<dt><a href="#isProbablyPrime">isProbablyPrime(w, [iterations], [disableWorkers])</a> ⇒ <code>Promise.&lt;boolean&gt;</code></dt>
-<dd><p>The test first tries if any of the first 250 small primes are a factor of the input number and then passes several
-iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)</p>
 </dd>
 <dt><a href="#prime">prime(bitLength, [iterations])</a> ⇒ <code>Promise.&lt;bigint&gt;</code></dt>
 <dd><p>A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator.
@@ -182,6 +179,9 @@ The sync version is NOT RECOMMENDED since it won&#39;t use workers and thus it&#
 </dd>
 <dt><a href="#randBytesSync">randBytesSync(byteLength, [forceLength])</a> ⇒ <code>Buffer</code> | <code>Uint8Array</code></dt>
 <dd><p>Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()</p>
+</dd>
+<dt><a href="#toZn">toZn(a, n)</a> ⇒ <code>bigint</code></dt>
+<dd><p>Finds the smallest positive element that is congruent to a in modulo n</p>
 </dd>
 </dl>
 
@@ -231,6 +231,20 @@ Take positive integers a, b as input, and return a triple (g, x, y), such that a
 | a | <code>number</code> \| <code>bigint</code> | 
 | b | <code>number</code> \| <code>bigint</code> | 
 
+<a name="egcdReturn"></a>
+
+### egcdReturn : <code>Object</code>
+A triple (g, x, y), such that ax + by = g = gcd(a, b).
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| g | <code>bigint</code> | 
+| x | <code>bigint</code> | 
+| y | <code>bigint</code> | 
+
 <a name="gcd"></a>
 
 ### gcd(a, b) ⇒ <code>bigint</code>
@@ -243,6 +257,25 @@ Greatest-common divisor of two integers based on the iterative binary algorithm.
 | --- | --- |
 | a | <code>number</code> \| <code>bigint</code> | 
 | b | <code>number</code> \| <code>bigint</code> | 
+
+<a name="isProbablyPrime"></a>
+
+### isProbablyPrime(w, [iterations], [disableWorkers]) ⇒ <code>Promise.&lt;boolean&gt;</code>
+The test first tries if any of the first 250 small primes are a factor of the input number and then passes several
+iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - A promise that resolves to a boolean that is either true (a probably prime number) or false (definitely composite)  
+**Throws**:
+
+- <code>RangeError</code> w MUST be >= 0
+
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| w | <code>number</code> \| <code>bigint</code> |  | A positive integer to be tested for primality |
+| [iterations] | <code>number</code> | <code>16</code> | The number of iterations for the primality test. The value shall be consistent with Table C.1, C.2 or C.3 |
+| [disableWorkers] | <code>boolean</code> | <code>false</code> | Disable the use of workers for the primality test |
 
 <a name="lcm"></a>
 
@@ -310,34 +343,6 @@ Modular exponentiation b**e mod n. Currently using the right-to-left binary meth
 | e | <code>number</code> \| <code>bigint</code> | exponent |
 | n | <code>number</code> \| <code>bigint</code> | modulo |
 
-<a name="toZn"></a>
-
-### toZn(a, n) ⇒ <code>bigint</code>
-Finds the smallest positive element that is congruent to a in modulo n
-
-**Kind**: global function  
-**Returns**: <code>bigint</code> - The smallest positive representation of a in modulo n  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| a | <code>number</code> \| <code>bigint</code> | An integer |
-| n | <code>number</code> \| <code>bigint</code> | The modulo |
-
-<a name="isProbablyPrime"></a>
-
-### isProbablyPrime(w, [iterations], [disableWorkers]) ⇒ <code>Promise.&lt;boolean&gt;</code>
-The test first tries if any of the first 250 small primes are a factor of the input number and then passes several
-iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)
-
-**Kind**: global function  
-**Returns**: <code>Promise.&lt;boolean&gt;</code> - A promise that resolves to a boolean that is either true (a probably prime number) or false (definitely composite)  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| w | <code>number</code> \| <code>bigint</code> |  | An integer to be tested for primality |
-| [iterations] | <code>number</code> | <code>16</code> | The number of iterations for the primality test. The value shall be consistent with Table C.1, C.2 or C.3 |
-| [disableWorkers] | <code>boolean</code> | <code>false</code> | Disable the use of workers for the primality test |
-
 <a name="prime"></a>
 
 ### prime(bitLength, [iterations]) ⇒ <code>Promise.&lt;bigint&gt;</code>
@@ -349,6 +354,10 @@ and can be enabled at runtime executing node --experimental-worker with node >=1
 
 **Kind**: global function  
 **Returns**: <code>Promise.&lt;bigint&gt;</code> - A promise that resolves to a bigint probable prime of bitLength bits.  
+**Throws**:
+
+- <code>RangeError</code> bitLength MUST be > 0
+
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -363,6 +372,10 @@ The sync version is NOT RECOMMENDED since it won't use workers and thus it'll be
 
 **Kind**: global function  
 **Returns**: <code>bigint</code> - A bigint probable prime of bitLength bits.  
+**Throws**:
+
+- <code>RangeError</code> bitLength MUST be > 0
+
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -376,6 +389,10 @@ Returns a cryptographically secure random integer between [min,max]. Both number
 
 **Kind**: global function  
 **Returns**: <code>bigint</code> - A cryptographically secure random bigint between [min,max]  
+**Throws**:
+
+- <code>RangeError</code> Arguments MUST be: max > 0 && min >=0 && max > min
+
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -389,6 +406,10 @@ Secure random bits for both node and browsers. Node version uses crypto.randomFi
 
 **Kind**: global function  
 **Returns**: <code>Promise.&lt;(Buffer\|Uint8Array)&gt;</code> - A Promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bits  
+**Throws**:
+
+- <code>RangeError</code> bitLength MUST be > 0
+
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -402,6 +423,10 @@ Secure random bits for both node and browsers. Node version uses crypto.randomFi
 
 **Kind**: global function  
 **Returns**: <code>Buffer</code> \| <code>Uint8Array</code> - A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bits  
+**Throws**:
+
+- <code>RangeError</code> bitLength MUST be > 0
+
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -415,6 +440,10 @@ Secure random bytes for both node and browsers. Node version uses crypto.randomB
 
 **Kind**: global function  
 **Returns**: <code>Promise.&lt;(Buffer\|Uint8Array)&gt;</code> - A promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes  
+**Throws**:
+
+- <code>RangeError</code> byteLength MUST be > 0
+
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -428,23 +457,26 @@ Secure random bytes for both node and browsers. Node version uses crypto.randomF
 
 **Kind**: global function  
 **Returns**: <code>Buffer</code> \| <code>Uint8Array</code> - A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes  
+**Throws**:
+
+- <code>RangeError</code> byteLength MUST be > 0
+
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | byteLength | <code>number</code> |  | The desired number of random bytes |
 | [forceLength] | <code>boolean</code> | <code>false</code> | If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1 |
 
-<a name="egcdReturn"></a>
+<a name="toZn"></a>
 
-### egcdReturn : <code>Object</code>
-A triple (g, x, y), such that ax + by = g = gcd(a, b).
+### toZn(a, n) ⇒ <code>bigint</code>
+Finds the smallest positive element that is congruent to a in modulo n
 
-**Kind**: global typedef  
-**Properties**
+**Kind**: global function  
+**Returns**: <code>bigint</code> - The smallest positive representation of a in modulo n  
 
-| Name | Type |
-| --- | --- |
-| g | <code>bigint</code> | 
-| x | <code>bigint</code> | 
-| y | <code>bigint</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| a | <code>number</code> \| <code>bigint</code> | An integer |
+| n | <code>number</code> \| <code>bigint</code> | The modulo |
 

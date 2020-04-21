@@ -6,9 +6,11 @@ export { abs, bitLength, eGcd, gcd, lcm, max, min, modInv, modPow, toZn } from '
  * The test first tries if any of the first 250 small primes are a factor of the input number and then passes several
  * iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)
  *
- * @param {number | bigint} w An integer to be tested for primality
+ * @param {number | bigint} w A positive integer to be tested for primality
  * @param {number} [iterations = 16] The number of iterations for the primality test. The value shall be consistent with Table C.1, C.2 or C.3
  * @param {boolean} [disableWorkers = false] Disable the use of workers for the primality test
+ *
+ * @throws {RangeError} w MUST be >= 0
  *
  * @returns {Promise<boolean>} A promise that resolves to a boolean that is either true (a probably prime number) or false (definitely composite)
  */
@@ -16,6 +18,7 @@ export function isProbablyPrime (w, iterations = 16, disableWorkers = false) {
   if (typeof w === 'number') {
     w = BigInt(w)
   }
+  if (w < 0) throw RangeError('w MUST be >= 0')
   /* eslint-disable no-lone-blocks */
   if (!process.browser) { // Node.js
     /* istanbul ignore else */
@@ -74,6 +77,8 @@ export function isProbablyPrime (w, iterations = 16, disableWorkers = false) {
  *
  * @param {number} bitLength The required bit length for the generated prime
  * @param {number} [iterations = 16] The number of iterations for the Miller-Rabin Probabilistic Primality Test
+ *
+ * @throws {RangeError} bitLength MUST be > 0
  *
  * @returns {Promise<bigint>} A promise that resolves to a bigint probable prime of bitLength bits.
  */
@@ -152,6 +157,8 @@ export function prime (bitLength, iterations = 16) {
  * @param {number} bitLength The required bit length for the generated prime
  * @param {number} [iterations = 16] The number of iterations for the Miller-Rabin Probabilistic Primality Test
  *
+ * @throws {RangeError} bitLength MUST be > 0
+ *
  * @returns {bigint} A bigint probable prime of bitLength bits.
  */
 export function primeSync (bitLength, iterations = 16) {
@@ -168,10 +175,12 @@ export function primeSync (bitLength, iterations = 16) {
  * @param {bigint} max Returned value will be <= max
  * @param {bigint} [min = BigInt(1)] Returned value will be >= min
  *
+ * @throws {RangeError} Arguments MUST be: max > 0 && min >=0 && max > min
+ *
  * @returns {bigint} A cryptographically secure random bigint between [min,max]
  */
 export function randBetween (max, min = 1n) {
-  if (max <= 0n || min < 0n || max <= min) throw new RangeError('inputs should be max > 0, min >= 0; max > min')
+  if (max <= 0n || min < 0n || max <= min) throw new RangeError('Arguments MUST be: max > 0 && min >=0 && max > min')
   const interval = max - min
   const bitLen = bitLength(interval)
   let rnd
@@ -187,6 +196,8 @@ export function randBetween (max, min = 1n) {
  *
  * @param {number} bitLength The desired number of random bits
  * @param {boolean} [forceLength = false] If we want to force the output to have a specific bit length. It basically forces the msb to be 1
+ *
+ * @throws {RangeError} bitLength MUST be > 0
  *
  * @returns {Promise<Buffer | Uint8Array>} A Promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bits
  */
@@ -216,6 +227,8 @@ export function randBits (bitLength, forceLength = false) {
  * @param {number} bitLength The desired number of random bits
  * @param {boolean} [forceLength = false] If we want to force the output to have a specific bit length. It basically forces the msb to be 1
  *
+ * @throws {RangeError} bitLength MUST be > 0
+ *
  * @returns {Buffer | Uint8Array} A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bits
  */
 export function randBitsSync (bitLength, forceLength = false) {
@@ -240,6 +253,8 @@ export function randBitsSync (bitLength, forceLength = false) {
  *
  * @param {number} byteLength The desired number of random bytes
  * @param {boolean} [forceLength = false] If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1
+ *
+ * @throws {RangeError} byteLength MUST be > 0
  *
  * @returns {Promise<Buffer | Uint8Array>} A promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
  */
@@ -273,6 +288,8 @@ export function randBytes (byteLength, forceLength = false) {
  *
  * @param {number} byteLength The desired number of random bytes
  * @param {boolean} [forceLength = false] If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1
+ *
+ * @throws {RangeError} byteLength MUST be > 0
  *
  * @returns {Buffer | Uint8Array} A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
  */
