@@ -37,7 +37,6 @@ Import your module as :
    import * as bigintCryptoUtils from 'bigint-crypto-utils'
    ... // your code here
    ```
-   BigInt is [ES-2020](https://tc39.es/ecma262/#sec-bigint-objects). In order to use it with TypeScript you should set `lib` (and probably also `target` and `module`) to `esnext` in `tsconfig.json`.
    `bigint-crypto-utils` **CANNOT BE POLYFILLED** to suport older browsers. If you are using webpack/babel to create your production bundles, you should target only the most modern browsers. For instance, for **React** apps created with [`create-react-app`](https://create-react-app.dev/), you should edit your `package.json` and modify the `browserList` so that it only targets the latest browsers (supporting the latest features):
    ```json
    "browserslist": {
@@ -53,7 +52,7 @@ Import your module as :
      ]
    }
    ```
-   Also, notice that BigInt is [ES-2020](https://tc39.es/ecma262/#sec-bigint-objects). In order to use it with TypeScript you should set `lib` (and probably also `target` and `module`) to `esnext` in `tsconfig.json`.
+   Also, notice that [BigInt implementation is quite recent](https://tc39.es/ecma262/#sec-bigint-objects). In order to use it with TypeScript you will probably need to set `lib`, `target` and/or `module` to `esnext` in your project's `tsconfig.json`.
 
  - JavaScript native browser ES module
    ```html
