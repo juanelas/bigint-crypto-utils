@@ -65,13 +65,8 @@ describe('randBetween', function () {
           chai.expect(ret).to.equal(true)
         })
       } else {
-        it('should return error (max <=0 || min <0 || min>=max)', function () {
-          try {
-            _pkg.randBetween(num.max, num.min)
-            chai.expect(num.error).to.equal(false)
-          } catch (error) {
-            chai.expect(num.error).to.equal(true)
-          }
+        it('should throw RangeError (max <=0 || min <0 || min>=max)', function () {
+          chai.expect(() => _pkg.randBetween(num.max, num.min)).to.throw(RangeError)
         })
       }
     })
@@ -86,13 +81,8 @@ describe('randBetween', function () {
           chai.expect(ret).to.equal(true)
         })
       } else {
-        it('should return error (max <=0)', function () {
-          try {
-            _pkg.randBetween(num.max)
-            chai.expect(num.errorMax).to.equal(false)
-          } catch (error) {
-            chai.expect(num.errorMax).to.equal(true)
-          }
+        it('should throw RangeError (max <=0)', function () {
+          chai.expect(() => _pkg.randBetween(num.max)).to.throw(RangeError)
         })
       }
     })

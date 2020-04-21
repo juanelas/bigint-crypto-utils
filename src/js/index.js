@@ -171,7 +171,7 @@ export function primeSync (bitLength, iterations = 16) {
  * @returns {bigint} A cryptographically secure random bigint between [min,max]
  */
 export function randBetween (max, min = 1n) {
-  if (max <= 0n || min < 0n || max <= min) throw new Error('inputs should be max > 0, min >= 0; max > min')
+  if (max <= 0n || min < 0n || max <= min) throw new RangeError('inputs should be max > 0, min >= 0; max > min')
   const interval = max - min
   const bitLen = bitLength(interval)
   let rnd
@@ -190,24 +190,25 @@ export function randBetween (max, min = 1n) {
  *
  * @returns {Promise<Buffer | Uint8Array>} A Promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bits
  */
-export async function randBits (bitLength, forceLength = false) {
-  if (bitLength < 1) {
-    throw new RangeError('bitLength MUST be > 0')
-  }
+export function randBits (bitLength, forceLength = false) {
+  if (bitLength < 1) throw new RangeError('bitLength MUST be > 0')
 
   const byteLength = Math.ceil(bitLength / 8)
   const bitLengthMod8 = bitLength % 8
 
-  const rndBytes = await randBytes(byteLength, false)
-  if (bitLengthMod8) {
-    // Fill with 0's the extra bits
-    rndBytes[0] = rndBytes[0] & (2 ** bitLengthMod8 - 1)
-  }
-  if (forceLength) {
-    const mask = bitLengthMod8 ? 2 ** (bitLengthMod8 - 1) : 128
-    rndBytes[0] = rndBytes[0] | mask
-  }
-  return rndBytes
+  return new Promise((resolve) => {
+    randBytes(byteLength, false).then(function (rndBytes) {
+      if (bitLengthMod8) {
+        // Fill with 0's the extra bits
+        rndBytes[0] = rndBytes[0] & (2 ** bitLengthMod8 - 1)
+      }
+      if (forceLength) {
+        const mask = bitLengthMod8 ? 2 ** (bitLengthMod8 - 1) : 128
+        rndBytes[0] = rndBytes[0] | mask
+      }
+      resolve(rndBytes)
+    })
+  })
 }
 
 /**
@@ -218,9 +219,7 @@ export async function randBits (bitLength, forceLength = false) {
  * @returns {Buffer | Uint8Array} A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bits
  */
 export function randBitsSync (bitLength, forceLength = false) {
-  if (bitLength < 1) {
-    throw new RangeError('bitLength MUST be > 0')
-  }
+  if (bitLength < 1) throw new RangeError('bitLength MUST be > 0')
 
   const byteLength = Math.ceil(bitLength / 8)
   const rndBytes = randBytesSync(byteLength, false)
