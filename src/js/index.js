@@ -1,6 +1,5 @@
-import { bitLength, eGcd, modInv, modPow, toZn } from 'bigint-mod-arith'
-/* istanbul ignore next */
-export { abs, bitLength, eGcd, gcd, lcm, max, min, modInv, modPow, toZn } from 'bigint-mod-arith' // already tested for coverage
+import { bitLength, eGcd, modInv, modPow, toZn } from './bigint-mod-arith'
+export { abs, bitLength, eGcd, gcd, lcm, max, min, modInv, modPow, toZn } from './bigint-mod-arith'
 
 /**
  * The test first tries if any of the first 250 small primes are a factor of the input number and then passes several

@@ -49,19 +49,13 @@ if (repoProvider && repoProvider === 'github') {
   template = template.replace(/\{\{GITHUB_ACTIONS_BADGES\}\}/g, workflowBadget + '\n' + coverallsBadge)
 }
 
-const input1 = path.join(rootDir, 'node_modules', 'bigint-mod-arith', pkgJson.browser) // bigint-mod-arith
-const input2 = path.join(rootDir, pkgJson.browser) // this module
-
+const input = path.join(rootDir, pkgJson.browser)
 // Let us replace bigint literals by standard numbers to avoid issues with bigint
-const source1 = fs.readFileSync(input1, { encoding: 'UTF-8' })
-const source2 = fs.readFileSync(input2, { encoding: 'UTF-8' })
-const source = (source1 + '\n' + source2)
-  .replace(/^.*bigint-mod-arith.*$/mg, '') // remove import/export of bigint-mod-arith
-  .replace(/([0-9]+)n([,\s\n)])/g, '$1$2') // replace bigint literals by standard numbers to avoid issues with bigint
+const source = fs.readFileSync(input, { encoding: 'UTF-8' }).replace(/([0-9]+)n([,\s\n)])/g, '$1$2')
 
 jsdoc2md.clear().then(() => {
   const data = jsdoc2md.getTemplateDataSync({ source })
-  data.sort((fn1, fn2) => (fn1.id > fn2.id) ? 1 : -1)
+  data.sort((fn1, fn2) => (fn1.id > fn2.id) ? 1 : -1) // sort functions alphabetically
   const options = {
     data,
     template,

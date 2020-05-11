@@ -93,4 +93,9 @@ describe('isProbablyPrime', function () {
       })
     })
   }
+  describe('isProbablyPrime(-1)', function () {
+    it('should throw RangeError', function () {
+      chai.expect(() => _pkg.isProbablyPrime(-1)).to.throw(RangeError)
+    })
+  })
 })

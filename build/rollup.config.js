@@ -36,8 +36,7 @@ module.exports = [
       replace({
         'process.browser': true
       })
-    ],
-    external: ['bigint-mod-arith']
+    ]
   },
   { // Browser bundles
     input: input,
@@ -74,7 +73,6 @@ module.exports = [
       replace({
         'process.browser': false
       })
-    ],
-    external: ['bigint-mod-arith']
+    ]
   }
 ]
