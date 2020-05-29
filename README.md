@@ -148,7 +148,7 @@ iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)</p>
 <dt><a href="#min">min(a, b)</a> ⇒ <code>bigint</code></dt>
 <dd><p>Minimum. min(a,b)==b if a&gt;=b. min(a,b)==a if a&lt;=b</p>
 </dd>
-<dt><a href="#modInv">modInv(a, n)</a> ⇒ <code>bigint</code> | <code>NaN</code></dt>
+<dt><a href="#modInv">modInv(a, n)</a> ⇒ <code>bigint</code></dt>
 <dd><p>Modular inverse.</p>
 </dd>
 <dt><a href="#modPow">modPow(b, e, n)</a> ⇒ <code>bigint</code></dt>
@@ -225,6 +225,10 @@ Take positive integers a, b as input, and return a triple (g, x, y), such that a
 
 **Kind**: global function  
 **Returns**: [<code>egcdReturn</code>](#egcdReturn) - A triple (g, x, y), such that ax + by = g = gcd(a, b).  
+**Throws**:
+
+- <code>RangeError</code> a and b MUST be > 0
+
 
 | Param | Type |
 | --- | --- |
@@ -318,11 +322,15 @@ Minimum. min(a,b)==b if a>=b. min(a,b)==a if a<=b
 
 <a name="modInv"></a>
 
-### modInv(a, n) ⇒ <code>bigint</code> \| <code>NaN</code>
+### modInv(a, n) ⇒ <code>bigint</code>
 Modular inverse.
 
 **Kind**: global function  
-**Returns**: <code>bigint</code> \| <code>NaN</code> - the inverse modulo n or NaN if it does not exist  
+**Returns**: <code>bigint</code> - the inverse modulo n  
+**Throws**:
+
+- <code>RangeError</code> a does not have inverse modulo n
+
 
 | Param | Type | Description |
 | --- | --- | --- |

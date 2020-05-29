@@ -39,6 +39,8 @@ export function bitLength (a) {
  * @param {number|bigint} a
  * @param {number|bigint} b
  *
+ * @throws {RangeError} a and b MUST be > 0
+ *
  * @returns {egcdReturn} A triple (g, x, y), such that ax + by = g = gcd(a, b).
  */
 export function eGcd (a, b) {
@@ -152,18 +154,16 @@ export function min (a, b) {
  * @param {number|bigint} a The number to find an inverse for
  * @param {number|bigint} n The modulo
  *
- * @returns {bigint|NaN} the inverse modulo n or NaN if it does not exist
+ * @throws {RangeError} a does not have inverse modulo n
+ *
+ * @returns {bigint} the inverse modulo n
  */
 export function modInv (a, n) {
-  try {
-    const egcd = eGcd(toZn(a, n), n)
-    if (egcd.g !== 1n) {
-      return NaN // modular inverse does not exist
-    } else {
-      return toZn(egcd.x, n)
-    }
-  } catch (error) {
-    return NaN
+  const egcd = eGcd(toZn(a, n), n)
+  if (egcd.g !== 1n) {
+    throw new RangeError(`${a.toString()} does not have inverse modulo ${n.toString()}`) // modular inverse does not exist
+  } else {
+    return toZn(egcd.x, n)
   }
 }
 
@@ -178,7 +178,7 @@ export function modInv (a, n) {
  */
 export function modPow (b, e, n) {
   n = BigInt(n)
-  if (n === 0n) { return NaN } else if (n === 1n) { return BigInt(0) }
+  if (n === 0n) { throw new RangeError('n must be > 0') } else if (n === 1n) { return BigInt(0) }
 
   b = toZn(b, n)
 

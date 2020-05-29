@@ -34,6 +34,8 @@ export function bitLength(a: number | bigint): number;
  * @param {number|bigint} a
  * @param {number|bigint} b
  *
+ * @throws {RangeError} a and b MUST be > 0
+ *
  * @returns {egcdReturn} A triple (g, x, y), such that ax + by = g = gcd(a, b).
  */
 export function eGcd(a: number | bigint, b: number | bigint): egcdReturn;
@@ -91,9 +93,11 @@ export function min(a: number | bigint, b: number | bigint): bigint;
  * @param {number|bigint} a The number to find an inverse for
  * @param {number|bigint} n The modulo
  *
- * @returns {bigint|NaN} the inverse modulo n or NaN if it does not exist
+ * @throws {RangeError} a does not have inverse modulo n
+ *
+ * @returns {bigint} the inverse modulo n
  */
-export function modInv(a: number | bigint, n: number | bigint): number | bigint;
+export function modInv(a: number | bigint, n: number | bigint): bigint;
 /**
  * Modular exponentiation b**e mod n. Currently using the right-to-left binary method
  *

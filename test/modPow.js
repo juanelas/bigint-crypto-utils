@@ -10,12 +10,6 @@ const inputs = [
   {
     a: BigInt(4),
     b: BigInt(-1),
-    n: BigInt(0),
-    modPow: NaN
-  },
-  {
-    a: BigInt(4),
-    b: BigInt(-1),
     n: BigInt(1),
     modPow: BigInt(0)
   },
@@ -42,6 +36,13 @@ const inputs = [
     b: BigInt(3),
     n: BigInt(25),
     modPow: BigInt(2)
+  }]
+
+const invalidInputs = [
+  {
+    a: BigInt(4),
+    b: BigInt(-1),
+    n: BigInt(0)
   }
 ]
 
@@ -52,6 +53,18 @@ describe('modPow', function () {
       it(`should return ${input.modPow}`, function () {
         const ret = _pkg.modPow(input.a, input.b, input.n)
         chai.expect(String(ret)).to.equal(String(input.modPow))
+      })
+    })
+  }
+  for (const input of invalidInputs) {
+    describe(`modPow(${input.a}, ${input.b}, ${input.n})`, function () {
+      it('should throw RangeError', function () {
+        try {
+          _pkg.modPow(input.a, input.b, input.n)
+          throw new Error('should have failed')
+        } catch (err) {
+          chai.expect(err).to.be.instanceOf(RangeError)
+        }
       })
     })
   }
