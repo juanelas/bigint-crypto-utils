@@ -676,8 +676,6 @@ if (!process.browser) { // Node.js
 This node version doesn't support worker_threads. You should enable them in order to greatly speedup the generation of big prime numbers.
   · With Node >=11 it is enabled by default (consider upgrading).
   · With Node 10, starting with 10.5.0, you can enable worker_threads at runtime executing node --experimental-worker `)
-    /* istanbul ignore next */
-    _useWorkers = true
   }
 } else { // Native JS
   if (self.Worker) _useWorkers = true
