@@ -35,7 +35,7 @@
     "node": ">=10.4.0"
   },
   "scripts": {
-    "test": "nyc --check-coverage mocha",
+    "test": "nyc mocha",
     "coverage": "nyc report --reporter=lcov",
     "build:js": "rollup -c build/rollup.config.js",
     "build:standard": "standard --fix",
