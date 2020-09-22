@@ -487,21 +487,20 @@ const inputs$6 = [
     a: BigInt(-2),
     n: BigInt(5),
     modInv: BigInt(2)
-  },
+  }];
+
+const invalidInputs = [
   {
     a: BigInt(2),
-    n: BigInt(4),
-    modInv: NaN
+    n: BigInt(4)
   },
   {
     a: BigInt(0),
-    n: BigInt(0),
-    modInv: NaN
+    n: BigInt(0)
   },
   {
     a: BigInt(0),
-    n: BigInt(37),
-    modInv: NaN
+    n: BigInt(37)
   }
 ];
 
@@ -515,6 +514,18 @@ describe('modInv', function () {
       });
     });
   }
+  for (const input of invalidInputs) {
+    describe(`modInv(${input.a}, ${input.n})`, function () {
+      it('should throw RangeError', function () {
+        try {
+          _pkg.modInv(input.a, input.n);
+          throw new Error('should have failed')
+        } catch (err) {
+          chai.expect(err).to.be.instanceOf(RangeError);
+        }
+      });
+    });
+  }
 });
 
 // Every test file (you can create as many as you want) should start like this
@@ -524,12 +535,6 @@ describe('modInv', function () {
 // <--
 
 const inputs$7 = [
-  {
-    a: BigInt(4),
-    b: BigInt(-1),
-    n: BigInt(0),
-    modPow: NaN
-  },
   {
     a: BigInt(4),
     b: BigInt(-1),
@@ -559,6 +564,13 @@ const inputs$7 = [
     b: BigInt(3),
     n: BigInt(25),
     modPow: BigInt(2)
+  }];
+
+const invalidInputs$1 = [
+  {
+    a: BigInt(4),
+    b: BigInt(-1),
+    n: BigInt(0)
   }
 ];
 
@@ -569,6 +581,18 @@ describe('modPow', function () {
       it(`should return ${input.modPow}`, function () {
         const ret = _pkg.modPow(input.a, input.b, input.n);
         chai.expect(String(ret)).to.equal(String(input.modPow));
+      });
+    });
+  }
+  for (const input of invalidInputs$1) {
+    describe(`modPow(${input.a}, ${input.b}, ${input.n})`, function () {
+      it('should throw RangeError', function () {
+        try {
+          _pkg.modPow(input.a, input.b, input.n);
+          throw new Error('should have failed')
+        } catch (err) {
+          chai.expect(err).to.be.instanceOf(RangeError);
+        }
       });
     });
   }
