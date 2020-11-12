@@ -155,7 +155,7 @@ export function randBetween(max: bigint, min?: bigint): bigint;
  *
  * @returns {Promise<Buffer | Uint8Array>} A Promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bits
  */
-export function randBits(bitLength: number, forceLength?: boolean): Promise<Uint8Array | Buffer>;
+export function randBits(bitLength: number, forceLength?: boolean): Promise<Buffer | Uint8Array>;
 /**
  * Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
  * @param {number} bitLength The desired number of random bits
@@ -165,7 +165,7 @@ export function randBits(bitLength: number, forceLength?: boolean): Promise<Uint
  *
  * @returns {Buffer | Uint8Array} A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bits
  */
-export function randBitsSync(bitLength: number, forceLength?: boolean): Uint8Array | Buffer;
+export function randBitsSync(bitLength: number, forceLength?: boolean): Buffer | Uint8Array;
 /**
  * Secure random bytes for both node and browsers. Node version uses crypto.randomBytes() and browser one self.crypto.getRandomValues()
  *
@@ -176,7 +176,7 @@ export function randBitsSync(bitLength: number, forceLength?: boolean): Uint8Arr
  *
  * @returns {Promise<Buffer | Uint8Array>} A promise that resolves to a Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
  */
-export function randBytes(byteLength: number, forceLength?: boolean): Promise<Uint8Array | Buffer>;
+export function randBytes(byteLength: number, forceLength?: boolean): Promise<Buffer | Uint8Array>;
 /**
  * Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
  *
@@ -187,7 +187,7 @@ export function randBytes(byteLength: number, forceLength?: boolean): Promise<Ui
  *
  * @returns {Buffer | Uint8Array} A Buffer/UInt8Array (Node.js/Browser) filled with cryptographically secure random bytes
  */
-export function randBytesSync(byteLength: number, forceLength?: boolean): Uint8Array | Buffer;
+export function randBytesSync(byteLength: number, forceLength?: boolean): Buffer | Uint8Array;
 /**
  * Finds the smallest positive element that is congruent to a in modulo n
  * @param {number|bigint} a An integer

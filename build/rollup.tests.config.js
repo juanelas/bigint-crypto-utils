@@ -1,6 +1,6 @@
 'use strict'
 
-const resolve = require('@rollup/plugin-node-resolve')
+const resolve = require('@rollup/plugin-node-resolve').nodeResolve
 const replace = require('@rollup/plugin-replace')
 const commonjs = require('@rollup/plugin-commonjs')
 const multi = require('@rollup/plugin-multi-entry')

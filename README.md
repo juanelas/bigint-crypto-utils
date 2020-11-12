@@ -9,7 +9,7 @@ Arbitrary precision modular arithmetic, cryptographically secure random numbers 
 
 It relies on the native JS implementation of ([BigInt](https://tc39.es/ecma262/#sec-bigint-objects)). It can be used by any [Web Browser or webview supporting BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility) and with Node.js (>=10.4.0). The bundles can be imported directly by the browser or in Angular projects, React apps, Node.js, etc.
 
-Secure random numbers are generated using the native crypto implementation of the browsers ([Web Cryptography API](https://w3c.github.io/webcrypto/)) or [Node.js Crypto](https://nodejs.org/dist/latest/docs/api/crypto.html)). Strong probable prime generation and testing use Miller-Rabin primality tests and are automatically sped up using parallel workers both in browsers and Node.js. 
+Secure random numbers are generated using the native crypto implementation of the browsers ([Web Cryptography API](https://w3c.github.io/webcrypto/)) or [Node.js Crypto](https://nodejs.org/dist/latest/docs/api/crypto.html)). Strong probable prime generation and testing use Miller-Rabin primality tests and are automatically sped up using parallel workers both in browsers and Node.js.
 
 > The operations supported on BigInts are not constant time. BigInt can be therefore **[unsuitable for use in cryptography](https://www.chosenplaintext.ca/articles/beginners-guide-constant-time-cryptography.html).** Many platforms provide native support for cryptography, such as [Web Cryptography API](https://w3c.github.io/webcrypto/) or [Node.js Crypto](https://nodejs.org/dist/latest/docs/api/crypto.html).
 
@@ -27,17 +27,22 @@ NPM installation defaults to the ES6 module for browsers and the CJS one for Nod
 
 Import your module as :
 
- - Node.js
+- Node.js
+
    ```javascript
    const bigintCryptoUtils = require('bigint-crypto-utils')
    ... // your code here
    ```
- - JavaScript native or TypeScript project (including React and Angular JS)
+
+- JavaScript native or TypeScript project (including React and Angular JS)
+
    ```javascript
    import * as bigintCryptoUtils from 'bigint-crypto-utils'
    ... // your code here
    ```
-   `bigint-crypto-utils` **CANNOT BE POLYFILLED** to suport older browsers. If you are using webpack/babel to create your production bundles, you should target only the most modern browsers. For instance, for **React** apps created with [`create-react-app`](https://create-react-app.dev/), you should edit your `package.json` and modify the `browserList` so that it only targets the latest browsers (supporting the latest features):
+
+   `bigint-crypto-utils` **CANNOT BE POLYFILLED** to suport older browsers. If you are using webpack/babel to create your production bundles, you should target only the most modern browsers. For instance, for **React** apps created with [`create-react-app`](https://create-react-app.dev/), you should edit your `package.json` and modify the `browserList` so that it only targets the latest browsers (play with the number of versions that do not need polyfilling):
+
    ```json
    "browserslist": {
      "production": [
@@ -52,20 +57,33 @@ Import your module as :
      ]
    }
    ```
-   Also, notice that [BigInt implementation is quite recent](https://tc39.es/ecma262/#sec-bigint-objects). In order to use it with TypeScript you will probably need to set `lib`, `target` and/or `module` to `esnext` in your project's `tsconfig.json`.
 
- - JavaScript native browser ES module
+   Also, notice that [BigInt implementation is ES2020](https://tc39.es/ecma262/#sec-bigint-objects). In order to use it with TypeScript you will probably need to set `lib`, `target` and/or `module` to `es2020` in your project's `tsconfig.json`.
+
+   If you are using Angular, since this library uses node typings, you should also add them to the `angularCompilerOptions` in your `tsconfig.json`:
+
+   ```json
+     "angularCompilerOptions": {
+       "types": ["node"]
+       ...
+     }
+   ```
+
+- JavaScript native browser ES module
+
    ```html
    <script type="module">
-      import * as bigintCryptoUtils from 'lib/index.browser.bundle.mod.js'  // Use you actual path to the broser mod bundle
+      import * as bigintCryptoUtils from 'index.browser.bundle.mod.js'  // Use your actual path to the broser mod bundle that is in the lib directory
       ... // your code here
     </script>
    ```
- - JavaScript native browser IIFE
+
+- JavaScript native browser IIFE
+
    ```html
    <head>
      ...
-     <script src="../../lib/index.browser.bundle.iife.js"></script> <!-- Use you actual path to the browser bundle -->
+     <script src="index.browser.bundle.iife.js"></script> <!-- Use your actual path to the browser iife bundle that is in the lib directory -->
    </head>
    <body>
      ...
@@ -78,10 +96,10 @@ Import your module as :
 An example of usage could be:
 
 ```javascript
-/* A BigInt with value 666 can be declared calling the bigint constructor as 
+/* A BigInt with value 666 can be declared calling the bigint constructor as
 BigInt('666') or with the shorter 666n.
-Notice that you can also pass a number to the constructor, e.g. BigInt(666). 
-However, it is not recommended since values over 2**53 - 1 won't be safe but 
+Notice that you can also pass a number to the constructor, e.g. BigInt(666).
+However, it is not recommended since values over 2**53 - 1 won't be safe but
 no warning will be raised.
 */
 const a = BigInt('5')
@@ -115,7 +133,6 @@ primeTesting()
 ```
 
 You can find examples in the [examples folder of the repository](https://github.com/juanelas/bigint-crypto-utils/tree/master/examples).
-
 
 ## API reference documentation
 

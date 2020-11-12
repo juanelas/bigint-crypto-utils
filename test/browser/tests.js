@@ -50,8 +50,8 @@ const inputs$1 = [
     bitLength: 2
   },
   {
-    value: BigInt(11592217955149597331),
-    abs: BigInt(11592217955149597331),
+    value: BigInt('11592217955149597331'),
+    abs: BigInt('11592217955149597331'),
     bitLength: 64
   }
 ];
