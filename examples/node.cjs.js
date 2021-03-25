@@ -1,4 +1,4 @@
-const bigintCryptoUtils = require('../lib/index.node')
+const bigintCryptoUtils = require('../')
 // const bigintCryptoUtils = require('bigint-crypto-utils')
 
 /* A BigInt with value 666 can be declared calling the bigint constructor as

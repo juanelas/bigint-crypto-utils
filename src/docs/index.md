@@ -1,9 +1,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-[![Node CI](https://github.com/juanelas/bigint-crypto-utils/workflows/Node%20CI/badge.svg)](https://github.com/juanelas/bigint-crypto-utils/actions?query=workflow%3A%22Node+CI%22)
-[![Coverage Status](https://coveralls.io/repos/github/juanelas/bigint-crypto-utils/badge.svg?branch=master)](https://coveralls.io/github/juanelas/bigint-crypto-utils?branch=master)
+{{GITHUB_ACTIONS_BADGES}}
 
-# bigint-crypto-utils
+# {{PKG_NAME}}
 
 Arbitrary precision modular arithmetic, cryptographically secure random numbers and strong probable prime generation/testing.
 
@@ -15,27 +14,27 @@ Secure random numbers are generated using the native crypto implementation of th
 
 ## Usage
 
-`bigint-crypto-utils` can be imported to your project with `npm`:
+`{{PKG_NAME}}` can be imported to your project with `npm`:
 
 ```console
-npm install bigint-crypto-utils
+npm install {{PKG_NAME}}
 ```
 
 Then either require (Node.js CJS):
 
 ```javascript
-const bigintCryptoUtils = require('bigint-crypto-utils')
+const {{PKG_CAMELCASE}} = require('{{PKG_NAME}}')
 ```
 
 or import (JavaScript ES module):
 
 ```javascript
-import * as bigintCryptoUtils from 'bigint-crypto-utils'
+import * as {{PKG_CAMELCASE}} from '{{PKG_NAME}}'
 ```
 
 The appropriate version for browser or node is automatically exported.
 
-`bigint-crypto-utils` **CANNOT BE POLYFILLED** to suport older JS version (\< ES2020). If you are using webpack/babel to create your production bundles, you should target only the most modern browsers. For instance, for **React** apps created with [`create-react-app`](https://create-react-app.dev/), you should edit your `package.json` and modify the `browserList` so that it only targets the latest browsers (play with the number of versions that do not need polyfilling):
+`{{PKG_NAME}}` **CANNOT BE POLYFILLED** to suport older JS version (\< ES2020). If you are using webpack/babel to create your production bundles, you should target only the most modern browsers. For instance, for **React** apps created with [`create-react-app`](https://create-react-app.dev/), you should edit your `package.json` and modify the `browserList` so that it only targets the latest browsers (play with the number of versions that do not need polyfilling):
 
 ```json
 "browserslist": {
@@ -63,7 +62,7 @@ If you are using Angular, since this library uses node typings, you should also 
   }
 ```
 
-You can also download the [IIFE bundle](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bundles/bigint-crypto-utils.iife.js), the [ESM bundle](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bundles/bigint-crypto-utils.esm.js) or the [UMD bundle](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bundles/bigint-crypto-utils.umd.js) and manually add it to your project, or, if you have already imported `bigint-crypto-utils` to your project, just get the bundles from `node_modules/bigint-crypto-utils/dist/bundles/`.
+You can also download the {{IIFE_BUNDLE}}, the {{ESM_BUNDLE}} or the {{UMD_BUNDLE}} and manually add it to your project, or, if you have already imported `{{PKG_NAME}}` to your project, just get the bundles from `node_modules/{{PKG_NAME}}/dist/bundles/`.
 
 An example of usage could be:
 

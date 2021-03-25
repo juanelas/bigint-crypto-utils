@@ -33,49 +33,49 @@ jobs:
       - name: test
         run: npm test
 
-  publication:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
+  # publication:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
       
-      - uses: EndBug/version-check@v1
-        id: check
+  #     - uses: EndBug/version-check@v1
+  #       id: check
 
-      - name: check version changes
-        if: steps.check.outputs.changed == 'true'
-        run: 'echo "Version change found! New version: ${{ steps.check.outputs.version }} (${{ steps.check.outputs.type }})"'
+  #     - name: check version changes
+  #       if: steps.check.outputs.changed == 'true'
+  #       run: 'echo "Version change found! New version: ${{ steps.check.outputs.version }} (${{ steps.check.outputs.type }})"'
 
-      - uses: actions/setup-node@v1
-        if: steps.check.outputs.changed == 'true'
-        with:
-          node-version: 12
-          registry-url: https://registry.npmjs.org/
+  #     - uses: actions/setup-node@v1
+  #       if: steps.check.outputs.changed == 'true'
+  #       with:
+  #         node-version: 14
+  #         registry-url: https://registry.npmjs.org/
       
-      - name: install
-        if: steps.check.outputs.changed == 'true'
-        run: npm ci
+  #     - name: install
+  #       if: steps.check.outputs.changed == 'true'
+  #       run: npm ci
       
-      - name: build
-        if: steps.check.outputs.changed == 'true'
-        run: npm run build
+  #     - name: build
+  #       if: steps.check.outputs.changed == 'true'
+  #       run: npm run build
       
-      - name: test
-        if: steps.check.outputs.changed == 'true'
-        run: npm test
+  #     - name: test
+  #       if: steps.check.outputs.changed == 'true'
+  #       run: npm test
       
-      - name: create code coverage report
-        if: steps.check.outputs.changed == 'true'
-        run: npm run coverage
+  #     - name: create code coverage report
+  #       if: steps.check.outputs.changed == 'true'
+  #       run: npm run coverage
       
-      - name: send report to coveralls.io
-        if: steps.check.outputs.changed == 'true'
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: send report to coveralls.io
+  #       if: steps.check.outputs.changed == 'true'
+  #       uses: coverallsapp/github-action@master
+  #       with:
+  #         github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: publish to NPM
-        if: steps.check.outputs.changed == 'true'
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  #     - name: publish to NPM
+  #       if: steps.check.outputs.changed == 'true'
+  #       run: npm publish
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
