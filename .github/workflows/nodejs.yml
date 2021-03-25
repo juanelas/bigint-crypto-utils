@@ -39,8 +39,8 @@ jobs:
       # - name: browser tests
       #   run: npm run test:browser
       
-      - name: node tests and coverage
-        run: npm run coverage
+      - name: node tests
+        run: npm run test:node
 
   publication:
     needs: build
