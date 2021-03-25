@@ -36,8 +36,8 @@ jobs:
       - name: docs
         run: npm run docs
       
-      - name: browser tests
-        run: npm run test:browser
+      # - name: browser tests
+      #   run: npm run test:browser
       
       - name: node tests and coverage
         run: npm run coverage
