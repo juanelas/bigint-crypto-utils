@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    name: build, test, check coverage
+    name: build and node tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
