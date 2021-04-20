@@ -35,9 +35,9 @@ Absolute value. abs(a)==a if a>=0. abs(a)==-a if a<0
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`a` | *number* \| *bigint* |
+| Name | Type |
+| :------ | :------ |
+| `a` | *number* \| *bigint* |
 
 **Returns:** *number* \| *bigint*
 
@@ -55,9 +55,9 @@ Returns the bitlength of a number
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`a` | *number* \| *bigint* |
+| Name | Type |
+| :------ | :------ |
+| `a` | *number* \| *bigint* |
 
 **Returns:** *number*
 
@@ -79,10 +79,10 @@ This excepction is thrown if a or b are less than 0
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`a` | *number* \| *bigint* |
-`b` | *number* \| *bigint* |
+| Name | Type |
+| :------ | :------ |
+| `a` | *number* \| *bigint* |
+| `b` | *number* \| *bigint* |
 
 **Returns:** Egcd
 
@@ -100,10 +100,10 @@ Greatest-common divisor of two integers based on the iterative binary algorithm.
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`a` | *number* \| *bigint* |
-`b` | *number* \| *bigint* |
+| Name | Type |
+| :------ | :------ |
+| `a` | *number* \| *bigint* |
+| `b` | *number* \| *bigint* |
 
 **Returns:** *bigint*
 
@@ -125,17 +125,17 @@ w MUST be >= 0
 
 #### Parameters:
 
-Name | Type | Default value | Description |
-:------ | :------ | :------ | :------ |
-`w` | *number* \| *bigint* | - | A positive integer to be tested for primality   |
-`iterations` | *number* | 16 | The number of iterations for the primality test. The value shall be consistent with Table C.1, C.2 or C.3   |
-`disableWorkers` | *boolean* | false | Disable the use of workers for the primality test    |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `w` | *number* \| *bigint* | - | A positive integer to be tested for primality |
+| `iterations` | *number* | 16 | The number of iterations for the primality test. The value shall be consistent with Table C.1, C.2 or C.3 |
+| `disableWorkers` | *boolean* | false | Disable the use of workers for the primality test |
 
 **Returns:** *Promise*<boolean\>
 
 A promise that resolves to a boolean that is either true (a probably prime number) or false (definitely composite)
 
-Defined in: [src/ts/isProbablyPrime.ts:21](https://github.com/juanelas/bigint-crypto-utils/blob/9b2700b/src/ts/isProbablyPrime.ts#L21)
+Defined in: [src/ts/isProbablyPrime.ts:21](https://github.com/juanelas/bigint-crypto-utils/blob/82eea18/src/ts/isProbablyPrime.ts#L21)
 
 ___
 
@@ -147,10 +147,10 @@ The least common multiple computed as abs(a*b)/gcd(a,b)
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`a` | *number* \| *bigint* |
-`b` | *number* \| *bigint* |
+| Name | Type |
+| :------ | :------ |
+| `a` | *number* \| *bigint* |
+| `b` | *number* \| *bigint* |
 
 **Returns:** *bigint*
 
@@ -168,10 +168,10 @@ Maximum. max(a,b)==a if a>=b. max(a,b)==b if a<=b
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`a` | *number* \| *bigint* |
-`b` | *number* \| *bigint* |
+| Name | Type |
+| :------ | :------ |
+| `a` | *number* \| *bigint* |
+| `b` | *number* \| *bigint* |
 
 **Returns:** *number* \| *bigint*
 
@@ -189,10 +189,10 @@ Minimum. min(a,b)==b if a>=b. min(a,b)==a if a<=b
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`a` | *number* \| *bigint* |
-`b` | *number* \| *bigint* |
+| Name | Type |
+| :------ | :------ |
+| `a` | *number* \| *bigint* |
+| `b` | *number* \| *bigint* |
 
 **Returns:** *number* \| *bigint*
 
@@ -213,10 +213,10 @@ Excpeption thorwn when a does not have inverse modulo n
 
 #### Parameters:
 
-Name | Type | Description |
-:------ | :------ | :------ |
-`a` | *number* \| *bigint* | The number to find an inverse for   |
-`n` | *number* \| *bigint* | The modulo    |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `a` | *number* \| *bigint* | The number to find an inverse for |
+| `n` | *number* \| *bigint* | The modulo |
 
 **Returns:** *bigint*
 
@@ -237,11 +237,11 @@ Excpeption thrown when n is not > 0
 
 #### Parameters:
 
-Name | Type | Description |
-:------ | :------ | :------ |
-`b` | *number* \| *bigint* | base   |
-`e` | *number* \| *bigint* | exponent   |
-`n` | *number* \| *bigint* | modulo    |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `b` | *number* \| *bigint* | base |
+| `e` | *number* \| *bigint* | exponent |
+| `n` | *number* \| *bigint* | modulo |
 
 **Returns:** *bigint*
 
@@ -266,16 +266,16 @@ bitLength MUST be > 0
 
 #### Parameters:
 
-Name | Type | Default value | Description |
-:------ | :------ | :------ | :------ |
-`bitLength` | *number* | - | The required bit length for the generated prime   |
-`iterations` | *number* | 16 | The number of iterations for the Miller-Rabin Probabilistic Primality Test    |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `bitLength` | *number* | - | The required bit length for the generated prime |
+| `iterations` | *number* | 16 | The number of iterations for the Miller-Rabin Probabilistic Primality Test |
 
 **Returns:** *Promise*<bigint\>
 
 A promise that resolves to a bigint probable prime of bitLength bits.
 
-Defined in: [src/ts/prime.ts:21](https://github.com/juanelas/bigint-crypto-utils/blob/9b2700b/src/ts/prime.ts#L21)
+Defined in: [src/ts/prime.ts:21](https://github.com/juanelas/bigint-crypto-utils/blob/82eea18/src/ts/prime.ts#L21)
 
 ___
 
@@ -291,16 +291,16 @@ bitLength MUST be > 0
 
 #### Parameters:
 
-Name | Type | Default value | Description |
-:------ | :------ | :------ | :------ |
-`bitLength` | *number* | - | The required bit length for the generated prime   |
-`iterations` | *number* | 16 | The number of iterations for the Miller-Rabin Probabilistic Primality Test    |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `bitLength` | *number* | - | The required bit length for the generated prime |
+| `iterations` | *number* | 16 | The number of iterations for the Miller-Rabin Probabilistic Primality Test |
 
 **Returns:** *bigint*
 
 A bigint probable prime of bitLength bits.
 
-Defined in: [src/ts/prime.ts:100](https://github.com/juanelas/bigint-crypto-utils/blob/9b2700b/src/ts/prime.ts#L100)
+Defined in: [src/ts/prime.ts:100](https://github.com/juanelas/bigint-crypto-utils/blob/82eea18/src/ts/prime.ts#L100)
 
 ___
 
@@ -315,16 +315,16 @@ Arguments MUST be: max > 0 && min >=0 && max > min
 
 #### Parameters:
 
-Name | Type | Description |
-:------ | :------ | :------ |
-`max` | *bigint* | Returned value will be <= max   |
-`min` | *bigint* | Returned value will be >= min    |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `max` | *bigint* | Returned value will be <= max |
+| `min` | *bigint* | Returned value will be >= min |
 
 **Returns:** *bigint*
 
 A cryptographically secure random bigint between [min,max]
 
-Defined in: [src/ts/randBetween.ts:15](https://github.com/juanelas/bigint-crypto-utils/blob/9b2700b/src/ts/randBetween.ts#L15)
+Defined in: [src/ts/randBetween.ts:15](https://github.com/juanelas/bigint-crypto-utils/blob/82eea18/src/ts/randBetween.ts#L15)
 
 ___
 
@@ -339,16 +339,16 @@ bitLength MUST be > 0
 
 #### Parameters:
 
-Name | Type | Default value | Description |
-:------ | :------ | :------ | :------ |
-`bitLength` | *number* | - | The desired number of random bits   |
-`forceLength` | *boolean* | false | If we want to force the output to have a specific bit length. It basically forces the msb to be 1    |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `bitLength` | *number* | - | The desired number of random bits |
+| `forceLength` | *boolean* | false | If we want to force the output to have a specific bit length. It basically forces the msb to be 1 |
 
 **Returns:** *Promise*<Uint8Array \| Buffer\>
 
 A Promise that resolves to a UInt8Array/Buffer (Browser/Node.js) filled with cryptographically secure random bits
 
-Defined in: [src/ts/randBits.ts:14](https://github.com/juanelas/bigint-crypto-utils/blob/9b2700b/src/ts/randBits.ts#L14)
+Defined in: [src/ts/randBits.ts:14](https://github.com/juanelas/bigint-crypto-utils/blob/82eea18/src/ts/randBits.ts#L14)
 
 ___
 
@@ -363,16 +363,16 @@ bitLength MUST be > 0
 
 #### Parameters:
 
-Name | Type | Default value | Description |
-:------ | :------ | :------ | :------ |
-`bitLength` | *number* | - | The desired number of random bits   |
-`forceLength` | *boolean* | false | If we want to force the output to have a specific bit length. It basically forces the msb to be 1    |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `bitLength` | *number* | - | The desired number of random bits |
+| `forceLength` | *boolean* | false | If we want to force the output to have a specific bit length. It basically forces the msb to be 1 |
 
 **Returns:** Uint8Array \| Buffer
 
 A Uint8Array/Buffer (Browser/Node.js) filled with cryptographically secure random bits
 
-Defined in: [src/ts/randBits.ts:45](https://github.com/juanelas/bigint-crypto-utils/blob/9b2700b/src/ts/randBits.ts#L45)
+Defined in: [src/ts/randBits.ts:45](https://github.com/juanelas/bigint-crypto-utils/blob/82eea18/src/ts/randBits.ts#L45)
 
 ___
 
@@ -387,16 +387,16 @@ byteLength MUST be > 0
 
 #### Parameters:
 
-Name | Type | Default value | Description |
-:------ | :------ | :------ | :------ |
-`byteLength` | *number* | - | The desired number of random bytes   |
-`forceLength` | *boolean* | false | If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1    |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `byteLength` | *number* | - | The desired number of random bytes |
+| `forceLength` | *boolean* | false | If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1 |
 
 **Returns:** *Promise*<Uint8Array \| Buffer\>
 
 A promise that resolves to a UInt8Array/Buffer (Browser/Node.js) filled with cryptographically secure random bytes
 
-Defined in: [src/ts/randBytes.ts:12](https://github.com/juanelas/bigint-crypto-utils/blob/9b2700b/src/ts/randBytes.ts#L12)
+Defined in: [src/ts/randBytes.ts:12](https://github.com/juanelas/bigint-crypto-utils/blob/82eea18/src/ts/randBytes.ts#L12)
 
 ___
 
@@ -411,16 +411,16 @@ byteLength MUST be > 0
 
 #### Parameters:
 
-Name | Type | Default value | Description |
-:------ | :------ | :------ | :------ |
-`byteLength` | *number* | - | The desired number of random bytes   |
-`forceLength` | *boolean* | false | If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1    |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `byteLength` | *number* | - | The desired number of random bytes |
+| `forceLength` | *boolean* | false | If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1 |
 
 **Returns:** Uint8Array \| Buffer
 
 A UInt8Array/Buffer (Browser/Node.js) filled with cryptographically secure random bytes
 
-Defined in: [src/ts/randBytes.ts:46](https://github.com/juanelas/bigint-crypto-utils/blob/9b2700b/src/ts/randBytes.ts#L46)
+Defined in: [src/ts/randBytes.ts:46](https://github.com/juanelas/bigint-crypto-utils/blob/82eea18/src/ts/randBytes.ts#L46)
 
 ___
 
@@ -438,10 +438,10 @@ Excpeption thrown when n is not > 0
 
 #### Parameters:
 
-Name | Type | Description |
-:------ | :------ | :------ |
-`a` | *number* \| *bigint* | An integer   |
-`n` | *number* \| *bigint* | The modulo    |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `a` | *number* \| *bigint* | An integer |
+| `n` | *number* \| *bigint* | The modulo |
 
 **Returns:** *bigint*
 

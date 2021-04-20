@@ -40,24 +40,6 @@ const sourcemapOutputOptions = {
 }
 
 module.exports = [
-  { // ESM for browsers
-    input: input,
-    output: [
-      {
-        file: path.join(rootDir, pkgJson.exports['.'].default),
-        ...sourcemapOutputOptions,
-        format: 'es'
-      }
-    ],
-    plugins: [
-      replace({
-        IS_BROWSER: true,
-        preventAssignment: true
-      }),
-      typescriptPlugin(tsBundleOptions)
-    ],
-    external
-  },
   { // Browser bundles
     input: input,
     output: [

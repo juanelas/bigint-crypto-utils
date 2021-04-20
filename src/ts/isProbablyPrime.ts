@@ -393,18 +393,18 @@ export function _isProbablyPrimeWorkerUrl (): string {
   // Let's us first add all the required functions
   let workerCode = `'use strict';const ${eGcd.name}=${eGcd.toString()};const ${modInv.name}=${modInv.toString()};const ${modPow.name}=${modPow.toString()};const ${toZn.name}=${toZn.toString()};const ${randBitsSync.name}=${randBitsSync.toString()};const ${randBytesSync.name}=${randBytesSync.toString()};const ${randBetween.name}=${randBetween.toString()};const ${isProbablyPrime.name}=${_isProbablyPrime.toString()};${bitLength.toString()};${fromBuffer.toString()};`
 
-  const onmessage = async function (event: {data: MainToWorkerMsg}): Promise<void> { // Let's start once we are called
+  workerCode += `
+  onmessage = async function (event) { // Let's start once we are called
     // event.data = {rnd: <bigint>, iterations: <number>}
-    const isPrime = await isProbablyPrime(event.data.rnd, event.data.iterations)
-    const msg: WorkerToMainMsg = {
+    const isPrime = await ${isProbablyPrime.name}(event.data.rnd, event.data.iterations);
+    const msg = {
       isPrime: isPrime,
       value: event.data.rnd,
       id: event.data.id
-    }
-    postMessage(msg)
+    };
+    postMessage(msg);
   }
-
-  workerCode += `onmessage = ${onmessage.toString()};`
+  `
 
   return _workerUrl(workerCode)
 }
