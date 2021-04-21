@@ -73,7 +73,7 @@ export function isProbablyPrime (w: number|bigint, iterations: number = 16, disa
   }
 }
 
-export function _isProbablyPrime (w: bigint, iterations: number = 16): boolean {
+export function _isProbablyPrime (w: bigint, iterations: number): boolean {
   /*
   PREFILTERING. Even values but 2 are not primes, so don't test.
   1 is not a prime and the M-R algorithm needs w>1.
@@ -393,18 +393,7 @@ export function _isProbablyPrimeWorkerUrl (): string {
   // Let's us first add all the required functions
   let workerCode = `'use strict';const ${eGcd.name}=${eGcd.toString()};const ${modInv.name}=${modInv.toString()};const ${modPow.name}=${modPow.toString()};const ${toZn.name}=${toZn.toString()};const ${randBitsSync.name}=${randBitsSync.toString()};const ${randBytesSync.name}=${randBytesSync.toString()};const ${randBetween.name}=${randBetween.toString()};const ${isProbablyPrime.name}=${_isProbablyPrime.toString()};${bitLength.toString()};${fromBuffer.toString()};`
 
-  workerCode += `
-  onmessage = async function (event) { // Let's start once we are called
-    // event.data = {rnd: <bigint>, iterations: <number>}
-    const isPrime = await ${isProbablyPrime.name}(event.data.rnd, event.data.iterations);
-    const msg = {
-      isPrime: isPrime,
-      value: event.data.rnd,
-      id: event.data.id
-    };
-    postMessage(msg);
-  }
-  `
+  workerCode += `onmessage=async function(e){const m={isPrime:await ${isProbablyPrime.name}(e.data.rnd,e.data.iterations),value:e.data.rnd,id:e.data.id};postMessage(m);}`
 
   return _workerUrl(workerCode)
 }

@@ -11,7 +11,6 @@ const fs = require('fs')
 const pkgJson = require('../package.json')
 
 const rootDir = path.join(__dirname, '..')
-const dstDir = path.join(rootDir, pkgJson.directories.dist)
 const srcDir = path.join(rootDir, 'src')
 
 function camelise (str) {
@@ -40,20 +39,39 @@ const sourcemapOutputOptions = {
 }
 
 module.exports = [
+  { // Browser ESM
+    input: input,
+    output: {
+      file: path.join(rootDir, pkgJson.browser),
+      format: 'es',
+      ...sourcemapOutputOptions
+    },
+    plugins: [
+      replace({
+        IS_BROWSER: true,
+        preventAssignment: true
+      }),
+      typescriptPlugin(tsBundleOptions),
+      resolve({ // For the workers to properly load all the functions when minified (e.g. by webpack), bigint-mod-arith should be resolved
+        browser: true,
+        exportConditions: ['browser', 'module', 'import', 'default']
+      })
+    ]
+  },
   { // Browser bundles
     input: input,
     output: [
       {
-        file: path.join(dstDir, `bundles/${name}.iife.js`),
+        file: path.join(rootDir, pkgJson.exports['./iife-browser-bundle']),
         format: 'iife',
         name: pkgCamelisedName
       },
       {
-        file: path.join(dstDir, `bundles/${name}.esm.js`),
+        file: path.join(rootDir, pkgJson.exports['./esm-browser-bundle']),
         format: 'es'
       },
       {
-        file: path.join(dstDir, `bundles/${name}.umd.js`),
+        file: path.join(rootDir, pkgJson.exports['./umd-browser-bundle']),
         format: 'umd',
         name: pkgCamelisedName
       }
@@ -110,6 +128,7 @@ module.exports = [
       }),
       typescriptPlugin(tsBundleOptions),
       commonjs({ extensions: ['.js', '.ts'] }) // the ".ts" extension is required
-    ]
+    ],
+    external
   }
 ]

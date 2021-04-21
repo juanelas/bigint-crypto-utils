@@ -12,6 +12,6 @@
  * @returns A promise that resolves to a boolean that is either true (a probably prime number) or false (definitely composite)
  */
 export declare function isProbablyPrime(w: number | bigint, iterations?: number, disableWorkers?: boolean): Promise<boolean>;
-export declare function _isProbablyPrime(w: bigint, iterations?: number): boolean;
+export declare function _isProbablyPrime(w: bigint, iterations: number): boolean;
 export declare function _isProbablyPrimeWorkerUrl(): string;
 //# sourceMappingURL=isProbablyPrime.d.ts.map
