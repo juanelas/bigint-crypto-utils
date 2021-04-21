@@ -26,9 +26,6 @@ coverage
 # GitHub
 .github
 
-# tsconfig
-tsconfig.json
-
 # SRC docs
 src/docs
 
