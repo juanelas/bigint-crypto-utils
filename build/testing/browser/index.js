@@ -42,7 +42,7 @@ const browserTests = async ({ logWarnings = false, serverPort = 38000, keepServe
   page.on('error', function (err) { page.emit(new Error(err)) })
 
   await page.goto('http://localhost:38000/')
-  const watchDog = page.waitForFunction('_mocha.state === \'stopped\'')
+  const watchDog = page.waitForFunction('_mocha.state === \'stopped\'', { timeout: 0 })
   await watchDog
 
   if (keepServerRunning === false) {
