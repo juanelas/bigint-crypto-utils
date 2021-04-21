@@ -35,35 +35,11 @@ import * as bigintCryptoUtils from 'bigint-crypto-utils'
 
 The appropriate version for browser or node is automatically exported.
 
-`bigint-crypto-utils` **CANNOT BE POLYFILLED** to suport older JS version (\< ES2020). If you are using webpack/babel to create your production bundles, you should target only the most modern browsers. For instance, for **React** apps created with [`create-react-app`](https://create-react-app.dev/), you should edit your `package.json` and modify the `browserList` so that it only targets the latest browsers (play with the number of versions that do not need polyfilling):
+> `bigint-crypto-utils` uses [ES2020 BigInt](https://tc39.es/ecma262/#sec-bigint-objects), so take into account that:
+> 1. If you experience issues using webpack/babel to create your production bundles, you may edit the supported browsers list and leave only [supported browsers and versions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility). The browsers list is usually located in your project's `package.json` or the `.browserslistrc` file.
+> 2. In order to use `bigint-crypto-utils` with TypeScript you need to set `target`, and `lib` and `module` if in use, to `ES2020` in your project's `tsconfig.json`.
 
-```json
-"browserslist": {
-  "production": [
-    "last 1 chrome version",
-    "last 1 firefox version",
-    "last 1 safari version"
-  ],
-  "development": [
-    "last 1 chrome version",
-    "last 1 firefox version",
-    "last 1 safari version"
-  ]
-}
-```
-
-Also, notice that [BigInt implementation is ES2020](https://tc39.es/ecma262/#sec-bigint-objects). In order to use it with TypeScript you need to set `target` to `ES2020` in your project's `tsconfig.json`.
-
-If you are using Angular, since this library uses node typings, you should also add them to the `angularCompilerOptions` in your `tsconfig.json`:
-
-```json
-  "angularCompilerOptions": {
-    "types": ["node", ...]
-    ...
-  }
-```
-
-You can also download the [IIFE bundle](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bundles/bigint-crypto-utils.iife.js), the [ESM bundle](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bundles/bigint-crypto-utils.esm.js) or the [UMD bundle](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bundles/bigint-crypto-utils.umd.js) and manually add it to your project, or, if you have already imported `bigint-crypto-utils` to your project, just get the bundles from `node_modules/bigint-crypto-utils/dist/bundles/`.
+You can also download the [IIFE bundle](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bundles/bigint-crypto-utils.iife.js), the [ESM bundle](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bundles/bigint-crypto-utils.esm.js) or the [UMD bundle](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bundles/bigint-crypto-utils.umd.js) and manually add it to your project, or, if you have already installed `bigint-crypto-utils` in your project, just get the bundles from `node_modules/bigint-crypto-utils/dist/bundles/`.
 
 An example of usage could be:
 
