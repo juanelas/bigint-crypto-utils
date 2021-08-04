@@ -133,7 +133,7 @@ w MUST be >= 0
 
 A promise that resolves to a boolean that is either true (a probably prime number) or false (definitely composite)
 
-Defined in: [src/ts/isProbablyPrime.ts:21](https://github.com/juanelas/bigint-crypto-utils/blob/365e92e/src/ts/isProbablyPrime.ts#L21)
+Defined in: [src/ts/isProbablyPrime.ts:21](https://github.com/juanelas/bigint-crypto-utils/blob/9543211/src/ts/isProbablyPrime.ts#L21)
 
 ___
 
@@ -273,7 +273,7 @@ bitLength MUST be > 0
 
 A promise that resolves to a bigint probable prime of bitLength bits.
 
-Defined in: [src/ts/prime.ts:21](https://github.com/juanelas/bigint-crypto-utils/blob/365e92e/src/ts/prime.ts#L21)
+Defined in: [src/ts/prime.ts:21](https://github.com/juanelas/bigint-crypto-utils/blob/9543211/src/ts/prime.ts#L21)
 
 ___
 
@@ -298,7 +298,7 @@ bitLength MUST be > 0
 
 A bigint probable prime of bitLength bits.
 
-Defined in: [src/ts/prime.ts:100](https://github.com/juanelas/bigint-crypto-utils/blob/365e92e/src/ts/prime.ts#L100)
+Defined in: [src/ts/prime.ts:100](https://github.com/juanelas/bigint-crypto-utils/blob/9543211/src/ts/prime.ts#L100)
 
 ___
 
@@ -322,7 +322,7 @@ Arguments MUST be: max > 0 && min >=0 && max > min
 
 A cryptographically secure random bigint between [min,max]
 
-Defined in: [src/ts/randBetween.ts:15](https://github.com/juanelas/bigint-crypto-utils/blob/365e92e/src/ts/randBetween.ts#L15)
+Defined in: [src/ts/randBetween.ts:15](https://github.com/juanelas/bigint-crypto-utils/blob/9543211/src/ts/randBetween.ts#L15)
 
 ___
 
@@ -346,7 +346,7 @@ bitLength MUST be > 0
 
 A Promise that resolves to a UInt8Array/Buffer (Browser/Node.js) filled with cryptographically secure random bits
 
-Defined in: [src/ts/randBits.ts:14](https://github.com/juanelas/bigint-crypto-utils/blob/365e92e/src/ts/randBits.ts#L14)
+Defined in: [src/ts/randBits.ts:14](https://github.com/juanelas/bigint-crypto-utils/blob/9543211/src/ts/randBits.ts#L14)
 
 ___
 
@@ -370,7 +370,7 @@ bitLength MUST be > 0
 
 A Uint8Array/Buffer (Browser/Node.js) filled with cryptographically secure random bits
 
-Defined in: [src/ts/randBits.ts:45](https://github.com/juanelas/bigint-crypto-utils/blob/365e92e/src/ts/randBits.ts#L45)
+Defined in: [src/ts/randBits.ts:45](https://github.com/juanelas/bigint-crypto-utils/blob/9543211/src/ts/randBits.ts#L45)
 
 ___
 
@@ -394,7 +394,7 @@ byteLength MUST be > 0
 
 A promise that resolves to a UInt8Array/Buffer (Browser/Node.js) filled with cryptographically secure random bytes
 
-Defined in: [src/ts/randBytes.ts:12](https://github.com/juanelas/bigint-crypto-utils/blob/365e92e/src/ts/randBytes.ts#L12)
+Defined in: [src/ts/randBytes.ts:12](https://github.com/juanelas/bigint-crypto-utils/blob/9543211/src/ts/randBytes.ts#L12)
 
 ___
 
@@ -418,7 +418,7 @@ byteLength MUST be > 0
 
 A UInt8Array/Buffer (Browser/Node.js) filled with cryptographically secure random bytes
 
-Defined in: [src/ts/randBytes.ts:46](https://github.com/juanelas/bigint-crypto-utils/blob/365e92e/src/ts/randBytes.ts#L46)
+Defined in: [src/ts/randBytes.ts:46](https://github.com/juanelas/bigint-crypto-utils/blob/9543211/src/ts/randBytes.ts#L46)
 
 ___
 

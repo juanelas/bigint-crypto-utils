@@ -27,6 +27,12 @@ Then either require (Node.js CJS):
 const bigintCryptoUtils = require('bigint-crypto-utils')
 ```
 
+> **Node >=10.4 <11**. `bigint-crypto-utils` uses workers to speed up some operations. Workers are enabled by default with Node.js from version 11. In order to use them with Node >=10.4 and <11, you need to execute node with the flag `--experimental-worker`, and require the .js file manually (otherwise .cjs is required by default and would not be supported by the workers)
+>
+> ```javascript
+> const bigintCryptoUtils = require('bigint-crypto-utils/dist/cjs/index.node')  // ONLY FOR node >=10.4 <11 !
+> ```
+
 or import (JavaScript ES module):
 
 ```javascript

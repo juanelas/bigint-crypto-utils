@@ -36,6 +36,7 @@
       },
       "default": "./dist/esm/index.browser.js"
     },
+    "./node-js": "./dist/cjs/index.node.js",
     "./esm-browser-bundle": "./dist/bundles/bigint-crypto-utils.esm.js",
     "./iife-browser-bundle": "./dist/bundles/bigint-crypto-utils.iife.js",
     "./umd-browser-bundle": "./dist/bundles/bigint-crypto-utils.umd.js",

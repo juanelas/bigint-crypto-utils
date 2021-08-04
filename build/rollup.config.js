@@ -115,12 +115,18 @@ module.exports = [
   },
   { // Node CJS
     input: input,
-    output: {
-      dir: path.join(rootDir, path.dirname(pkgJson.exports['.'].node.require)),
-      entryFileNames: path.basename(pkgJson.exports['.'].node.require),
-      ...sourcemapOutputOptions,
-      format: 'cjs'
-    },
+    output: [
+      {
+        file: path.join(rootDir, pkgJson.exports['.'].node.require),
+        ...sourcemapOutputOptions,
+        format: 'cjs'
+      },
+      {
+        file: path.join(rootDir, pkgJson.exports['./node-js']),
+        ...sourcemapOutputOptions,
+        format: 'cjs'
+      }
+    ],
     plugins: [
       replace({
         IS_BROWSER: false,
