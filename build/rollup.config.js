@@ -7,8 +7,7 @@ import typescriptPlugin from '@rollup/plugin-typescript'
 import commonjs from '@rollup/plugin-commonjs'
 
 import { dirname, join } from 'path'
-import { existsSync } from 'fs'
-import { move } from 'fs-extra'
+import { existsSync, moveSync, removeSync } from 'fs-extra'
 import { directories, name as _name, dependencies, peerDependencies, exports, types } from '../package.json'
 
 const rootDir = join(__dirname, '..')
@@ -45,8 +44,9 @@ const sourcemapOutputOptions = {
 function moveDirPlugin (srcDir, dstDir) {
   return {
     name: 'move-dir',
-    async closeBundle () {
-      move(srcDir, dstDir, { overwrite: true })
+    closeBundle () {
+      removeSync(dstDir)
+      moveSync(srcDir, dstDir, { overwrite: true })
     }
   }
 }

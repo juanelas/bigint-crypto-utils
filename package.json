@@ -80,7 +80,8 @@
     "project": "./tsconfig.json",
     "ignore": [
       "dist/**/*",
-      "examples/**/*"
+      "examples/**/*",
+      "types/**/*"
     ]
   },
   "devDependencies": {
