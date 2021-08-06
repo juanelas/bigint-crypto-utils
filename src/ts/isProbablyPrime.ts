@@ -393,7 +393,7 @@ export function _isProbablyPrimeWorkerUrl (): string {
   // Let's us first add all the required functions
   let workerCode = `'use strict';const ${eGcd.name}=${eGcd.toString()};const ${modInv.name}=${modInv.toString()};const ${modPow.name}=${modPow.toString()};const ${toZn.name}=${toZn.toString()};const ${randBitsSync.name}=${randBitsSync.toString()};const ${randBytesSync.name}=${randBytesSync.toString()};const ${randBetween.name}=${randBetween.toString()};const ${isProbablyPrime.name}=${_isProbablyPrime.toString()};${bitLength.toString()};${fromBuffer.toString()};`
 
-  workerCode += `onmessage=async function(e){const m={isPrime:await ${isProbablyPrime.name}(e.data.rnd,e.data.iterations),value:e.data.rnd,id:e.data.id};postMessage(m);}`
+  workerCode += `onmessage=async function(_e){const _m={isPrime:await ${isProbablyPrime.name}(_e.data.rnd,_e.data.iterations),value:_e.data.rnd,id:_e.data.id};postMessage(_m);}`
 
   return _workerUrl(workerCode)
 }
