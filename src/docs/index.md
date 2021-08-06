@@ -41,6 +41,7 @@ import * as {{PKG_CAMELCASE}} from '{{PKG_NAME}}'
 The appropriate version for browser or node is automatically exported.
 
 > `{{PKG_NAME}}` uses [ES2020 BigInt](https://tc39.es/ecma262/#sec-bigint-objects), so take into account that:
+>
 > 1. If you experience issues using webpack/babel to create your production bundles, you may edit the supported browsers list and leave only [supported browsers and versions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility). The browsers list is usually located in your project's `package.json` or the `.browserslistrc` file.
 > 2. In order to use `{{PKG_NAME}}` with TypeScript you need to set `target`, and `lib` and `module` if in use, to `ES2020` in your project's `tsconfig.json`.
 
