@@ -46,7 +46,7 @@ The appropriate version for browser or node is automatically exported.
 
 You can also download the {{IIFE_BUNDLE}}, the {{ESM_BUNDLE}} or the {{UMD_BUNDLE}} and manually add it to your project, or, if you have already installed `{{PKG_NAME}}` in your project, just get the bundles from `node_modules/{{PKG_NAME}}/dist/bundles/`.
 
-An example of usage could be:
+An example of usage could be (complete examples can be found in the [examples](https://github.com/juanelas/bigint-crypto-utils/tree/master/examples) directory):
 
 ```typescript
 /* A BigInt with value 666 can be declared calling the bigint constructor as

@@ -23,9 +23,9 @@ async function typedoc () {
 
   app.bootstrap({
     // typedoc options here
-    entryPoints: ['src/index.ts'],
+    entryPoints: ['src/ts/index.ts'],
     plugin: ['typedoc-plugin-markdown'],
-    includeVersion: true,
+    includeVersion: false,
     entryDocument: 'API.md',
     readme: 'none',
     hideBreadcrumbs: true
@@ -50,7 +50,7 @@ function getRepositoryData () {
       return {
         repoProvider,
         repoUsername: repodata[1],
-        repoName: repodata[2]
+        repoName: repodata.slice(2).join('/')
       }
     } else return null
   }
@@ -98,6 +98,8 @@ let template = fs.readFileSync(templateFile, { encoding: 'UTF-8' })
 
 if (repoProvider && repoProvider === 'github') {
   template = template.replace(/\{\{GITHUB_ACTIONS_BADGES\}\}/g, workflowBadget + '\n' + coverallsBadge)
+} else {
+  template = template.replace(/\{\{GITHUB_ACTIONS_BADGES\}\}/g, '')
 }
 
 const readmeFile = path.join(rootDir, 'README.md')

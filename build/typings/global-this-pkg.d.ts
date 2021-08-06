@@ -1,5 +1,7 @@
 import * as _pkgModule from '../..'
 
-export as namespace _pkg
-
+declare global {
+  const _pkg: typeof _pkgModule
+}
+export as namespace _pkgTypes
 export = _pkgModule

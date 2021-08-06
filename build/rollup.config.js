@@ -11,7 +11,8 @@ const fs = require('fs')
 const pkgJson = require('../package.json')
 
 const rootDir = path.join(__dirname, '..')
-const srcDir = path.join(rootDir, 'src')
+const dstDir = path.join(rootDir, pkgJson.directories.dist)
+const srcDir = path.join(rootDir, 'src', 'ts')
 
 function camelise (str) {
   return str.replace(/-([a-z])/g,
@@ -28,6 +29,7 @@ const input = path.join(srcDir, 'index.ts')
 if (fs.existsSync(input) !== true) throw new Error('The entry point should be index.ts')
 
 const tsBundleOptions = {
+  outDir: undefined, // ignore outDir in tsconfig.json
   exclude: ['test/**/*', 'src/**/*.spec.ts', './build/typings/global-this-pkg.d.ts']
 }
 
@@ -39,39 +41,38 @@ const sourcemapOutputOptions = {
 }
 
 module.exports = [
-  { // Browser ESM
+  { // ESM for browsers
     input: input,
-    output: {
-      file: path.join(rootDir, pkgJson.browser),
-      format: 'es',
-      ...sourcemapOutputOptions
-    },
+    output: [
+      {
+        file: path.join(rootDir, pkgJson.exports['.'].default),
+        ...sourcemapOutputOptions,
+        format: 'es'
+      }
+    ],
     plugins: [
       replace({
         IS_BROWSER: true,
         preventAssignment: true
       }),
-      typescriptPlugin(tsBundleOptions),
-      resolve({ // For the workers to properly load all the functions when minified (e.g. by webpack), bigint-mod-arith should be resolved
-        browser: true,
-        exportConditions: ['browser', 'module', 'import', 'default']
-      })
-    ]
+      typescriptPlugin(tsBundleOptions)
+    ],
+    external
   },
   { // Browser bundles
     input: input,
     output: [
       {
-        file: path.join(rootDir, pkgJson.exports['./iife-browser-bundle']),
+        file: path.join(dstDir, 'bundles/iife.js'),
         format: 'iife',
         name: pkgCamelisedName
       },
       {
-        file: path.join(rootDir, pkgJson.exports['./esm-browser-bundle']),
+        file: path.join(dstDir, 'bundles/esm.js'),
         format: 'es'
       },
       {
-        file: path.join(rootDir, pkgJson.exports['./umd-browser-bundle']),
+        file: path.join(dstDir, 'bundles/umd.js'),
         format: 'umd',
         name: pkgCamelisedName
       }
@@ -92,8 +93,7 @@ module.exports = [
   { // Node ESM with declaration files
     input: input,
     output: {
-      dir: path.join(rootDir, path.dirname(pkgJson.exports['.'].node.import)),
-      entryFileNames: path.basename(pkgJson.exports['.'].node.import),
+      file: path.join(rootDir, pkgJson.exports['.'].node.import),
       ...sourcemapOutputOptions,
       format: 'es'
     },
@@ -122,7 +122,7 @@ module.exports = [
         format: 'cjs'
       },
       {
-        file: path.join(rootDir, pkgJson.exports['./node-js']),
+        file: path.join(rootDir, pkgJson.exports['.'].node.require).slice(0, -4) + '.js', // .js extension instead of .cjs for Node 10 support
         ...sourcemapOutputOptions,
         format: 'cjs'
       }
@@ -134,7 +134,6 @@ module.exports = [
       }),
       typescriptPlugin(tsBundleOptions),
       commonjs({ extensions: ['.js', '.ts'] }) // the ".ts" extension is required
-    ],
-    external
+    ]
   }
 ]
