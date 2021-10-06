@@ -66,6 +66,10 @@ export default [
         IS_BROWSER: true,
         preventAssignment: true
       }),
+      resolve({
+        browser: true,
+        exportConditions: ['browser', 'module', 'import', 'default']
+      }),
       typescriptPlugin(tsBundleOptions)
     ],
     external
@@ -120,6 +124,10 @@ export default [
         declarationDir: 'types',
         declarationMap: true
       }),
+      resolve({
+        browser: true,
+        exportConditions: ['node', 'module', 'require']
+      }),
       commonjs({ extensions: ['.js', '.cjs', '.ts'] }), // the ".ts" extension is required
       moveDirPlugin(join(rootDir, dirname(exports['.'].node.import), 'types'), join(rootDir, dirname(types)))
     ],
@@ -145,6 +153,10 @@ export default [
         preventAssignment: true
       }),
       typescriptPlugin(tsBundleOptions),
+      resolve({
+        browser: true,
+        exportConditions: ['node', 'module', 'require']
+      }),
       commonjs({ extensions: ['.js', '.cjs', '.ts'] }) // the ".ts" extension is required
     ]
   }

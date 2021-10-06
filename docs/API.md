@@ -45,7 +45,7 @@ The absolute value of a
 
 #### Defined in
 
-node_modules/bigint-mod-arith/dist/esm/types/ts/abs.d.ts:8
+node_modules/bigint-mod-arith/types/abs.d.ts:8
 
 ___
 
@@ -69,7 +69,7 @@ The bit length
 
 #### Defined in
 
-node_modules/bigint-mod-arith/dist/esm/types/ts/bitLength.d.ts:7
+node_modules/bigint-mod-arith/types/bitLength.d.ts:7
 
 ___
 
@@ -98,7 +98,7 @@ A triple (g, x, y), such that ax + by = g = gcd(a, b).
 
 #### Defined in
 
-node_modules/bigint-mod-arith/dist/esm/types/ts/egcd.d.ts:18
+node_modules/bigint-mod-arith/types/egcd.d.ts:18
 
 ___
 
@@ -123,7 +123,7 @@ The greatest common divisor of a and b
 
 #### Defined in
 
-node_modules/bigint-mod-arith/dist/esm/types/ts/gcd.d.ts:9
+node_modules/bigint-mod-arith/types/gcd.d.ts:9
 
 ___
 
@@ -153,7 +153,7 @@ A promise that resolves to a boolean that is either true (a probably prime numbe
 
 #### Defined in
 
-[src/ts/isProbablyPrime.ts:21](https://github.com/juanelas/bigint-crypto-utils/blob/9c4cd84/src/ts/isProbablyPrime.ts#L21)
+[src/ts/isProbablyPrime.ts:21](https://github.com/juanelas/bigint-crypto-utils/blob/622fd09/src/ts/isProbablyPrime.ts#L21)
 
 ___
 
@@ -178,7 +178,7 @@ The least common multiple of a and b
 
 #### Defined in
 
-node_modules/bigint-mod-arith/dist/esm/types/ts/lcm.d.ts:8
+node_modules/bigint-mod-arith/types/lcm.d.ts:8
 
 ___
 
@@ -203,7 +203,7 @@ Maximum of numbers a and b
 
 #### Defined in
 
-node_modules/bigint-mod-arith/dist/esm/types/ts/max.d.ts:9
+node_modules/bigint-mod-arith/types/max.d.ts:9
 
 ___
 
@@ -228,7 +228,7 @@ Minimum of numbers a and b
 
 #### Defined in
 
-node_modules/bigint-mod-arith/dist/esm/types/ts/min.d.ts:9
+node_modules/bigint-mod-arith/types/min.d.ts:9
 
 ___
 
@@ -256,7 +256,7 @@ The inverse modulo n
 
 #### Defined in
 
-node_modules/bigint-mod-arith/dist/esm/types/ts/modInv.d.ts:12
+node_modules/bigint-mod-arith/types/modInv.d.ts:12
 
 ___
 
@@ -285,7 +285,7 @@ b**e mod n
 
 #### Defined in
 
-node_modules/bigint-mod-arith/dist/esm/types/ts/modPow.d.ts:13
+node_modules/bigint-mod-arith/types/modPow.d.ts:13
 
 ___
 
@@ -317,7 +317,7 @@ A promise that resolves to a bigint probable prime of bitLength bits.
 
 #### Defined in
 
-[src/ts/prime.ts:21](https://github.com/juanelas/bigint-crypto-utils/blob/9c4cd84/src/ts/prime.ts#L21)
+[src/ts/prime.ts:21](https://github.com/juanelas/bigint-crypto-utils/blob/622fd09/src/ts/prime.ts#L21)
 
 ___
 
@@ -346,7 +346,7 @@ A bigint probable prime of bitLength bits.
 
 #### Defined in
 
-[src/ts/prime.ts:100](https://github.com/juanelas/bigint-crypto-utils/blob/9c4cd84/src/ts/prime.ts#L100)
+[src/ts/prime.ts:100](https://github.com/juanelas/bigint-crypto-utils/blob/622fd09/src/ts/prime.ts#L100)
 
 ___
 
@@ -374,7 +374,7 @@ A cryptographically secure random bigint between [min,max]
 
 #### Defined in
 
-[src/ts/randBetween.ts:15](https://github.com/juanelas/bigint-crypto-utils/blob/9c4cd84/src/ts/randBetween.ts#L15)
+[src/ts/randBetween.ts:15](https://github.com/juanelas/bigint-crypto-utils/blob/622fd09/src/ts/randBetween.ts#L15)
 
 ___
 
@@ -402,7 +402,7 @@ A Promise that resolves to a UInt8Array/Buffer (Browser/Node.js) filled with cry
 
 #### Defined in
 
-[src/ts/randBits.ts:14](https://github.com/juanelas/bigint-crypto-utils/blob/9c4cd84/src/ts/randBits.ts#L14)
+[src/ts/randBits.ts:14](https://github.com/juanelas/bigint-crypto-utils/blob/622fd09/src/ts/randBits.ts#L14)
 
 ___
 
@@ -430,7 +430,7 @@ A Uint8Array/Buffer (Browser/Node.js) filled with cryptographically secure rando
 
 #### Defined in
 
-[src/ts/randBits.ts:45](https://github.com/juanelas/bigint-crypto-utils/blob/9c4cd84/src/ts/randBits.ts#L45)
+[src/ts/randBits.ts:45](https://github.com/juanelas/bigint-crypto-utils/blob/622fd09/src/ts/randBits.ts#L45)
 
 ___
 
@@ -458,7 +458,7 @@ A promise that resolves to a UInt8Array/Buffer (Browser/Node.js) filled with cry
 
 #### Defined in
 
-[src/ts/randBytes.ts:12](https://github.com/juanelas/bigint-crypto-utils/blob/9c4cd84/src/ts/randBytes.ts#L12)
+[src/ts/randBytes.ts:12](https://github.com/juanelas/bigint-crypto-utils/blob/622fd09/src/ts/randBytes.ts#L12)
 
 ___
 
@@ -486,7 +486,7 @@ A UInt8Array/Buffer (Browser/Node.js) filled with cryptographically secure rando
 
 #### Defined in
 
-[src/ts/randBytes.ts:46](https://github.com/juanelas/bigint-crypto-utils/blob/9c4cd84/src/ts/randBytes.ts#L46)
+[src/ts/randBytes.ts:46](https://github.com/juanelas/bigint-crypto-utils/blob/622fd09/src/ts/randBytes.ts#L46)
 
 ___
 
@@ -517,4 +517,4 @@ A bigint with the smallest positive representation of a modulo n
 
 #### Defined in
 
-node_modules/bigint-mod-arith/dist/esm/types/ts/toZn.d.ts:15
+node_modules/bigint-mod-arith/types/toZn.d.ts:15
