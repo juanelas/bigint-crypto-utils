@@ -8,7 +8,7 @@ import commonjs from '@rollup/plugin-commonjs'
 
 import { dirname, join } from 'path'
 import { existsSync, moveSync, removeSync } from 'fs-extra'
-import { directories, name as _name, dependencies, peerDependencies, exports, types } from '../package.json'
+import { directories, name as _name, /* dependencies, peerDependencies, */ exports, types } from '../package.json'
 
 const rootDir = join(__dirname, '..')
 const dstDir = join(rootDir, directories.dist)
@@ -34,7 +34,7 @@ const tsBundleOptions = {
   exclude: ['test/**/*', 'src/**/*.spec.ts', './build/typings/global-this-pkg.d.ts']
 }
 
-const external = [...Object.keys(dependencies || {}), ...Object.keys(peerDependencies || {})]
+// const external = [...Object.keys(dependencies || {}), ...Object.keys(peerDependencies || {})]
 
 const sourcemapOutputOptions = {
   sourcemap: 'inline',
@@ -66,15 +66,14 @@ export default [
         IS_BROWSER: true,
         preventAssignment: true
       }),
+      typescriptPlugin(tsBundleOptions),
       resolve({
         browser: true,
         exportConditions: ['browser', 'module', 'import', 'default']
-      }),
-      typescriptPlugin(tsBundleOptions)
-    ],
-    external
+      })
+    ]
   },
-  { // Browser bundles
+  { // Other Browser bundles
     input: input,
     output: [
       {
@@ -125,13 +124,12 @@ export default [
         declarationMap: true
       }),
       resolve({
-        browser: true,
+        browser: false,
         exportConditions: ['node', 'module', 'require']
       }),
       commonjs({ extensions: ['.js', '.cjs', '.ts'] }), // the ".ts" extension is required
       moveDirPlugin(join(rootDir, dirname(exports['.'].node.import), 'types'), join(rootDir, dirname(types)))
-    ],
-    external
+    ]
   },
   { // Node CJS
     input: input,
@@ -154,7 +152,7 @@ export default [
       }),
       typescriptPlugin(tsBundleOptions),
       resolve({
-        browser: true,
+        browser: false,
         exportConditions: ['node', 'module', 'require']
       }),
       commonjs({ extensions: ['.js', '.cjs', '.ts'] }) // the ".ts" extension is required
