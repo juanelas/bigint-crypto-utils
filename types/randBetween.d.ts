@@ -1,10 +1,10 @@
 /**
- * Returns a cryptographically secure random integer between [min,max]. Both numbers must be >=0
+ * Returns a cryptographically secure random integer between [min,max].
  * @param max Returned value will be <= max
  * @param min Returned value will be >= min
  *
  * @throws {RangeError}
- * Arguments MUST be: max > 0 && min >=0 && max > min
+ * Arguments MUST be: max > min
  *
  * @returns A cryptographically secure random bigint between [min,max]
  */
