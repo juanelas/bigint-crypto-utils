@@ -3,7 +3,7 @@ const fs = require('fs')
 const path = require('path')
 
 const rollup = require('rollup')
-const loadAndParseConfigFile = require('rollup/dist/loadConfigFile')
+const loadAndParseConfigFile = require('rollup/dist/loadConfigFile.js')
 
 const Builder = require('./Builder.js')
 
@@ -28,6 +28,7 @@ module.exports = class RollupBuilder extends Builder {
         : bundle.output[0].file
       return file === path.join(rootDir, pkgJson.main)
     })[0]
+    delete rollupOptions.output.pop() // remove the second output
 
     this.builder = new RollupBundler(rollupOptions, this.watch)
 
