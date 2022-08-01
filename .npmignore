@@ -26,11 +26,25 @@ coverage
 # GitHub
 .github
 
+# GitLab
+.gitlab-ci.yml
+.gitlab-ci.yaml
+
+# tsconfig
+tsconfig.json
+
 # SRC docs
 src/docs
 
+# Environment files
+*.env
+
 # Test temporal files
 .mocha-ts
+.tsconfig.json
+
+# docs temporal files
+.nojekyll
 
 # Examples
 examples
