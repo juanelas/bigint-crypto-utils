@@ -61,6 +61,11 @@ export default [
         format: 'es'
       },
       {
+        file: join(dstDir, 'bundles/esm.js'),
+        ...sourcemapOutputOptions,
+        format: 'es'
+      },
+      {
         file: join(dstDir, 'bundles/esm.min.js'),
         format: 'es',
         plugins: [terser()]

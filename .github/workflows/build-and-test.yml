@@ -31,7 +31,8 @@ jobs:
       - name: build
         run: npm run build:js
       
-      - name: docs
+      - if: matrix.node-version == '16.x'
+        name: docs
         run: npm run docs
       
       - name: node tests
