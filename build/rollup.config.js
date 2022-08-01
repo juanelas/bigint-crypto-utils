@@ -81,7 +81,6 @@ export default [
         browser: true,
         exportConditions: ['browser', 'default']
       }),
-      compileDts(),
       commonjs({ extensions: ['.js', '.cjs', '.ts', '.jsx', '.cjsx', '.tsx'] }), // the ".ts" extension is required
       json()
     ]
@@ -172,6 +171,7 @@ export default [
         browser: false,
         exportConditions: ['node']
       }),
+      compileDts(),
       commonjs({ extensions: ['.js', '.cjs', '.ts', '.jsx', '.cjsx', '.tsx'] }), // the ".ts" extension is required
       json()
     ]

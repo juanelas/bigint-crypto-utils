@@ -396,9 +396,9 @@ export function _isProbablyPrimeWorkerUrl (): string {
   return _workerUrl(workerCode)
 }
 
-try {
-  var workerThreads = await import('worker_threads') // eslint-disable-line no-var
-  if (!IS_BROWSER && _useWorkers) { // node.js with support for workers
+if (!IS_BROWSER && _useWorkers) { // node.js with support for workers
+  try {
+    var workerThreads = await import('worker_threads') // eslint-disable-line no-var
     const isWorker = !(workerThreads.isMainThread)
     if (isWorker && workerThreads.parentPort !== null) { // worker
       const parentPort = workerThreads.parentPort
@@ -412,5 +412,5 @@ try {
         parentPort.postMessage(msg)
       })
     }
-  }
-} catch (error) {}
+  } catch (error) {}
+}

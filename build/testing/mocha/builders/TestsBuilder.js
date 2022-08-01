@@ -63,7 +63,7 @@ export default class TestsBuilder extends Builder {
     tsConfig.compilerOptions.sourceMap = true
 
     // This prevents SyntaxError: Cannot use import statement outside a module
-    // tsConfig.compilerOptions.module = 'commonjs'
+    tsConfig.compilerOptions.module = 'commonjs'
 
     // Removed typeroots (it causes issues)
     tsConfig.compilerOptions.typeRoots = undefined
