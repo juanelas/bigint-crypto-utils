@@ -80,7 +80,8 @@ ___
 An iterative implementation of the extended euclidean algorithm or extended greatest common divisor algorithm.
 Take positive integers a, b as input, and return a triple (g, x, y), such that ax + by = g = gcd(a, b).
 
-**`throws`** {RangeError}
+**`Throws`**
+
 This excepction is thrown if a or b are less than 0
 
 #### Parameters
@@ -134,7 +135,8 @@ ___
 The test first tries if any of the first 250 small primes are a factor of the input number and then passes several
 iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)
 
-**`throws`** {RangeError}
+**`Throws`**
+
 w MUST be >= 0
 
 #### Parameters
@@ -153,7 +155,7 @@ A promise that resolves to a boolean that is either true (a probably prime numbe
 
 #### Defined in
 
-[src/ts/isProbablyPrime.ts:21](https://github.com/juanelas/bigint-crypto-utils/blob/b2b3b8f/src/ts/isProbablyPrime.ts#L21)
+[src/ts/isProbablyPrime.ts:21](https://github.com/juanelas/bigint-crypto-utils/blob/76a4460/src/ts/isProbablyPrime.ts#L21)
 
 ___
 
@@ -238,7 +240,8 @@ ___
 
 Modular inverse.
 
-**`throws`** {RangeError}
+**`Throws`**
+
 Excpeption thorwn when a does not have inverse modulo n
 
 #### Parameters
@@ -266,7 +269,8 @@ ___
 
 Modular exponentiation b**e mod n. Currently using the right-to-left binary method
 
-**`throws`** {RangeError}
+**`Throws`**
+
 Excpeption thrown when n is not > 0
 
 #### Parameters
@@ -299,7 +303,8 @@ main process, and it can be much faster (if several cores or cpu are available).
 The node version can also use worker_threads if they are available (enabled by default with Node 11 and
 and can be enabled at runtime executing node --experimental-worker with node >=10.5.0).
 
-**`throws`** {RangeError}
+**`Throws`**
+
 bitLength MUST be > 0
 
 #### Parameters
@@ -317,7 +322,7 @@ A promise that resolves to a bigint probable prime of bitLength bits.
 
 #### Defined in
 
-[src/ts/prime.ts:21](https://github.com/juanelas/bigint-crypto-utils/blob/b2b3b8f/src/ts/prime.ts#L21)
+[src/ts/prime.ts:25](https://github.com/juanelas/bigint-crypto-utils/blob/76a4460/src/ts/prime.ts#L25)
 
 ___
 
@@ -328,7 +333,8 @@ ___
 A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator.
 The sync version is NOT RECOMMENDED since it won't use workers and thus it'll be slower and may freeze thw window in browser's javascript. Please consider using prime() instead.
 
-**`throws`** {RangeError}
+**`Throws`**
+
 bitLength MUST be > 0
 
 #### Parameters
@@ -346,7 +352,7 @@ A bigint probable prime of bitLength bits.
 
 #### Defined in
 
-[src/ts/prime.ts:100](https://github.com/juanelas/bigint-crypto-utils/blob/b2b3b8f/src/ts/prime.ts#L100)
+[src/ts/prime.ts:102](https://github.com/juanelas/bigint-crypto-utils/blob/76a4460/src/ts/prime.ts#L102)
 
 ___
 
@@ -356,7 +362,8 @@ ___
 
 Returns a cryptographically secure random integer between [min,max].
 
-**`throws`** {RangeError}
+**`Throws`**
+
 Arguments MUST be: max > min
 
 #### Parameters
@@ -374,7 +381,7 @@ A cryptographically secure random bigint between [min,max]
 
 #### Defined in
 
-[src/ts/randBetween.ts:15](https://github.com/juanelas/bigint-crypto-utils/blob/b2b3b8f/src/ts/randBetween.ts#L15)
+[src/ts/randBetween.ts:15](https://github.com/juanelas/bigint-crypto-utils/blob/76a4460/src/ts/randBetween.ts#L15)
 
 ___
 
@@ -384,7 +391,8 @@ ___
 
 Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
 
-**`throws`** {RangeError}
+**`Throws`**
+
 bitLength MUST be > 0
 
 #### Parameters
@@ -402,7 +410,7 @@ A Promise that resolves to a UInt8Array/Buffer (Browser/Node.js) filled with cry
 
 #### Defined in
 
-[src/ts/randBits.ts:14](https://github.com/juanelas/bigint-crypto-utils/blob/b2b3b8f/src/ts/randBits.ts#L14)
+[src/ts/randBits.ts:14](https://github.com/juanelas/bigint-crypto-utils/blob/76a4460/src/ts/randBits.ts#L14)
 
 ___
 
@@ -412,7 +420,8 @@ ___
 
 Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
 
-**`throws`** {RangeError}
+**`Throws`**
+
 bitLength MUST be > 0
 
 #### Parameters
@@ -430,7 +439,7 @@ A Uint8Array/Buffer (Browser/Node.js) filled with cryptographically secure rando
 
 #### Defined in
 
-[src/ts/randBits.ts:45](https://github.com/juanelas/bigint-crypto-utils/blob/b2b3b8f/src/ts/randBits.ts#L45)
+[src/ts/randBits.ts:45](https://github.com/juanelas/bigint-crypto-utils/blob/76a4460/src/ts/randBits.ts#L45)
 
 ___
 
@@ -440,7 +449,8 @@ ___
 
 Secure random bytes for both node and browsers. Node version uses crypto.randomBytes() and browser one self.crypto.getRandomValues()
 
-**`throws`** {RangeError}
+**`Throws`**
+
 byteLength MUST be > 0
 
 #### Parameters
@@ -458,7 +468,7 @@ A promise that resolves to a UInt8Array/Buffer (Browser/Node.js) filled with cry
 
 #### Defined in
 
-[src/ts/randBytes.ts:12](https://github.com/juanelas/bigint-crypto-utils/blob/b2b3b8f/src/ts/randBytes.ts#L12)
+[src/ts/randBytes.ts:14](https://github.com/juanelas/bigint-crypto-utils/blob/76a4460/src/ts/randBytes.ts#L14)
 
 ___
 
@@ -468,7 +478,8 @@ ___
 
 Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
 
-**`throws`** {RangeError}
+**`Throws`**
+
 byteLength MUST be > 0
 
 #### Parameters
@@ -486,7 +497,7 @@ A UInt8Array/Buffer (Browser/Node.js) filled with cryptographically secure rando
 
 #### Defined in
 
-[src/ts/randBytes.ts:46](https://github.com/juanelas/bigint-crypto-utils/blob/b2b3b8f/src/ts/randBytes.ts#L46)
+[src/ts/randBytes.ts:47](https://github.com/juanelas/bigint-crypto-utils/blob/76a4460/src/ts/randBytes.ts#L47)
 
 ___
 
@@ -496,10 +507,12 @@ ___
 
 Finds the smallest positive element that is congruent to a in modulo n
 
-**`remarks`**
+**`Remarks`**
+
 a and b must be the same type, either number or bigint
 
-**`throws`** {RangeError}
+**`Throws`**
+
 Excpeption thrown when n is not > 0
 
 #### Parameters

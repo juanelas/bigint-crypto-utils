@@ -15,7 +15,7 @@ const browserTests = async (
       devtools: true
     }
   }, testFiles) => {
-  const server = require('./server.js').server
+  const server = require('./server.cjs').server
   await server.init(testFiles)
   await server.listen(serverPort)
   const browser = await puppeteer.launch(puppeteerOptions)

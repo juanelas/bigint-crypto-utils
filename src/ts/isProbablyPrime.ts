@@ -27,12 +27,11 @@ export function isProbablyPrime (w: number|bigint, iterations: number = 16, disa
   if (!IS_BROWSER) { // Node.js
     /* istanbul ignore else */
     if (!disableWorkers && _useWorkers) {
-      const { Worker } = require('worker_threads')  // eslint-disable-line
       return new Promise((resolve, reject) => {
-        const worker = new Worker(__filename)
+        const worker = new workerThreads.Worker(__filename)
 
         worker.on('message', (data: WorkerToMainMsg) => {
-          worker.terminate()
+          worker.terminate().catch(reject)
           resolve(data.isPrime)
         })
 
@@ -399,18 +398,18 @@ export function _isProbablyPrimeWorkerUrl (): string {
 }
 
 if (!IS_BROWSER && _useWorkers) { // node.js with support for workers
-  const { parentPort, isMainThread } = require('worker_threads') // eslint-disable-line
-  const isWorker = !(isMainThread as boolean)
+  var workerThreads = await import('worker_threads') // eslint-disable-line
+  const isWorker = !(workerThreads.isMainThread)
   /* istanbul ignore if */
-  if (isWorker) { // worker
-    parentPort.on('message', function (data: MainToWorkerMsg) { // Let's start once we are called
+  if (isWorker && workerThreads.parentPort !== null) { // worker
+    workerThreads.parentPort.on('message', function (data: MainToWorkerMsg) { // Let's start once we are called
       const isPrime = _isProbablyPrime(data.rnd, data.iterations)
       const msg: WorkerToMainMsg = {
         isPrime: isPrime,
         value: data.rnd,
         id: data.id
       }
-      parentPort.postMessage(msg)
+      workerThreads.parentPort?.postMessage(msg)
     })
   }
 }

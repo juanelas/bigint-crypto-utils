@@ -5,7 +5,7 @@ const path = require('path')
 const rollup = require('rollup')
 const loadAndParseConfigFile = require('rollup/dist/loadConfigFile.js')
 
-const Builder = require('./Builder.js')
+const Builder = require('./Builder.cjs')
 
 const rootDir = path.join(__dirname, '../../../../')
 const pkgJson = require(path.join(rootDir, 'package.json'))

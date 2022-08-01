@@ -1,6 +1,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-[![build](https://github.com/juanelas/bigint-crypto-utils/workflows/build/badge.svg)](https://github.com/juanelas/bigint-crypto-utils/actions?query=workflow%3A%22build%22)
+[![Node.js CI](https://github.com/juanelas/bigint-crypto-utils/workflows/build/badge.svg)](https://github.com/juanelas/bigint-crypto-utils/actions?query=workflow%3A%22build%22)
 [![Coverage Status](https://coveralls.io/repos/github/juanelas/bigint-crypto-utils/badge.svg?branch=master)](https://coveralls.io/github/juanelas/bigint-crypto-utils?branch=master)
 
 # bigint-crypto-utils
@@ -46,7 +46,7 @@ The appropriate version for browser or node is automatically exported.
 > 1. If you experience issues using webpack/babel to create your production bundles, you may edit the supported browsers list and leave only [supported browsers and versions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility). The browsers list is usually located in your project's `package.json` or the `.browserslistrc` file.
 > 2. In order to use `bigint-crypto-utils` with TypeScript you need to set `target`, and `lib` and `module` if in use, to `ES2020` in your project's `tsconfig.json`.
 
-You can also download the [IIFE bundle](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bundles/iife.js), the [ESM bundle](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bundles/esm.js) or the [UMD bundle](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bundles/umd.js) and manually add it to your project, or, if you have already installed `bigint-crypto-utils` in your project, just get the bundles from `node_modules/bigint-crypto-utils/dist/bundles/`.
+You can also download the [IIFE bundle](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bundles/iife.js), the [ESM bundle](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bundles/esm.min.js) or the [UMD bundle](https://raw.githubusercontent.com/juanelas/bigint-crypto-utils/master/dist/bundles/umd.js) and manually add it to your project, or, if you have already installed `bigint-crypto-utils` in your project, just get the bundles from `node_modules/bigint-crypto-utils/dist/bundles/`.
 
 An example of usage could be (complete examples can be found in the [examples](https://github.com/juanelas/bigint-crypto-utils/tree/master/examples) directory):
 

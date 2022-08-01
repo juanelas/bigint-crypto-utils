@@ -4,7 +4,7 @@ const fs = require('fs')
 const ts = require('typescript')
 const JSON5 = require('json5')
 
-const Builder = require('./Builder.js')
+const Builder = require('./Builder.cjs')
 
 const rootDir = path.join(__dirname, '../../../../')
 const mochaTsRelativeDir = '.mocha-ts'
@@ -44,7 +44,7 @@ module.exports = class TestsBuilder extends Builder {
     tsConfig.compilerOptions.sourceMap = true
 
     // This prevents SyntaxError: Cannot use import statement outside a module
-    tsConfig.compilerOptions.module = 'commonjs'
+    // tsConfig.compilerOptions.module = 'commonjs'
 
     // Removed typeroots (it causes issues)
     tsConfig.compilerOptions.typeRoots = undefined

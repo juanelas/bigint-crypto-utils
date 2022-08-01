@@ -8,7 +8,7 @@ let _useWorkers = false // The following is just to check whether we can use wor
 /* eslint-disable no-lone-blocks */
 if (!IS_BROWSER) { // Node.js
   try {
-    require.resolve('worker_threads')
+    await import('worker_threads')
     _useWorkers = true
   } catch (e) {
     /* istanbul ignore next */

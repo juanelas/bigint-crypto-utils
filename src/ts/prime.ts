@@ -2,6 +2,10 @@ import { fromBuffer } from './fromBuffer'
 import { _isProbablyPrime, _isProbablyPrimeWorkerUrl } from './isProbablyPrime'
 import { randBits, randBitsSync } from './randBits'
 import { _useWorkers, WorkerToMainMsg, MainToWorkerMsg } from './workerUtils'
+import type { Worker as NodeWorker } from 'worker_threads'
+
+if (!IS_BROWSER) var os = await import('os') // eslint-disable-line no-var
+if (!IS_BROWSER) var workerThreads = await import('worker_threads') // eslint-disable-line no-var
 
 /**
  * A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator.
@@ -30,12 +34,12 @@ export function prime (bitLength: number, iterations: number = 16): Promise<bigi
     return new Promise((resolve) => { resolve(rnd) })
   }
   return new Promise((resolve, reject) => {
-    const workerList: Worker[] = []
-    const _onmessage = (msg: WorkerToMainMsg, newWorker: Worker): void => {
+    const workerList: Array<NodeWorker | Worker> = []
+    const _onmessage = (msg: WorkerToMainMsg, newWorker: Worker | NodeWorker): void => {
       if (msg.isPrime) {
         // if a prime number has been found, stop all the workers, and return it
         for (let j = 0; j < workerList.length; j++) {
-          workerList[j].terminate()
+          workerList[j].terminate() // eslint-disable-line @typescript-eslint/no-floating-promises
         }
         while (workerList.length > 0) {
           workerList.pop()
@@ -64,10 +68,8 @@ export function prime (bitLength: number, iterations: number = 16): Promise<bigi
         workerList.push(newWorker)
       }
     } else { // Node.js
-      const { cpus } = require('os') // eslint-disable-line
-      const { Worker } = require('worker_threads') // eslint-disable-line
-      for (let i = 0; i < cpus().length - 1; i++) {
-        const newWorker = new Worker(__filename)
+      for (let i = 0; i < os.cpus().length - 1; i++) {
+        const newWorker = new workerThreads.Worker(__filename)
         newWorker.on('message', (msg: WorkerToMainMsg) => _onmessage(msg, newWorker))
         workerList.push(newWorker)
       }

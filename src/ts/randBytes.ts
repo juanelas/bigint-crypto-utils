@@ -1,3 +1,5 @@
+if (!IS_BROWSER) var crypto = await import('crypto') // eslint-disable-line no-var
+
 /**
  * Secure random bytes for both node and browsers. Node version uses crypto.randomBytes() and browser one self.crypto.getRandomValues()
  *
@@ -14,8 +16,7 @@ export function randBytes (byteLength: number, forceLength = false): Promise<Uin
 
   return new Promise(function (resolve, reject) {
     if (!IS_BROWSER) {
-      const crypto = require('crypto') // eslint-disable-line
-      crypto.randomBytes(byteLength, function (err: Error, buf: Buffer) {
+      crypto.randomBytes(byteLength, function (err, buf: Buffer) {
         /* istanbul ignore if */
         if (err !== null) reject(err)
         // If fixed length is required we put the first bit to 1 -> to get the necessary bitLength
@@ -48,7 +49,6 @@ export function randBytesSync (byteLength: number, forceLength: boolean = false)
 
   /* eslint-disable no-lone-blocks */
   if (!IS_BROWSER) { // node
-    const crypto = require('crypto') // eslint-disable-line
     const buf = crypto.randomBytes(byteLength)
     // If fixed length is required we put the first bit to 1 -> to get the necessary bitLength
     if (forceLength) buf[0] = buf[0] | 128
