@@ -162,8 +162,8 @@ export default [
     plugins: [
       replace({
         IS_BROWSER: false,
-        __filename: `'${join(rootDir, exports['.'].node.import)}'`,
-        __dirname: `'${dirname(join(rootDir, exports['.'].node.import))}'`,
+        __filename: `'${exports['.'].node.import}'`,
+        __dirname: `'${dirname(exports['.'].node.import)}'`,
         preventAssignment: true
       }),
       typescriptPlugin(tsBundleOptions),
