@@ -5,7 +5,11 @@ import { _useWorkers, WorkerToMainMsg, MainToWorkerMsg } from './workerUtils'
 import type { Worker as NodeWorker } from 'worker_threads'
 
 if (!IS_BROWSER) var os = await import('os') // eslint-disable-line no-var
-if (!IS_BROWSER) var workerThreads = await import('worker_threads') // eslint-disable-line no-var
+if (!IS_BROWSER) {
+  try {
+    var workerThreads = await import('worker_threads') // eslint-disable-line no-var
+  } catch {}
+}
 
 /**
  * A probably-prime (Miller-Rabin), cryptographically-secure, random-number generator.

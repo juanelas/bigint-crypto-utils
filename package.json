@@ -89,8 +89,7 @@
     "ignore": [
       "dist/**/*",
       "examples/**/*",
-      "types/**/*",
-      "build/testing/mocha/**/*"
+      "types/**/*"
     ]
   },
   "devDependencies": {

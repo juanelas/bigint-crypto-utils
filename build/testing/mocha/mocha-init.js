@@ -1,6 +1,8 @@
 'use strict'
 
-import { join, relative, resolve, sep } from 'path'
+import { join, resolve } from 'path'
+import { readFileSync } from 'fs'
+import json5 from 'json5'
 import chai from 'chai'
 import rimraf from 'rimraf'
 import { fileURLToPath } from 'url'
@@ -12,17 +14,13 @@ const __dirname = resolve(fileURLToPath(import.meta.url), '../')
 
 const rootDir = join(__dirname, '../../../')
 
-const pkgJson = (await import(join(rootDir, 'package.json'), {
-  assert: {
-    type: "json",
-  }
-})).default
+const pkgJson = json5.parse(readFileSync(join(rootDir, 'package.json')))
 
 global.chai = chai
 
 async function reloadModule () {
   const _pkg = await import(join(rootDir, pkgJson.exports['.'].node.import + `?update=${Date.now()}`))
-  return _pkg
+  global._pkg = _pkg
   // if (typeof _pkg === 'function') { // If it is just a default export, load it as named (for compatibility)
   //   global._pkg = {
   //     default: _pkg
@@ -32,7 +30,7 @@ async function reloadModule () {
   // }
 }
 
-global._pkg = await reloadModule()
+reloadModule()
 
 global.IS_BROWSER = false
 
@@ -55,7 +53,7 @@ export const mochaHooks = {
 
       // Just in case our module had been modified. Reload it when the tests are repeated (for mocha watch mode).
       // delete require.cache[require.resolve(rootDir)]
-      global._pkg = await reloadModule()
+      await reloadModule()
 
       // And now reset any other transpiled module (just delete the cache so it is fully reloaded)
       // for (const key in require.cache) {

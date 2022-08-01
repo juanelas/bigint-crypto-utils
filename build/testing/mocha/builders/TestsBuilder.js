@@ -6,19 +6,19 @@ import { fileURLToPath } from 'url'
 import typescript from 'typescript'
 import Builder from './Builder.js'
 
-const { parse } = json5
-
 const { sys, createSemanticDiagnosticsBuilderProgram, flattenDiagnosticMessageText, createWatchCompilerHost, createWatchProgram } = typescript
 
 const __dirname = resolve(fileURLToPath(import.meta.url), '../')
 
 const rootDir = join(__dirname, '../../../../')
 
-const pkgJson = (await import(join(rootDir, 'package.json'), {
-  assert: {
-    type: "json",
-  }
-})).default
+// const pkgJson = (await import(join(rootDir, 'package.json'), {
+//   assert: {
+//     type: "json",
+//   }
+// })).default
+
+const pkgJson = json5.parse(readFileSync(join(rootDir, 'package.json')))
 
 const mochaTsRelativeDir = '.mocha-ts'
 const mochaTsDir = join(rootDir, mochaTsRelativeDir)
@@ -43,7 +43,7 @@ export default class TestsBuilder extends Builder {
 
     writeFileSync(this.tempPkgJsonPath, JSON.stringify(pkgJson, undefined, 2))
 
-    const tsConfig = parse(readFileSync(configPath, 'utf8'))
+    const tsConfig = json5.parse(readFileSync(configPath, 'utf8'))
 
     tsConfig.file = undefined
 

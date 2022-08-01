@@ -1,9 +1,10 @@
 import EventEmitter from 'events'
-import { writeFileSync, existsSync } from 'fs'
+import { existsSync, readFileSync, writeFileSync } from 'fs'
+import json5 from 'json5'
 import { join, resolve } from 'path'
 import { fileURLToPath } from 'url'
 
-import { watch as _watch, rollup as _rollup } from 'rollup'
+import { rollup as _rollup, watch as _watch } from 'rollup'
 import loadAndParseConfigFile from 'rollup/dist/loadConfigFile.js'
 
 import Builder from './Builder.js'
@@ -11,11 +12,7 @@ import Builder from './Builder.js'
 const __dirname = resolve(fileURLToPath(import.meta.url), '../')
 
 const rootDir = join(__dirname, '../../../../')
-const pkgJson = (await import(join(rootDir, 'package.json'), {
-  assert: {
-    type: "json",
-  }
-})).default
+const pkgJson = json5.parse(readFileSync(join(rootDir, 'package.json')))
 
 export default class RollupBuilder extends Builder {
   constructor ({ name = 'rollup', configPath = join(rootDir, 'rollup.config.js'), tempDir = join(rootDir, '.mocha-ts'), watch = false }) {

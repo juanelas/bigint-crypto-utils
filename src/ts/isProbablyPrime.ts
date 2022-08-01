@@ -396,18 +396,21 @@ export function _isProbablyPrimeWorkerUrl (): string {
   return _workerUrl(workerCode)
 }
 
-if (!IS_BROWSER && _useWorkers) { // node.js with support for workers
-  var workerThreads = await import('worker_threads') // eslint-disable-line
-  const isWorker = !(workerThreads.isMainThread)
-  if (isWorker && workerThreads.parentPort !== null) { // worker
-    workerThreads.parentPort.on('message', function (data: MainToWorkerMsg) { // Let's start once we are called
-      const isPrime = _isProbablyPrime(data.rnd, data.iterations)
-      const msg: WorkerToMainMsg = {
-        isPrime: isPrime,
-        value: data.rnd,
-        id: data.id
-      }
-      workerThreads.parentPort?.postMessage(msg)
-    })
+try {
+  var workerThreads = await import('worker_threads') // eslint-disable-line no-var
+  if (!IS_BROWSER && _useWorkers) { // node.js with support for workers
+    const isWorker = !(workerThreads.isMainThread)
+    if (isWorker && workerThreads.parentPort !== null) { // worker
+      const parentPort = workerThreads.parentPort
+      parentPort.on('message', function (data: MainToWorkerMsg) { // Let's start once we are called
+        const isPrime = _isProbablyPrime(data.rnd, data.iterations)
+        const msg: WorkerToMainMsg = {
+          isPrime: isPrime,
+          value: data.rnd,
+          id: data.id
+        }
+        parentPort.postMessage(msg)
+      })
+    }
   }
-}
+} catch (error) {}
