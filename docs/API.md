@@ -155,7 +155,7 @@ A promise that resolves to a boolean that is either true (a probably prime numbe
 
 #### Defined in
 
-[src/ts/isProbablyPrime.ts:21](https://github.com/juanelas/bigint-crypto-utils/blob/a545f2c/src/ts/isProbablyPrime.ts#L21)
+[src/ts/isProbablyPrime.ts:21](https://github.com/juanelas/bigint-crypto-utils/blob/a8ae97b/src/ts/isProbablyPrime.ts#L21)
 
 ___
 
@@ -322,7 +322,7 @@ A promise that resolves to a bigint probable prime of bitLength bits.
 
 #### Defined in
 
-[src/ts/prime.ts:25](https://github.com/juanelas/bigint-crypto-utils/blob/a545f2c/src/ts/prime.ts#L25)
+[src/ts/prime.ts:25](https://github.com/juanelas/bigint-crypto-utils/blob/a8ae97b/src/ts/prime.ts#L25)
 
 ___
 
@@ -352,7 +352,7 @@ A bigint probable prime of bitLength bits.
 
 #### Defined in
 
-[src/ts/prime.ts:102](https://github.com/juanelas/bigint-crypto-utils/blob/a545f2c/src/ts/prime.ts#L102)
+[src/ts/prime.ts:102](https://github.com/juanelas/bigint-crypto-utils/blob/a8ae97b/src/ts/prime.ts#L102)
 
 ___
 
@@ -381,7 +381,7 @@ A cryptographically secure random bigint between [min,max]
 
 #### Defined in
 
-[src/ts/randBetween.ts:15](https://github.com/juanelas/bigint-crypto-utils/blob/a545f2c/src/ts/randBetween.ts#L15)
+[src/ts/randBetween.ts:15](https://github.com/juanelas/bigint-crypto-utils/blob/a8ae97b/src/ts/randBetween.ts#L15)
 
 ___
 
@@ -410,7 +410,7 @@ A Promise that resolves to a UInt8Array/Buffer (Browser/Node.js) filled with cry
 
 #### Defined in
 
-[src/ts/randBits.ts:14](https://github.com/juanelas/bigint-crypto-utils/blob/a545f2c/src/ts/randBits.ts#L14)
+[src/ts/randBits.ts:14](https://github.com/juanelas/bigint-crypto-utils/blob/a8ae97b/src/ts/randBits.ts#L14)
 
 ___
 
@@ -439,7 +439,7 @@ A Uint8Array/Buffer (Browser/Node.js) filled with cryptographically secure rando
 
 #### Defined in
 
-[src/ts/randBits.ts:45](https://github.com/juanelas/bigint-crypto-utils/blob/a545f2c/src/ts/randBits.ts#L45)
+[src/ts/randBits.ts:45](https://github.com/juanelas/bigint-crypto-utils/blob/a8ae97b/src/ts/randBits.ts#L45)
 
 ___
 
@@ -468,7 +468,7 @@ A promise that resolves to a UInt8Array/Buffer (Browser/Node.js) filled with cry
 
 #### Defined in
 
-[src/ts/randBytes.ts:14](https://github.com/juanelas/bigint-crypto-utils/blob/a545f2c/src/ts/randBytes.ts#L14)
+[src/ts/randBytes.ts:14](https://github.com/juanelas/bigint-crypto-utils/blob/a8ae97b/src/ts/randBytes.ts#L14)
 
 ___
 
@@ -497,7 +497,7 @@ A UInt8Array/Buffer (Browser/Node.js) filled with cryptographically secure rando
 
 #### Defined in
 
-[src/ts/randBytes.ts:47](https://github.com/juanelas/bigint-crypto-utils/blob/a545f2c/src/ts/randBytes.ts#L47)
+[src/ts/randBytes.ts:47](https://github.com/juanelas/bigint-crypto-utils/blob/a8ae97b/src/ts/randBytes.ts#L47)
 
 ___
 
