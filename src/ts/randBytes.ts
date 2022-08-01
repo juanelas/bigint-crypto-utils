@@ -17,7 +17,6 @@ export function randBytes (byteLength: number, forceLength = false): Promise<Uin
   return new Promise(function (resolve, reject) {
     if (!IS_BROWSER) {
       crypto.randomBytes(byteLength, function (err, buf: Buffer) {
-        /* istanbul ignore if */
         if (err !== null) reject(err)
         // If fixed length is required we put the first bit to 1 -> to get the necessary bitLength
         if (forceLength) buf[0] = buf[0] | 128

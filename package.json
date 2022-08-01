@@ -53,12 +53,12 @@
   "scripts": {
     "build": "run-s lint build:js docs",
     "build:js": "rollup -c build/rollup.config.js",
-    "clean": "rimraf .nyc_output .mocha-ts coverage dist types docs",
-    "coverage": "nyc --check-coverage --exclude build --exclude '{src/ts/**/*.spec.ts,test/**/*.ts,.mocha-ts/**/*}' --reporter=text --reporter=lcov node ./build/bin/mocha-ts.cjs --require build/testing/mocha/mocha-init.cjs '{src/ts/**/*.spec.ts,test/**/*.ts}'",
+    "clean": "rimraf .mocha-ts coverage dist types docs",
+    "coverage": "c8 --clean --check-coverage --exclude-after-remap --exclude '{build,node_modules,src/ts/**/*.spec.ts,test/**/*.ts,.mocha-ts/**/*}' --reporter=text --reporter=lcov node ./build/bin/mocha-ts.js --require build/testing/mocha/mocha-init.js '{src/ts/**/*.spec.ts,test/**/*.ts}'",
     "docs": "node build/build.docs.cjs",
     "git:add": "git add -A",
     "lint": "ts-standard --fix",
-    "mocha-ts": "node ./build/bin/mocha-ts.cjs --require build/testing/mocha/mocha-init.cjs ",
+    "mocha-ts": "node ./build/bin/mocha-ts.js --require build/testing/mocha/mocha-init.js ",
     "mocha-ts:browser": "node build/testing/browser/index.cjs ",
     "mocha-ts:browser-headless": "node build/testing/browser/index.cjs headless ",
     "preversion": "run-s clean lint build:js coverage test:browser-headless",
@@ -68,7 +68,7 @@
     "test:browser": "npm run mocha-ts:browser ",
     "test:browser-headless": "npm run mocha-ts:browser-headless ",
     "test:node": "npm run mocha-ts -- '{src/ts/**/*.spec.ts,test/**/*.ts}'",
-    "watch": "npm run mocha-ts:node -- --watch '{src/ts/**/*.spec.ts,test/**/*.ts}'"
+    "watch": "npm run mocha-ts -- --watch '{src/ts/**/*.spec.ts,test/**/*.ts}'"
   },
   "ts-standard": {
     "env": [
@@ -85,11 +85,12 @@
       "_pkg",
       "chai"
     ],
-    "project": "./tsconfig.json",
+    "project": "tsconfig.json",
     "ignore": [
       "dist/**/*",
       "examples/**/*",
-      "types/**/*"
+      "types/**/*",
+      "build/testing/mocha/**/*"
     ]
   },
   "devDependencies": {
@@ -101,6 +102,7 @@
     "@rollup/plugin-typescript": "^8.2.0",
     "@types/chai": "^4.2.22",
     "@types/mocha": "^9.0.0",
+    "c8": "^7.12.0",
     "chai": "^4.3.3",
     "dotenv": "^16.0.0",
     "fs-extra": "^10.0.0",
@@ -109,7 +111,6 @@
     "minimatch": "^5.0.1",
     "mocha": "^10.0.0",
     "npm-run-all": "^4.1.5",
-    "nyc": "^15.1.0",
     "pirates": "^4.0.1",
     "puppeteer": "^15.5.0",
     "rimraf": "^3.0.2",

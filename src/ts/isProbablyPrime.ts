@@ -25,7 +25,6 @@ export function isProbablyPrime (w: number|bigint, iterations: number = 16, disa
   if (w < 0n) throw RangeError('w MUST be >= 0')
 
   if (!IS_BROWSER) { // Node.js
-    /* istanbul ignore else */
     if (!disableWorkers && _useWorkers) {
       return new Promise((resolve, reject) => {
         const worker = new workerThreads.Worker(__filename)
@@ -400,7 +399,6 @@ export function _isProbablyPrimeWorkerUrl (): string {
 if (!IS_BROWSER && _useWorkers) { // node.js with support for workers
   var workerThreads = await import('worker_threads') // eslint-disable-line
   const isWorker = !(workerThreads.isMainThread)
-  /* istanbul ignore if */
   if (isWorker && workerThreads.parentPort !== null) { // worker
     workerThreads.parentPort.on('message', function (data: MainToWorkerMsg) { // Let's start once we are called
       const isPrime = _isProbablyPrime(data.rnd, data.iterations)

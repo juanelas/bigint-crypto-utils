@@ -25,7 +25,7 @@ if (!IS_BROWSER) var workerThreads = await import('worker_threads') // eslint-di
 export function prime (bitLength: number, iterations: number = 16): Promise<bigint> { // eslint-disable-line
   if (bitLength < 1) throw new RangeError('bitLength MUST be > 0')
 
-  /* istanbul ignore if */
+  /* c8 ignore start */
   if (!_useWorkers) { // If there is no support for workers
     let rnd = 0n
     do {
@@ -33,6 +33,7 @@ export function prime (bitLength: number, iterations: number = 16): Promise<bigi
     } while (!_isProbablyPrime(rnd, iterations))
     return new Promise((resolve) => { resolve(rnd) })
   }
+  /* c8 ignore stop */
   return new Promise((resolve, reject) => {
     const workerList: Array<NodeWorker | Worker> = []
     const _onmessage = (msg: WorkerToMainMsg, newWorker: Worker | NodeWorker): void => {
