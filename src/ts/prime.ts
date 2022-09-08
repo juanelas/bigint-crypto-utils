@@ -41,7 +41,7 @@ export function prime (bitLength: number, iterations: number = 16): Promise<bigi
   return new Promise((resolve, reject) => {
     const workerList: Array<NodeWorker | Worker> = []
     const _onmessage = (msg: WorkerToMainMsg, newWorker: Worker | NodeWorker): void => {
-      if (msg.isPrime) {
+      if (msg._bcu.isPrime) {
         // if a prime number has been found, stop all the workers, and return it
         for (let j = 0; j < workerList.length; j++) {
           workerList[j].terminate() // eslint-disable-line @typescript-eslint/no-floating-promises
@@ -49,15 +49,17 @@ export function prime (bitLength: number, iterations: number = 16): Promise<bigi
         while (workerList.length > 0) {
           workerList.pop()
         }
-        resolve(msg.value)
+        resolve(msg._bcu.value)
       } else { // if a composite is found, make the worker test another random number
         const buf = randBitsSync(bitLength, true)
         const rnd = fromBuffer(buf)
         try {
           const msgToWorker: MainToWorkerMsg = {
-            rnd: rnd,
-            iterations: iterations,
-            id: msg.id
+            _bcu: {
+              rnd: rnd,
+              iterations: iterations,
+              id: msg._bcu.id
+            }
           }
           newWorker.postMessage(msgToWorker)
         } catch (error) {
@@ -83,9 +85,11 @@ export function prime (bitLength: number, iterations: number = 16): Promise<bigi
       randBits(bitLength, true).then(function (buf: Uint8Array|Buffer) {
         const rnd = fromBuffer(buf)
         workerList[i].postMessage({
-          rnd: rnd,
-          iterations: iterations,
-          id: i
+          _bcu: {
+            rnd: rnd,
+            iterations: iterations,
+            id: i
+          }
         })
       }).catch(reject)
     }

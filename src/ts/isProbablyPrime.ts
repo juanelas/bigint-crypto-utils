@@ -29,17 +29,21 @@ export function isProbablyPrime (w: number|bigint, iterations: number = 16, disa
       return new Promise((resolve, reject) => {
         const worker = new workerThreads.Worker(__filename)
 
-        worker.on('message', (data: WorkerToMainMsg) => {
-          worker.terminate().catch(reject)
-          resolve(data.isPrime)
+        worker.on('message', (data?: WorkerToMainMsg) => {
+          if (data?._bcu?.isPrime !== undefined) {
+            worker.terminate().catch(reject)
+            resolve(data._bcu.isPrime)
+          }
         })
 
         worker.on('error', reject)
 
         const msg: MainToWorkerMsg = {
-          rnd: w as bigint,
-          iterations: iterations,
-          id: 0
+          _bcu: {
+            rnd: w as bigint,
+            iterations: iterations,
+            id: 0
+          }
         }
         worker.postMessage(msg)
       })
@@ -53,8 +57,10 @@ export function isProbablyPrime (w: number|bigint, iterations: number = 16, disa
       const worker = new Worker(_isProbablyPrimeWorkerUrl())
 
       worker.onmessage = (event) => {
-        worker.terminate()
-        resolve(event.data.isPrime)
+        if (event?.data?._bcu?.isPrime !== undefined) {
+          worker.terminate()
+          resolve(event.data._bcu.isPrime)
+        }
       }
 
       worker.onmessageerror = (event) => {
@@ -62,9 +68,11 @@ export function isProbablyPrime (w: number|bigint, iterations: number = 16, disa
       }
 
       const msg: MainToWorkerMsg = {
-        rnd: w as bigint,
-        iterations: iterations,
-        id: 0
+        _bcu: {
+          rnd: w as bigint,
+          iterations: iterations,
+          id: 0
+        }
       }
       worker.postMessage(msg)
     })
@@ -389,9 +397,32 @@ export function _isProbablyPrime (w: bigint, iterations: number): boolean {
 
 export function _isProbablyPrimeWorkerUrl (): string {
   // Let's us first add all the required functions
-  let workerCode = `'use strict';const ${eGcd.name}=${eGcd.toString()};const ${modInv.name}=${modInv.toString()};const ${modPow.name}=${modPow.toString()};const ${toZn.name}=${toZn.toString()};const ${randBitsSync.name}=${randBitsSync.toString()};const ${randBytesSync.name}=${randBytesSync.toString()};const ${randBetween.name}=${randBetween.toString()};const ${isProbablyPrime.name}=${_isProbablyPrime.toString()};${bitLength.toString()};${fromBuffer.toString()};`
+  let workerCode = `
+  'use strict';
+  const ${eGcd.name} = ${eGcd.toString()};
+  const ${modInv.name} = ${modInv.toString()};
+  const ${modPow.name} = ${modPow.toString()};
+  const ${toZn.name} = ${toZn.toString()};
+  const ${randBitsSync.name} = ${randBitsSync.toString()};
+  const ${randBytesSync.name} = ${randBytesSync.toString()};
+  const ${randBetween.name} = ${randBetween.toString()};
+  const ${isProbablyPrime.name} = ${_isProbablyPrime.toString()};
+  ${bitLength.toString()};
+  ${fromBuffer.toString()};`
 
-  workerCode += `onmessage=async function(_e){const _m={isPrime:await ${isProbablyPrime.name}(_e.data.rnd,_e.data.iterations),value:_e.data.rnd,id:_e.data.id};postMessage(_m);}`
+  workerCode += `
+  onmessage = async function(msg) {
+    if (msg !== undefined && msg.data !== undefined && msg.data._bcu !== undefined && msg.data._bcu.id !== undefined && msg.data._bcu.iterations !== undefined && msg.data._bcu.rnd !== undefined) {
+      const msgToParent = {
+        _bcu: {
+          isPrime: await ${isProbablyPrime.name}(msg.data._bcu.rnd, msg.data._bcu.iterations),
+          value: msg.data._bcu.rnd,
+          id: msg.data._bcu.id
+        }
+      };
+      postMessage(msgToParent);
+    }
+  }`
 
   return _workerUrl(workerCode)
 }
@@ -402,14 +433,18 @@ if (!IS_BROWSER && _useWorkers) { // node.js with support for workers
     const isWorker = !(workerThreads.isMainThread)
     if (isWorker && workerThreads.parentPort !== null) { // worker
       const parentPort = workerThreads.parentPort
-      parentPort.on('message', function (data: MainToWorkerMsg) { // Let's start once we are called
-        const isPrime = _isProbablyPrime(data.rnd, data.iterations)
-        const msg: WorkerToMainMsg = {
-          isPrime: isPrime,
-          value: data.rnd,
-          id: data.id
+      parentPort.on('message', function (data: MainToWorkerMsg | any) { // Let's start once we are called
+        if (data?._bcu?.iterations !== undefined && data?._bcu?.rnd !== undefined) {
+          const isPrime = _isProbablyPrime(data._bcu.rnd, data._bcu.iterations)
+          const msg: WorkerToMainMsg = {
+            _bcu: {
+              isPrime: isPrime,
+              value: data._bcu.rnd,
+              id: data._bcu.id
+            }
+          }
+          parentPort.postMessage(msg)
         }
-        parentPort.postMessage(msg)
       })
     }
   } catch (error) {}
