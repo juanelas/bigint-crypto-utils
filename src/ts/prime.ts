@@ -21,8 +21,7 @@ if (!IS_BROWSER) {
  * @param bitLength - The required bit length for the generated prime
  * @param iterations - The number of iterations for the Miller-Rabin Probabilistic Primality Test
  *
- * @throws {RangeError}
- * bitLength MUST be > 0
+ * @throws {@link RangeError} if bitLength < 1
  *
  * @returns A promise that resolves to a bigint probable prime of bitLength bits.
  */
@@ -103,8 +102,7 @@ export function prime (bitLength: number, iterations: number = 16): Promise<bigi
  * @param bitLength - The required bit length for the generated prime
  * @param iterations - The number of iterations for the Miller-Rabin Probabilistic Primality Test
  *
- * @throws {RangeError}
- * bitLength MUST be > 0
+ * @throws {@link RangeError} if bitLength < 1
  *
  * @returns A bigint probable prime of bitLength bits.
  */

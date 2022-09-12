@@ -7,8 +7,7 @@ import { randBitsSync } from './randBits'
  * @param max Returned value will be <= max
  * @param min Returned value will be >= min
  *
- * @throws {RangeError}
- * Arguments MUST be: max > min
+ * @throws {@link RangeError} if max <= min
  *
  * @returns A cryptographically secure random bigint between [min,max]
  */

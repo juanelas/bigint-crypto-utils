@@ -82,7 +82,7 @@ Take positive integers a, b as input, and return a triple (g, x, y), such that a
 
 **`Throws`**
 
-This excepction is thrown if a or b are less than 0
+RangeError if a or b are <= 0
 
 #### Parameters
 
@@ -99,7 +99,7 @@ A triple (g, x, y), such that ax + by = g = gcd(a, b).
 
 #### Defined in
 
-node_modules/bigint-mod-arith/types/egcd.d.ts:18
+node_modules/bigint-mod-arith/types/egcd.d.ts:17
 
 ___
 
@@ -107,7 +107,7 @@ ___
 
 ▸ **gcd**(`a`, `b`): `bigint`
 
-Greatest-common divisor of two integers based on the iterative binary algorithm.
+Greatest common divisor of two integers based on the iterative binary algorithm.
 
 #### Parameters
 
@@ -137,14 +137,14 @@ iterations of Miller-Rabin Probabilistic Primality Test (FIPS 186-4 C.3.1)
 
 **`Throws`**
 
-w MUST be >= 0
+RangeError if w<0
 
 #### Parameters
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
 | `w` | `number` \| `bigint` | `undefined` | A positive integer to be tested for primality |
-| `iterations` | `number` | `16` | The number of iterations for the primality test. The value shall be consistent with Table C.1, C.2 or C.3 |
+| `iterations` | `number` | `16` | The number of iterations for the primality test. The value shall be consistent with Table C.1, C.2 or C.3 of FIPS 186-4 |
 | `disableWorkers` | `boolean` | `false` | Disable the use of workers for the primality test |
 
 #### Returns
@@ -155,7 +155,7 @@ A promise that resolves to a boolean that is either true (a probably prime numbe
 
 #### Defined in
 
-[src/ts/isProbablyPrime.ts:21](https://github.com/juanelas/bigint-crypto-utils/blob/d4bc197/src/ts/isProbablyPrime.ts#L21)
+[src/ts/isProbablyPrime.ts:20](https://github.com/juanelas/bigint-crypto-utils/blob/fe7a8fe/src/ts/isProbablyPrime.ts#L20)
 
 ___
 
@@ -188,7 +188,7 @@ ___
 
 ▸ **max**(`a`, `b`): `number` \| `bigint`
 
-Maximum. max(a,b)==a if a>=b. max(a,b)==b if a<=b
+Maximum. max(a,b)==a if a>=b. max(a,b)==b if a<b
 
 #### Parameters
 
@@ -213,7 +213,7 @@ ___
 
 ▸ **min**(`a`, `b`): `number` \| `bigint`
 
-Minimum. min(a,b)==b if a>=b. min(a,b)==a if a<=b
+Minimum. min(a,b)==b if a>=b. min(a,b)==a if a<b
 
 #### Parameters
 
@@ -242,7 +242,7 @@ Modular inverse.
 
 **`Throws`**
 
-Excpeption thorwn when a does not have inverse modulo n
+RangeError if a does not have inverse modulo n
 
 #### Parameters
 
@@ -259,7 +259,7 @@ The inverse modulo n
 
 #### Defined in
 
-node_modules/bigint-mod-arith/types/modInv.d.ts:12
+node_modules/bigint-mod-arith/types/modInv.d.ts:11
 
 ___
 
@@ -271,7 +271,7 @@ Modular exponentiation b**e mod n. Currently using the right-to-left binary meth
 
 **`Throws`**
 
-Excpeption thrown when n is not > 0
+RangeError if n <= 0
 
 #### Parameters
 
@@ -289,7 +289,7 @@ b**e mod n
 
 #### Defined in
 
-node_modules/bigint-mod-arith/types/modPow.d.ts:13
+node_modules/bigint-mod-arith/types/modPow.d.ts:12
 
 ___
 
@@ -305,7 +305,7 @@ and can be enabled at runtime executing node --experimental-worker with node >=1
 
 **`Throws`**
 
-bitLength MUST be > 0
+RangeError if bitLength < 1
 
 #### Parameters
 
@@ -322,7 +322,7 @@ A promise that resolves to a bigint probable prime of bitLength bits.
 
 #### Defined in
 
-[src/ts/prime.ts:29](https://github.com/juanelas/bigint-crypto-utils/blob/d4bc197/src/ts/prime.ts#L29)
+[src/ts/prime.ts:28](https://github.com/juanelas/bigint-crypto-utils/blob/fe7a8fe/src/ts/prime.ts#L28)
 
 ___
 
@@ -335,7 +335,7 @@ The sync version is NOT RECOMMENDED since it won't use workers and thus it'll be
 
 **`Throws`**
 
-bitLength MUST be > 0
+RangeError if bitLength < 1
 
 #### Parameters
 
@@ -352,7 +352,7 @@ A bigint probable prime of bitLength bits.
 
 #### Defined in
 
-[src/ts/prime.ts:111](https://github.com/juanelas/bigint-crypto-utils/blob/d4bc197/src/ts/prime.ts#L111)
+[src/ts/prime.ts:109](https://github.com/juanelas/bigint-crypto-utils/blob/fe7a8fe/src/ts/prime.ts#L109)
 
 ___
 
@@ -364,7 +364,7 @@ Returns a cryptographically secure random integer between [min,max].
 
 **`Throws`**
 
-Arguments MUST be: max > min
+RangeError if max <= min
 
 #### Parameters
 
@@ -381,7 +381,7 @@ A cryptographically secure random bigint between [min,max]
 
 #### Defined in
 
-[src/ts/randBetween.ts:15](https://github.com/juanelas/bigint-crypto-utils/blob/d4bc197/src/ts/randBetween.ts#L15)
+[src/ts/randBetween.ts:14](https://github.com/juanelas/bigint-crypto-utils/blob/fe7a8fe/src/ts/randBetween.ts#L14)
 
 ___
 
@@ -393,14 +393,14 @@ Secure random bits for both node and browsers. Node version uses crypto.randomFi
 
 **`Throws`**
 
-bitLength MUST be > 0
+RangeError if bitLength < 1
 
 #### Parameters
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
 | `bitLength` | `number` | `undefined` | The desired number of random bits |
-| `forceLength` | `boolean` | `false` | If we want to force the output to have a specific bit length. It basically forces the msb to be 1 |
+| `forceLength` | `boolean` | `false` | Set to true if you want to force the output to have a specific bit length. It basically forces the msb to be 1 |
 
 #### Returns
 
@@ -410,7 +410,7 @@ A Promise that resolves to a UInt8Array/Buffer (Browser/Node.js) filled with cry
 
 #### Defined in
 
-[src/ts/randBits.ts:14](https://github.com/juanelas/bigint-crypto-utils/blob/d4bc197/src/ts/randBits.ts#L14)
+[src/ts/randBits.ts:13](https://github.com/juanelas/bigint-crypto-utils/blob/fe7a8fe/src/ts/randBits.ts#L13)
 
 ___
 
@@ -422,14 +422,14 @@ Secure random bits for both node and browsers. Node version uses crypto.randomFi
 
 **`Throws`**
 
-bitLength MUST be > 0
+RangeError if bitLength < 1
 
 #### Parameters
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
 | `bitLength` | `number` | `undefined` | The desired number of random bits |
-| `forceLength` | `boolean` | `false` | If we want to force the output to have a specific bit length. It basically forces the msb to be 1 |
+| `forceLength` | `boolean` | `false` | Set to true if you want to force the output to have a specific bit length. It basically forces the msb to be 1 |
 
 #### Returns
 
@@ -439,7 +439,7 @@ A Uint8Array/Buffer (Browser/Node.js) filled with cryptographically secure rando
 
 #### Defined in
 
-[src/ts/randBits.ts:45](https://github.com/juanelas/bigint-crypto-utils/blob/d4bc197/src/ts/randBits.ts#L45)
+[src/ts/randBits.ts:43](https://github.com/juanelas/bigint-crypto-utils/blob/fe7a8fe/src/ts/randBits.ts#L43)
 
 ___
 
@@ -451,14 +451,14 @@ Secure random bytes for both node and browsers. Node version uses crypto.randomB
 
 **`Throws`**
 
-byteLength MUST be > 0
+RangeError if byteLength < 1
 
 #### Parameters
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
 | `byteLength` | `number` | `undefined` | The desired number of random bytes |
-| `forceLength` | `boolean` | `false` | If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1 |
+| `forceLength` | `boolean` | `false` | Set to true if you want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1 |
 
 #### Returns
 
@@ -468,7 +468,7 @@ A promise that resolves to a UInt8Array/Buffer (Browser/Node.js) filled with cry
 
 #### Defined in
 
-[src/ts/randBytes.ts:14](https://github.com/juanelas/bigint-crypto-utils/blob/d4bc197/src/ts/randBytes.ts#L14)
+[src/ts/randBytes.ts:13](https://github.com/juanelas/bigint-crypto-utils/blob/fe7a8fe/src/ts/randBytes.ts#L13)
 
 ___
 
@@ -477,17 +477,18 @@ ___
 ▸ **randBytesSync**(`byteLength`, `forceLength?`): `Uint8Array` \| `Buffer`
 
 Secure random bytes for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
+This is the synchronous version, consider using the asynchronous one for improved efficiency.
 
 **`Throws`**
 
-byteLength MUST be > 0
+RangeError if byteLength < 1
 
 #### Parameters
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
 | `byteLength` | `number` | `undefined` | The desired number of random bytes |
-| `forceLength` | `boolean` | `false` | If we want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1 |
+| `forceLength` | `boolean` | `false` | Set to true if you want to force the output to have a bit length of 8*byteLength. It basically forces the msb to be 1 |
 
 #### Returns
 
@@ -497,7 +498,7 @@ A UInt8Array/Buffer (Browser/Node.js) filled with cryptographically secure rando
 
 #### Defined in
 
-[src/ts/randBytes.ts:46](https://github.com/juanelas/bigint-crypto-utils/blob/d4bc197/src/ts/randBytes.ts#L46)
+[src/ts/randBytes.ts:45](https://github.com/juanelas/bigint-crypto-utils/blob/fe7a8fe/src/ts/randBytes.ts#L45)
 
 ___
 
@@ -513,7 +514,7 @@ a and b must be the same type, either number or bigint
 
 **`Throws`**
 
-Excpeption thrown when n is not > 0
+RangeError if n <= 0
 
 #### Parameters
 
@@ -530,4 +531,4 @@ A bigint with the smallest positive representation of a modulo n
 
 #### Defined in
 
-node_modules/bigint-mod-arith/types/toZn.d.ts:15
+node_modules/bigint-mod-arith/types/toZn.d.ts:14
