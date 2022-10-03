@@ -1,6 +1,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-[![Node.js CI](https://github.com/juanelas/bigint-crypto-utils/workflows/build/badge.svg)](https://github.com/juanelas/bigint-crypto-utils/actions?query=workflow%3A%22build%22)
+[![Node.js CI](https://github.com/juanelas/bigint-crypto-utils/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/juanelas/bigint-crypto-utils/actions/workflows/build-and-test.yml)
 [![Coverage Status](https://coveralls.io/repos/github/juanelas/bigint-crypto-utils/badge.svg?branch=master)](https://coveralls.io/github/juanelas/bigint-crypto-utils?branch=master)
 
 # bigint-crypto-utils

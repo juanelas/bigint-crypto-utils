@@ -52,7 +52,7 @@ function compileDts () {
 }
 
 export default [
-  { // ESM for browsers and declarations
+  { // Browser ESM bundle
     input: input,
     output: [
       {
@@ -103,11 +103,6 @@ export default [
     ],
     plugins: [
       replace({
-        'await import(': 'require(',
-        delimiters: ['', ''],
-        preventAssignment: true
-      }),
-      replace({
         IS_BROWSER: true,
         preventAssignment: true
       }),
@@ -150,7 +145,7 @@ export default [
       json()
     ]
   },
-  { // Node ESM
+  { // Node ESM and type declarations
     input: input,
     output: [
       {

@@ -1,3 +1,5 @@
+import * as bcu from '#pkg'
+
 describe('isProbablyPrime', function () {
   this.timeout(90000)
   const numbers = [
@@ -79,15 +81,15 @@ describe('isProbablyPrime', function () {
     describe(`isProbablyPrime(${num.value}, ${num.iterations}, ${String(!num.workers)})`, function () {
       it(`should return ${String(num.prime)}`, async function () {
         let ret
-        if (num.iterations === 16 && num.workers) ret = await _pkg.isProbablyPrime(num.value)
-        else ret = await _pkg.isProbablyPrime(num.value, num.iterations, !num.workers)
+        if (num.iterations === 16 && num.workers) ret = await bcu.isProbablyPrime(num.value)
+        else ret = await bcu.isProbablyPrime(num.value, num.iterations, !num.workers)
         chai.expect(ret).to.equal(num.prime)
       })
     })
   }
   describe('isProbablyPrime(-1)', function () {
     it('should throw RangeError', function () {
-      chai.expect(() => _pkg.isProbablyPrime(-1)).to.throw(RangeError) // eslint-disable-line
+      chai.expect(() => bcu.isProbablyPrime(-1)).to.throw(RangeError) // eslint-disable-line
     })
   })
 })

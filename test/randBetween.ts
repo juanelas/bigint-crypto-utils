@@ -1,3 +1,5 @@
+import * as bcu from '#pkg'
+
 describe('randBetween', function () {
   const numbers = [
     {
@@ -57,14 +59,14 @@ describe('randBetween', function () {
         it(`[${num.iterations} iterations] should return x such that min <= x <= max`, function () {
           let ret = true
           for (let i = 0; i < num.iterations; i++) {
-            const x = _pkg.randBetween(num.max, num.min)
+            const x = bcu.randBetween(num.max, num.min)
             ret = ret && x >= num.min && x <= num.max
           }
           chai.expect(ret).to.equal(true)
         })
       } else {
         it('should throw RangeError (max <=0 || min <0 || min>=max)', function () {
-          chai.expect(() => _pkg.randBetween(num.max, num.min)).to.throw(RangeError)
+          chai.expect(() => bcu.randBetween(num.max, num.min)).to.throw(RangeError)
         })
       }
     })
@@ -73,14 +75,14 @@ describe('randBetween', function () {
         it(`[${num.iterations} iterations] should return x such that 1 <= x <= max`, function () {
           let ret = true
           for (let i = 0; i < num.iterations; i++) {
-            const x = _pkg.randBetween(num.max)
+            const x = bcu.randBetween(num.max)
             ret = ret && x >= BigInt(1) && x <= num.max
           }
           chai.expect(ret).to.equal(true)
         })
       } else {
         it('should throw RangeError (max <= min)', function () {
-          chai.expect(() => _pkg.randBetween(num.max)).to.throw(RangeError)
+          chai.expect(() => bcu.randBetween(num.max)).to.throw(RangeError)
         })
       }
     })

@@ -36,7 +36,10 @@
     /* Advanced Options */
     "skipLibCheck": true,                     /* Skip type checking of declaration files. */
     "forceConsistentCasingInFileNames": true,  /* Disallow inconsistently-cased references to the same file. */
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      "#pkg": ["."]
+    }
   },
-  "include": ["src/ts/**/*", "test/**/*", "build/typings/**/*.d.ts"]
+  "include": ["src/ts/**/*", "build/typings/**/*.d.ts", "test/**/*", "test-vectors/**/*.ts", "benchmark/**/*.ts"]
 }

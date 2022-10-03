@@ -1,3 +1,5 @@
+import * as bcu from '#pkg'
+
 const iterations = 10
 const bitLengths = [-1, 0, 3, 8, 16, 511, 2048]
 const byteLengths = [-7, 0, 1, 8, 33, 40]
@@ -9,9 +11,9 @@ describe('testing randBits', function () {
         it('should return buffers', function () {
           let ret = true
           for (let i = 0; i < iterations; i++) {
-            const randbits = _pkg.randBitsSync(bitLength)
+            const randbits = bcu.randBitsSync(bitLength)
             // console.log(JSON.stringify(randbits))
-            const randbits2 = _pkg.randBitsSync(bitLength, true)
+            const randbits2 = bcu.randBitsSync(bitLength, true)
             // console.log(JSON.stringify(randbits2))
             if (!(((randbits instanceof Uint8Array) && (randbits2 instanceof Uint8Array)) ||
              ((randbits instanceof Buffer) && (randbits2 instanceof Buffer)))) {
@@ -23,7 +25,7 @@ describe('testing randBits', function () {
         })
       } else {
         it('should throw RangeError', function () {
-          chai.expect(() => _pkg.randBitsSync(bitLength)).to.throw(RangeError)
+          chai.expect(() => bcu.randBitsSync(bitLength)).to.throw(RangeError)
         })
       }
     })
@@ -32,9 +34,9 @@ describe('testing randBits', function () {
         it('should return buffers', async function () {
           let ret = true
           for (let i = 0; i < iterations; i++) {
-            const randbits = await _pkg.randBits(bitLength)
+            const randbits = await bcu.randBits(bitLength)
             // console.log(JSON.stringify(randbits))
-            const randbits2 = await _pkg.randBits(bitLength, true)
+            const randbits2 = await bcu.randBits(bitLength, true)
             // console.log(JSON.stringify(randbits2))
             if (!(((randbits instanceof Uint8Array) && (randbits2 instanceof Uint8Array)) ||
              ((randbits instanceof Buffer) && (randbits2 instanceof Buffer)))) {
@@ -46,7 +48,7 @@ describe('testing randBits', function () {
         })
       } else {
         it('should throw RangeError', function () {
-          chai.expect(() => _pkg.randBits(bitLength)).to.throw(RangeError) // eslint-disable-line
+          chai.expect(() => bcu.randBits(bitLength)).to.throw(RangeError) // eslint-disable-line
         })
       }
     })
@@ -60,9 +62,9 @@ describe('testing randBytes', function () {
         it('should return buffers', function () {
           let ret = true
           for (let i = 0; i < iterations; i++) {
-            const randbytes = _pkg.randBytesSync(byteLength)
+            const randbytes = bcu.randBytesSync(byteLength)
             // console.log(JSON.stringify(randbits))
-            const randbytes2 = _pkg.randBytesSync(byteLength, true)
+            const randbytes2 = bcu.randBytesSync(byteLength, true)
             // console.log(JSON.stringify(randbits2))
             if (!(((randbytes instanceof Uint8Array) && (randbytes2 instanceof Uint8Array)) ||
              ((randbytes instanceof Buffer) && (randbytes2 instanceof Buffer)))) {
@@ -73,7 +75,7 @@ describe('testing randBytes', function () {
         })
       } else {
         it('should throw RangeError', function () {
-          chai.expect(() => _pkg.randBytesSync(byteLength)).to.throw(RangeError)
+          chai.expect(() => bcu.randBytesSync(byteLength)).to.throw(RangeError)
         })
       }
     })
@@ -82,9 +84,9 @@ describe('testing randBytes', function () {
         it('should return buffers', async function () {
           let ret = true
           for (let i = 0; i < iterations; i++) {
-            const randbytes = await _pkg.randBytes(byteLength)
+            const randbytes = await bcu.randBytes(byteLength)
             // console.log(JSON.stringify(randbits))
-            const randbytes2 = await _pkg.randBytes(byteLength, true)
+            const randbytes2 = await bcu.randBytes(byteLength, true)
             // console.log(JSON.stringify(randbits2))
             if (!(((randbytes instanceof Uint8Array) && (randbytes2 instanceof Uint8Array)) ||
              ((randbytes instanceof Buffer) && (randbytes2 instanceof Buffer)))) {
@@ -95,7 +97,7 @@ describe('testing randBytes', function () {
         })
       } else {
         it('should throw RangeError', function () {
-          chai.expect(() => _pkg.randBytes(byteLength)).to.throw(RangeError) // eslint-disable-line
+          chai.expect(() => bcu.randBytes(byteLength)).to.throw(RangeError) // eslint-disable-line
         })
       }
     })
