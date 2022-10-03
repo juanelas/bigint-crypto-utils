@@ -61,13 +61,13 @@ console.log(bigintCryptoUtils.modInv(2n, 5n)) // prints 3
 
 console.log(bigintCryptoUtils.modInv(BigInt('3'), BigInt('5'))) // prints 2
 
-console.log(bigintCryptoUtils.randBetween(2n ** 256n)) // Prints a cryptographically secure random number between 1 and 2**256 (both included).
+console.log(bigintCryptoUtils.randBetween(2n ** 256n)) // prints a cryptographically secure random number between 1 and 2**256 (both included).
 
 async function primeTesting (): void {
-  // Output of a probable prime of 2048 bits
+  // Let us print out a probable prime of 2048 bits
   console.log(await bigintCryptoUtils.prime(2048))
 
-  // Testing if a number is a probable prime (Miller-Rabin)
+  // Testing if number is a probable prime (Miller-Rabin)
   const number = 27n
   const isPrime = await bigintCryptoUtils.isProbablyPrime(number)
   if (isPrime === true) {
