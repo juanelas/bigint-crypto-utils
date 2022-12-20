@@ -1,6 +1,6 @@
 {
   "name": "bigint-crypto-utils",
-  "version": "3.1.7",
+  "version": "3.1.8",
   "description": "Arbitrary precision modular arithmetic, cryptographically secure random numbers and strong probable prime generation/testing. It works in modern browsers, Angular, React, Node.js, etc. since it uses the native JS implementation of BigInt",
   "keywords": [
     "modular arithmetics",
