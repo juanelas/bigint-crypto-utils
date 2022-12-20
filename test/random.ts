@@ -2,7 +2,7 @@ import * as bcu from '#pkg'
 
 const iterations = 10
 const bitLengths = [-1, 0, 3, 8, 16, 511, 2048]
-const byteLengths = [-7, 0, 1, 8, 33, 40]
+const byteLengths = [-7, 0, 1, 8, 33, 40, 65536, 67108864]
 
 describe('testing randBits', function () {
   for (const bitLength of bitLengths) {
@@ -81,12 +81,14 @@ describe('testing randBytes', function () {
     })
     describe(`${iterations} iterations of randBytes(${byteLength})`, function () {
       if (byteLength > 0) {
-        it('should return buffers', async function () {
+        it('should return buffers of the expected length', async function () {
           let ret = true
           for (let i = 0; i < iterations; i++) {
             const randbytes = await bcu.randBytes(byteLength)
+            chai.expect(randbytes.length).to.equal(byteLength)
             // console.log(JSON.stringify(randbits))
             const randbytes2 = await bcu.randBytes(byteLength, true)
+            chai.expect(randbytes2.length).to.equal(byteLength)
             // console.log(JSON.stringify(randbits2))
             if (!(((randbytes instanceof Uint8Array) && (randbytes2 instanceof Uint8Array)) ||
              ((randbytes instanceof Buffer) && (randbytes2 instanceof Buffer)))) {

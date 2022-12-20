@@ -23,7 +23,16 @@ export function randBytes (byteLength: number, forceLength = false): Promise<Uin
       })
     } else { // browser
       const buf = new Uint8Array(byteLength)
-      self.crypto.getRandomValues(buf)
+      // the maximum number of bytes of entropy available via self.crypto.getRandomValues is 65536
+      if (byteLength <= 65536) {
+        self.crypto.getRandomValues(buf)
+      } else {
+        for (let i = 0; i < Math.ceil(byteLength / 65536); i++) {
+          const begin = i * 65536
+          const end = ((begin + 65535) < byteLength) ? begin + 65535 : byteLength - 1
+          self.crypto.getRandomValues(buf.subarray(begin, end))
+        }
+      }
       // If fixed length is required we put the first bit to 1 -> to get the necessary bitLength
       if (forceLength) buf[0] = buf[0] | 128
       resolve(buf)
@@ -53,7 +62,16 @@ export function randBytesSync (byteLength: number, forceLength: boolean = false)
     return buf
   } else { // browser
     const buf = new Uint8Array(byteLength)
-    self.crypto.getRandomValues(buf)
+    // the maximum number of bytes of entropy available via self.crypto.getRandomValues is 65536
+    if (byteLength <= 65536) {
+      self.crypto.getRandomValues(buf)
+    } else {
+      for (let i = 0; i < Math.ceil(byteLength / 65536); i++) {
+        const begin = i * 65536
+        const end = ((begin + 65535) < byteLength) ? begin + 65535 : byteLength - 1
+        self.crypto.getRandomValues(buf.subarray(begin, end))
+      }
+    }
     // If fixed length is required we put the first bit to 1 -> to get the necessary bitLength
     if (forceLength) buf[0] = buf[0] | 128
     return buf
