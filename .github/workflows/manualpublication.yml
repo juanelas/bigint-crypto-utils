@@ -14,20 +14,14 @@ jobs:
       
       - uses: actions/setup-node@v1
         with:
-          node-version: 16
+          node-version: 18
           registry-url: https://registry.npmjs.org/
       
       - name: install
         run: npm ci
       
-      - name: lint
-        run: npm run lint
-      
       - name: build
-        run: npm run build:js
-      
-      - name: docs
-        run: npm run docs
+        run: npm run build
       
       - name: browser tests
         run: npm run test:browser-headless

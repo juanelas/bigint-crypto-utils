@@ -1,98 +1,116 @@
-name: build
+name: build, test (node and browser), coverage, publish to NPM
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
 
 jobs:
   build:
-    name: build and node tests
+    name: build
     runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          registry-url: "https://registry.npmjs.org"
+
+      - name: install
+        run: npm ci
+      
+      - name: build
+        run: npm run build
+
+  nodetests:
+    name: tests in Node.js
+    needs: [build]
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
-        node-version: [14.x, 16.x, 18.x]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [10.x, 12.x, 14.x, 16.x, 18.x]
+      # When set to true, GitHub cancels all in-progress jobs if any matrix job fails.
+      fail-fast: false
+      # The maximum number of jobs that can run simultaneously. Set to 1 if you can't run tests in parallel
+      # max-parallel: 1
     steps:
-      - uses: actions/checkout@v2
+      - name: Git checkout
+        uses: actions/checkout@v3
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+          registry-url: "https://registry.npmjs.org"
 
       - name: install
         run: npm ci
-      
-      - name: lint
-        run: npm run lint
-      
-      - name: build
-        run: npm run build:js
-      
-      - if: matrix.node-version == '16.x'
-        name: docs
-        run: npm run docs
-      
-      - name: node tests
-        run: npm run test:node
 
-      - if: matrix.node-version == '16.x'
-        name: browser tests
-        run: npm run test:browser-headless
+      - name: node esm tests
+        run: npm run test:node-esm
+        # env:
+        #   VARIABLE1: ${{ secrets.VARIABLE1 }}
+        #   VARIABLE2: ${{ secrets.VARIABLE2 }}
+      
+      - name: node cjs tests
+        run: npm run test:node-cjs
+        # env:
+        #   VARIABLE1: ${{ secrets.VARIABLE1 }}
+        #   VARIABLE2: ${{ secrets.VARIABLE2 }}
 
-  publication:
-    needs: build
+  browsertests:
+    needs: [build]
+    name: tests in browser
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      
-      - uses: EndBug/version-check@v1
-        id: check
+      - name: Git checkout
+        uses: actions/checkout@v3
 
-      - name: check version changes
-        if: steps.check.outputs.changed == 'true'
-        run: 'echo "Version change found! New version: ${{ steps.check.outputs.version }} (${{ steps.check.outputs.type }})"'
-
-      - uses: actions/setup-node@v1
-        if: steps.check.outputs.changed == 'true'
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
         with:
-          node-version: 16
-          registry-url: https://registry.npmjs.org/
-      
+          node-version: 18.x
+          registry-url: "https://registry.npmjs.org"
+
       - name: install
-        if: steps.check.outputs.changed == 'true'
         run: npm ci
-      
-      - name: lint
-        if: steps.check.outputs.changed == 'true'
-        run: npm run lint
-      
-      - name: build
-        if: steps.check.outputs.changed == 'true'
-        run: npm run build:js
-      
-      - name: docs
-        if: steps.check.outputs.changed == 'true'
-        run: npm run docs
-      
+
       - name: browser tests
-        if: steps.check.outputs.changed == 'true'
         run: npm run test:browser-headless
-      
-      - name: node tests and coverage
-        if: steps.check.outputs.changed == 'true'
+        # env:
+        #   VARIABLE1: ${{ secrets.VARIABLE1 }}
+        #   VARIABLE2: ${{ secrets.VARIABLE2 }}
+
+  publish:
+    needs: [nodetests, browsertests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: install
+        run: npm ci
+        
+      - name: coverage
         run: npm run coverage
-      
+
       - name: send report to coveralls.io
-        if: steps.check.outputs.changed == 'true'
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: publish to NPM
-        if: steps.check.outputs.changed == 'true'
-        run: npm publish
+      - name: NPM publish
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
