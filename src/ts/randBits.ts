@@ -1,4 +1,4 @@
-import { randBytes, randBytesSync } from './randBytes'
+import { randBytes, randBytesSync } from './randBytes.js'
 
 /**
  * Secure random bits for both node and browsers. Node version uses crypto.randomFill() and browser one self.crypto.getRandomValues()
@@ -40,7 +40,7 @@ export function randBits (bitLength: number, forceLength: boolean = false): Prom
  *
  * @returns A Uint8Array/Buffer (Browser/Node.js) filled with cryptographically secure random bits
  */
-export function randBitsSync (bitLength: number, forceLength: boolean = false): Uint8Array|Buffer {
+export function randBitsSync (bitLength: number, forceLength: boolean = false): Uint8Array | Buffer {
   if (bitLength < 1) throw new RangeError('bitLength MUST be > 0')
 
   const byteLength = Math.ceil(bitLength / 8)

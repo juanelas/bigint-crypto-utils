@@ -30,13 +30,36 @@ function renameJsToCjs (dir, fileList = []) {
   const files = fs.readdirSync(dir)
 
   files.forEach(file => {
-    if (fs.statSync(path.join(dir, file)).isDirectory()) {
-      fileList = renameJsToCjs(path.join(dir, file), fileList)
+    const srcFile = path.join(dir, file)
+    if (fs.statSync(srcFile).isDirectory()) {
+      fileList = renameJsToCjs(srcFile, fileList)
     } else {
       const match = file.match(/(.*)\.js$/)
       if (match !== null) {
         const filename = match[1]
-        fs.renameSync(path.join(dir, file), path.join(dir, `${filename}.cjs`))
+        const dstFile = path.join(dir, `${filename}.cjs`)
+        fs.renameSync(srcFile, dstFile)
+        const fileContents = fs.readFileSync(dstFile, 'utf8')
+        const updatedFileContents = fileContents.replace(/(require\([`'"])(\..*[^.]{5})([`'"])/g, '$1$2.cjs$3')
+        fs.writeFileSync(dstFile, updatedFileContents, { encoding: 'utf8' })
+      }
+    }
+  })
+}
+
+function fixJsonAssertsInESMTests (dir, fileList = []) {
+  const files = fs.readdirSync(dir)
+
+  files.forEach(file => {
+    const srcFile = path.join(dir, file)
+    if (fs.statSync(srcFile).isDirectory()) {
+      fileList = fixJsonAssertsInESMTests(srcFile, fileList)
+    } else {
+      const match = file.match(/(.*)\.js$/)
+      if (match !== null) {
+        const fileContents = fs.readFileSync(srcFile, 'utf8')
+        const updatedFileContents = fileContents.replace(/(import\([`'"]\..*\.json[`'"])\)/g, '$1, { assert: { type: "json" } })')
+        fs.writeFileSync(srcFile, updatedFileContents, { encoding: 'utf8' })
       }
     }
   })
@@ -124,6 +147,8 @@ class TestsBuilder extends Builder {
         }
         if (this.commonjs) {
           renameJsToCjs(mochaTsDir)
+        } else {
+          fixJsonAssertsInESMTests(mochaTsDir)
         }
         this.emit('ready', updateSemaphore)
       } else {

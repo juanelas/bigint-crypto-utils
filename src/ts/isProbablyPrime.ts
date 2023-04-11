@@ -1,9 +1,9 @@
 import { eGcd, modInv, modPow, toZn, bitLength } from 'bigint-mod-arith'
-import { fromBuffer } from './fromBuffer'
-import { randBetween } from './randBetween'
-import { randBitsSync } from './randBits'
-import { randBytesSync } from './randBytes'
-import { _useWorkers, _workerUrl, WorkerToMainMsg, MainToWorkerMsg } from './workerUtils'
+import { fromBuffer } from './fromBuffer.js'
+import { randBetween } from './randBetween.js'
+import { randBitsSync } from './randBits.js'
+import { randBytesSync } from './randBytes.js'
+import { _useWorkers, _workerUrl, WorkerToMainMsg, MainToWorkerMsg } from './workerUtils.js'
 
 /**
  * The test first tries if any of the first 250 small primes are a factor of the input number and then passes several
@@ -40,7 +40,7 @@ export function isProbablyPrime (w: number|bigint, iterations: number = 16, disa
         const msg: MainToWorkerMsg = {
           _bcu: {
             rnd: w as bigint,
-            iterations: iterations,
+            iterations,
             id: 0
           }
         }
@@ -69,7 +69,7 @@ export function isProbablyPrime (w: number|bigint, iterations: number = 16, disa
       const msg: MainToWorkerMsg = {
         _bcu: {
           rnd: w as bigint,
-          iterations: iterations,
+          iterations,
           id: 0
         }
       }
@@ -437,7 +437,7 @@ if (!IS_BROWSER && _useWorkers) { // node.js with support for workers
           const isPrime = _isProbablyPrime(data._bcu.rnd, data._bcu.iterations)
           const msg: WorkerToMainMsg = {
             _bcu: {
-              isPrime: isPrime,
+              isPrime,
               value: data._bcu.rnd,
               id: data._bcu.id
             }

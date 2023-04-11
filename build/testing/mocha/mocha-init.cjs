@@ -27,6 +27,8 @@ let commonjs = setup.commonjs
 
 commonjs = watch ? true : commonjs // mocha in watch mode only supports commonjs
 
+global._MODULE_TYPE = commonjs ? 'CJS' : 'ESM'
+
 exports.mochaGlobalSetup = async function () {
   if (watch) {
     await rollupBuilder.start({ commonjs, watch })

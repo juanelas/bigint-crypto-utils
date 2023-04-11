@@ -1,7 +1,7 @@
-import { fromBuffer } from './fromBuffer'
-import { _isProbablyPrime, _isProbablyPrimeWorkerUrl } from './isProbablyPrime'
-import { randBits, randBitsSync } from './randBits'
-import { _useWorkers, WorkerToMainMsg, MainToWorkerMsg } from './workerUtils'
+import { fromBuffer } from './fromBuffer.js'
+import { _isProbablyPrime, _isProbablyPrimeWorkerUrl } from './isProbablyPrime.js'
+import { randBits, randBitsSync } from './randBits.js'
+import { _useWorkers, WorkerToMainMsg, MainToWorkerMsg } from './workerUtils.js'
 import type { Worker as NodeWorker } from 'worker_threads'
 
 if (!IS_BROWSER) var os = await import('os') // eslint-disable-line no-var
@@ -55,8 +55,8 @@ export function prime (bitLength: number, iterations: number = 16): Promise<bigi
         try {
           const msgToWorker: MainToWorkerMsg = {
             _bcu: {
-              rnd: rnd,
-              iterations: iterations,
+              rnd,
+              iterations,
               id: msg._bcu.id
             }
           }
@@ -81,12 +81,12 @@ export function prime (bitLength: number, iterations: number = 16): Promise<bigi
       }
     }
     for (let i = 0; i < workerList.length; i++) {
-      randBits(bitLength, true).then(function (buf: Uint8Array|Buffer) {
+      randBits(bitLength, true).then(function (buf: Uint8Array | Buffer) {
         const rnd = fromBuffer(buf)
         workerList[i].postMessage({
           _bcu: {
-            rnd: rnd,
-            iterations: iterations,
+            rnd,
+            iterations,
             id: i
           }
         })

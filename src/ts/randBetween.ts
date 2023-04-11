@@ -1,6 +1,6 @@
 import { bitLength } from 'bigint-mod-arith'
-import { fromBuffer } from './fromBuffer'
-import { randBitsSync } from './randBits'
+import { fromBuffer } from './fromBuffer.js'
+import { randBitsSync } from './randBits.js'
 
 /**
  * Returns a cryptographically secure random integer between [min,max].

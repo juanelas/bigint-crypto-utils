@@ -51,7 +51,7 @@ export function randBytes (byteLength: number, forceLength = false): Promise<Uin
  *
  * @returns A UInt8Array/Buffer (Browser/Node.js) filled with cryptographically secure random bytes
  */
-export function randBytesSync (byteLength: number, forceLength: boolean = false): Uint8Array|Buffer {
+export function randBytesSync (byteLength: number, forceLength: boolean = false): Uint8Array | Buffer {
   if (byteLength < 1) throw new RangeError('byteLength MUST be > 0')
 
   /* eslint-disable no-lone-blocks */

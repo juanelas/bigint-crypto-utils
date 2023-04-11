@@ -3,7 +3,7 @@ const fs = require('fs')
 const path = require('path')
 
 const rollup = require('rollup')
-const loadAndParseConfigFile = require('rollup/dist/loadConfigFile')
+const loadAndParseConfigFile = require('rollup/loadConfigFile').loadConfigFile
 
 const Builder = require('./Builder.cjs')
 
@@ -27,7 +27,7 @@ class RollupBuilder extends Builder {
 
     this.watch = watch
     this.commonjs = commonjs
-    this.watchedModule = commonjs ? pkgJson.exports['.'].node.require : pkgJson.exports['.'].node.import
+    this.watchedModule = commonjs ? pkgJson.exports['.'].node.require.default : pkgJson.exports['.'].node.import.default
 
     const { options } = await loadAndParseConfigFile(this.configPath)
 

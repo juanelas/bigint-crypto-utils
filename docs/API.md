@@ -29,8 +29,6 @@
 
 ▸ **abs**(`a`): `number` \| `bigint`
 
-Absolute value. abs(a)==a if a>=0. abs(a)==-a if a<0
-
 #### Parameters
 
 | Name | Type |
@@ -41,19 +39,15 @@ Absolute value. abs(a)==a if a>=0. abs(a)==-a if a<0
 
 `number` \| `bigint`
 
-The absolute value of a
-
 #### Defined in
 
-node_modules/bigint-mod-arith/types/abs.d.ts:8
+node_modules/bigint-mod-arith/types/abs.d.ts:1
 
 ___
 
 ### bitLength
 
 ▸ **bitLength**(`a`): `number`
-
-Returns the (minimum) length of a number expressed in bits.
 
 #### Parameters
 
@@ -65,24 +59,15 @@ Returns the (minimum) length of a number expressed in bits.
 
 `number`
 
-The bit length
-
 #### Defined in
 
-node_modules/bigint-mod-arith/types/bitLength.d.ts:7
+node_modules/bigint-mod-arith/types/bitLength.d.ts:1
 
 ___
 
 ### eGcd
 
 ▸ **eGcd**(`a`, `b`): `Egcd`
-
-An iterative implementation of the extended euclidean algorithm or extended greatest common divisor algorithm.
-Take positive integers a, b as input, and return a triple (g, x, y), such that ax + by = g = gcd(a, b).
-
-**`Throws`**
-
-RangeError if a or b are <= 0
 
 #### Parameters
 
@@ -95,19 +80,15 @@ RangeError if a or b are <= 0
 
 `Egcd`
 
-A triple (g, x, y), such that ax + by = g = gcd(a, b).
-
 #### Defined in
 
-node_modules/bigint-mod-arith/types/egcd.d.ts:17
+node_modules/bigint-mod-arith/types/egcd.d.ts:6
 
 ___
 
 ### gcd
 
 ▸ **gcd**(`a`, `b`): `bigint`
-
-Greatest common divisor of two integers based on the iterative binary algorithm.
 
 #### Parameters
 
@@ -120,11 +101,9 @@ Greatest common divisor of two integers based on the iterative binary algorithm.
 
 `bigint`
 
-The greatest common divisor of a and b
-
 #### Defined in
 
-node_modules/bigint-mod-arith/types/gcd.d.ts:9
+node_modules/bigint-mod-arith/types/gcd.d.ts:1
 
 ___
 
@@ -155,7 +134,7 @@ A promise that resolves to a boolean that is either true (a probably prime numbe
 
 #### Defined in
 
-[src/ts/isProbablyPrime.ts:20](https://github.com/juanelas/bigint-crypto-utils/blob/e99584a/src/ts/isProbablyPrime.ts#L20)
+[src/ts/isProbablyPrime.ts:20](https://github.com/juanelas/bigint-crypto-utils/blob/6894e72/src/ts/isProbablyPrime.ts#L20)
 
 ___
 
@@ -163,8 +142,6 @@ ___
 
 ▸ **lcm**(`a`, `b`): `bigint`
 
-The least common multiple computed as abs(a*b)/gcd(a,b)
-
 #### Parameters
 
 | Name | Type |
@@ -176,11 +153,9 @@ The least common multiple computed as abs(a*b)/gcd(a,b)
 
 `bigint`
 
-The least common multiple of a and b
-
 #### Defined in
 
-node_modules/bigint-mod-arith/types/lcm.d.ts:8
+node_modules/bigint-mod-arith/types/lcm.d.ts:1
 
 ___
 
@@ -188,8 +163,6 @@ ___
 
 ▸ **max**(`a`, `b`): `number` \| `bigint`
 
-Maximum. max(a,b)==a if a>=b. max(a,b)==b if a<b
-
 #### Parameters
 
 | Name | Type |
@@ -201,11 +174,9 @@ Maximum. max(a,b)==a if a>=b. max(a,b)==b if a<b
 
 `number` \| `bigint`
 
-Maximum of numbers a and b
-
 #### Defined in
 
-node_modules/bigint-mod-arith/types/max.d.ts:9
+node_modules/bigint-mod-arith/types/max.d.ts:1
 
 ___
 
@@ -213,8 +184,6 @@ ___
 
 ▸ **min**(`a`, `b`): `number` \| `bigint`
 
-Minimum. min(a,b)==b if a>=b. min(a,b)==a if a<b
-
 #### Parameters
 
 | Name | Type |
@@ -226,11 +195,9 @@ Minimum. min(a,b)==b if a>=b. min(a,b)==a if a<b
 
 `number` \| `bigint`
 
-Minimum of numbers a and b
-
 #### Defined in
 
-node_modules/bigint-mod-arith/types/min.d.ts:9
+node_modules/bigint-mod-arith/types/min.d.ts:1
 
 ___
 
@@ -238,28 +205,20 @@ ___
 
 ▸ **modInv**(`a`, `n`): `bigint`
 
-Modular inverse.
-
-**`Throws`**
-
-RangeError if a does not have inverse modulo n
-
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `a` | `number` \| `bigint` | The number to find an inverse for |
-| `n` | `number` \| `bigint` | The modulo |
+| Name | Type |
+| :------ | :------ |
+| `a` | `number` \| `bigint` |
+| `n` | `number` \| `bigint` |
 
 #### Returns
 
 `bigint`
 
-The inverse modulo n
-
 #### Defined in
 
-node_modules/bigint-mod-arith/types/modInv.d.ts:11
+node_modules/bigint-mod-arith/types/modInv.d.ts:1
 
 ___
 
@@ -267,29 +226,21 @@ ___
 
 ▸ **modPow**(`b`, `e`, `n`): `bigint`
 
-Modular exponentiation b**e mod n. Currently using the right-to-left binary method
-
-**`Throws`**
-
-RangeError if n <= 0
-
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `b` | `number` \| `bigint` | base |
-| `e` | `number` \| `bigint` | exponent |
-| `n` | `number` \| `bigint` | modulo |
+| Name | Type |
+| :------ | :------ |
+| `b` | `number` \| `bigint` |
+| `e` | `number` \| `bigint` |
+| `n` | `number` \| `bigint` |
 
 #### Returns
 
 `bigint`
 
-b**e mod n
-
 #### Defined in
 
-node_modules/bigint-mod-arith/types/modPow.d.ts:12
+node_modules/bigint-mod-arith/types/modPow.d.ts:1
 
 ___
 
@@ -322,7 +273,7 @@ A promise that resolves to a bigint probable prime of bitLength bits.
 
 #### Defined in
 
-[src/ts/prime.ts:28](https://github.com/juanelas/bigint-crypto-utils/blob/e99584a/src/ts/prime.ts#L28)
+[src/ts/prime.ts:28](https://github.com/juanelas/bigint-crypto-utils/blob/6894e72/src/ts/prime.ts#L28)
 
 ___
 
@@ -352,7 +303,7 @@ A bigint probable prime of bitLength bits.
 
 #### Defined in
 
-[src/ts/prime.ts:109](https://github.com/juanelas/bigint-crypto-utils/blob/e99584a/src/ts/prime.ts#L109)
+[src/ts/prime.ts:109](https://github.com/juanelas/bigint-crypto-utils/blob/6894e72/src/ts/prime.ts#L109)
 
 ___
 
@@ -381,7 +332,7 @@ A cryptographically secure random bigint between [min,max]
 
 #### Defined in
 
-[src/ts/randBetween.ts:14](https://github.com/juanelas/bigint-crypto-utils/blob/e99584a/src/ts/randBetween.ts#L14)
+[src/ts/randBetween.ts:14](https://github.com/juanelas/bigint-crypto-utils/blob/6894e72/src/ts/randBetween.ts#L14)
 
 ___
 
@@ -410,7 +361,7 @@ A Promise that resolves to a UInt8Array/Buffer (Browser/Node.js) filled with cry
 
 #### Defined in
 
-[src/ts/randBits.ts:13](https://github.com/juanelas/bigint-crypto-utils/blob/e99584a/src/ts/randBits.ts#L13)
+[src/ts/randBits.ts:13](https://github.com/juanelas/bigint-crypto-utils/blob/6894e72/src/ts/randBits.ts#L13)
 
 ___
 
@@ -439,7 +390,7 @@ A Uint8Array/Buffer (Browser/Node.js) filled with cryptographically secure rando
 
 #### Defined in
 
-[src/ts/randBits.ts:43](https://github.com/juanelas/bigint-crypto-utils/blob/e99584a/src/ts/randBits.ts#L43)
+[src/ts/randBits.ts:43](https://github.com/juanelas/bigint-crypto-utils/blob/6894e72/src/ts/randBits.ts#L43)
 
 ___
 
@@ -468,7 +419,7 @@ A promise that resolves to a UInt8Array/Buffer (Browser/Node.js) filled with cry
 
 #### Defined in
 
-[src/ts/randBytes.ts:13](https://github.com/juanelas/bigint-crypto-utils/blob/e99584a/src/ts/randBytes.ts#L13)
+[src/ts/randBytes.ts:13](https://github.com/juanelas/bigint-crypto-utils/blob/6894e72/src/ts/randBytes.ts#L13)
 
 ___
 
@@ -498,7 +449,7 @@ A UInt8Array/Buffer (Browser/Node.js) filled with cryptographically secure rando
 
 #### Defined in
 
-[src/ts/randBytes.ts:54](https://github.com/juanelas/bigint-crypto-utils/blob/e99584a/src/ts/randBytes.ts#L54)
+[src/ts/randBytes.ts:54](https://github.com/juanelas/bigint-crypto-utils/blob/6894e72/src/ts/randBytes.ts#L54)
 
 ___
 
@@ -506,29 +457,17 @@ ___
 
 ▸ **toZn**(`a`, `n`): `bigint`
 
-Finds the smallest positive element that is congruent to a in modulo n
-
-**`Remarks`**
-
-a and b must be the same type, either number or bigint
-
-**`Throws`**
-
-RangeError if n <= 0
-
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `a` | `number` \| `bigint` | An integer |
-| `n` | `number` \| `bigint` | The modulo |
+| Name | Type |
+| :------ | :------ |
+| `a` | `number` \| `bigint` |
+| `n` | `number` \| `bigint` |
 
 #### Returns
 
 `bigint`
 
-A bigint with the smallest positive representation of a modulo n
-
 #### Defined in
 
-node_modules/bigint-mod-arith/types/toZn.d.ts:14
+node_modules/bigint-mod-arith/types/toZn.d.ts:1
