@@ -1,7 +1,7 @@
 const path = require('path')
 
 const puppeteer = require('puppeteer')
-const minimatch = require('minimatch')
+const minimatch = require('minimatch').minimatch
 const glob = require('glob')
 const rootDir = path.join(__dirname, '../../..')
 const pkgJson = require(path.join(rootDir, 'package.json'))

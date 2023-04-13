@@ -41,7 +41,7 @@
 
 #### Defined in
 
-node_modules/bigint-mod-arith/types/abs.d.ts:1
+node_modules/bigint-mod-arith/dist/index.d.ts:1
 
 ___
 
@@ -61,7 +61,7 @@ ___
 
 #### Defined in
 
-node_modules/bigint-mod-arith/types/bitLength.d.ts:1
+node_modules/bigint-mod-arith/dist/index.d.ts:3
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 #### Defined in
 
-node_modules/bigint-mod-arith/types/egcd.d.ts:6
+node_modules/bigint-mod-arith/dist/index.d.ts:10
 
 ___
 
@@ -103,7 +103,7 @@ ___
 
 #### Defined in
 
-node_modules/bigint-mod-arith/types/gcd.d.ts:1
+node_modules/bigint-mod-arith/dist/index.d.ts:12
 
 ___
 
@@ -134,7 +134,7 @@ A promise that resolves to a boolean that is either true (a probably prime numbe
 
 #### Defined in
 
-[src/ts/isProbablyPrime.ts:20](https://github.com/juanelas/bigint-crypto-utils/blob/8f2c2a5/src/ts/isProbablyPrime.ts#L20)
+[src/ts/isProbablyPrime.ts:20](https://github.com/juanelas/bigint-crypto-utils/blob/9ebe60d/src/ts/isProbablyPrime.ts#L20)
 
 ___
 
@@ -155,7 +155,7 @@ ___
 
 #### Defined in
 
-node_modules/bigint-mod-arith/types/lcm.d.ts:1
+node_modules/bigint-mod-arith/dist/index.d.ts:14
 
 ___
 
@@ -176,7 +176,7 @@ ___
 
 #### Defined in
 
-node_modules/bigint-mod-arith/types/max.d.ts:1
+node_modules/bigint-mod-arith/dist/index.d.ts:16
 
 ___
 
@@ -197,7 +197,7 @@ ___
 
 #### Defined in
 
-node_modules/bigint-mod-arith/types/min.d.ts:1
+node_modules/bigint-mod-arith/dist/index.d.ts:18
 
 ___
 
@@ -218,7 +218,7 @@ ___
 
 #### Defined in
 
-node_modules/bigint-mod-arith/types/modInv.d.ts:1
+node_modules/bigint-mod-arith/dist/index.d.ts:20
 
 ___
 
@@ -240,7 +240,7 @@ ___
 
 #### Defined in
 
-node_modules/bigint-mod-arith/types/modPow.d.ts:1
+node_modules/bigint-mod-arith/dist/index.d.ts:22
 
 ___
 
@@ -273,7 +273,7 @@ A promise that resolves to a bigint probable prime of bitLength bits.
 
 #### Defined in
 
-[src/ts/prime.ts:28](https://github.com/juanelas/bigint-crypto-utils/blob/8f2c2a5/src/ts/prime.ts#L28)
+[src/ts/prime.ts:28](https://github.com/juanelas/bigint-crypto-utils/blob/9ebe60d/src/ts/prime.ts#L28)
 
 ___
 
@@ -303,7 +303,7 @@ A bigint probable prime of bitLength bits.
 
 #### Defined in
 
-[src/ts/prime.ts:109](https://github.com/juanelas/bigint-crypto-utils/blob/8f2c2a5/src/ts/prime.ts#L109)
+[src/ts/prime.ts:109](https://github.com/juanelas/bigint-crypto-utils/blob/9ebe60d/src/ts/prime.ts#L109)
 
 ___
 
@@ -332,7 +332,7 @@ A cryptographically secure random bigint between [min,max]
 
 #### Defined in
 
-[src/ts/randBetween.ts:14](https://github.com/juanelas/bigint-crypto-utils/blob/8f2c2a5/src/ts/randBetween.ts#L14)
+[src/ts/randBetween.ts:14](https://github.com/juanelas/bigint-crypto-utils/blob/9ebe60d/src/ts/randBetween.ts#L14)
 
 ___
 
@@ -361,7 +361,7 @@ A Promise that resolves to a UInt8Array/Buffer (Browser/Node.js) filled with cry
 
 #### Defined in
 
-[src/ts/randBits.ts:13](https://github.com/juanelas/bigint-crypto-utils/blob/8f2c2a5/src/ts/randBits.ts#L13)
+[src/ts/randBits.ts:13](https://github.com/juanelas/bigint-crypto-utils/blob/9ebe60d/src/ts/randBits.ts#L13)
 
 ___
 
@@ -390,7 +390,7 @@ A Uint8Array/Buffer (Browser/Node.js) filled with cryptographically secure rando
 
 #### Defined in
 
-[src/ts/randBits.ts:43](https://github.com/juanelas/bigint-crypto-utils/blob/8f2c2a5/src/ts/randBits.ts#L43)
+[src/ts/randBits.ts:43](https://github.com/juanelas/bigint-crypto-utils/blob/9ebe60d/src/ts/randBits.ts#L43)
 
 ___
 
@@ -419,7 +419,7 @@ A promise that resolves to a UInt8Array/Buffer (Browser/Node.js) filled with cry
 
 #### Defined in
 
-[src/ts/randBytes.ts:13](https://github.com/juanelas/bigint-crypto-utils/blob/8f2c2a5/src/ts/randBytes.ts#L13)
+[src/ts/randBytes.ts:13](https://github.com/juanelas/bigint-crypto-utils/blob/9ebe60d/src/ts/randBytes.ts#L13)
 
 ___
 
@@ -449,7 +449,7 @@ A UInt8Array/Buffer (Browser/Node.js) filled with cryptographically secure rando
 
 #### Defined in
 
-[src/ts/randBytes.ts:54](https://github.com/juanelas/bigint-crypto-utils/blob/8f2c2a5/src/ts/randBytes.ts#L54)
+[src/ts/randBytes.ts:54](https://github.com/juanelas/bigint-crypto-utils/blob/9ebe60d/src/ts/randBytes.ts#L54)
 
 ___
 
@@ -470,4 +470,4 @@ ___
 
 #### Defined in
 
-node_modules/bigint-mod-arith/types/toZn.d.ts:1
+node_modules/bigint-mod-arith/dist/index.d.ts:24

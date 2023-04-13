@@ -1,147 +1,4 @@
-function abs(a) {
-    return (a >= 0) ? a : -a;
-}
-
-function bitLength(a) {
-    if (typeof a === 'number')
-        a = BigInt(a);
-    if (a === 1n) {
-        return 1;
-    }
-    let bits = 1;
-    do {
-        bits++;
-    } while ((a >>= 1n) > 1n);
-    return bits;
-}
-
-function eGcd(a, b) {
-    if (typeof a === 'number')
-        a = BigInt(a);
-    if (typeof b === 'number')
-        b = BigInt(b);
-    if (a <= 0n || b <= 0n)
-        throw new RangeError('a and b MUST be > 0');
-    let x = 0n;
-    let y = 1n;
-    let u = 1n;
-    let v = 0n;
-    while (a !== 0n) {
-        const q = b / a;
-        const r = b % a;
-        const m = x - (u * q);
-        const n = y - (v * q);
-        b = a;
-        a = r;
-        x = u;
-        y = v;
-        u = m;
-        v = n;
-    }
-    return {
-        g: b,
-        x,
-        y
-    };
-}
-
-function gcd(a, b) {
-    let aAbs = (typeof a === 'number') ? BigInt(abs(a)) : abs(a);
-    let bAbs = (typeof b === 'number') ? BigInt(abs(b)) : abs(b);
-    if (aAbs === 0n) {
-        return bAbs;
-    }
-    else if (bAbs === 0n) {
-        return aAbs;
-    }
-    let shift = 0n;
-    while (((aAbs | bAbs) & 1n) === 0n) {
-        aAbs >>= 1n;
-        bAbs >>= 1n;
-        shift++;
-    }
-    while ((aAbs & 1n) === 0n)
-        aAbs >>= 1n;
-    do {
-        while ((bAbs & 1n) === 0n)
-            bAbs >>= 1n;
-        if (aAbs > bAbs) {
-            const x = aAbs;
-            aAbs = bAbs;
-            bAbs = x;
-        }
-        bAbs -= aAbs;
-    } while (bAbs !== 0n);
-    return aAbs << shift;
-}
-
-function lcm(a, b) {
-    if (typeof a === 'number')
-        a = BigInt(a);
-    if (typeof b === 'number')
-        b = BigInt(b);
-    if (a === 0n && b === 0n)
-        return BigInt(0);
-    return abs((a / gcd(a, b)) * b);
-}
-
-function max(a, b) {
-    return (a >= b) ? a : b;
-}
-
-function min(a, b) {
-    return (a >= b) ? b : a;
-}
-
-function toZn(a, n) {
-    if (typeof a === 'number')
-        a = BigInt(a);
-    if (typeof n === 'number')
-        n = BigInt(n);
-    if (n <= 0n) {
-        throw new RangeError('n must be > 0');
-    }
-    const aZn = a % n;
-    return (aZn < 0n) ? aZn + n : aZn;
-}
-
-function modInv(a, n) {
-    const egcd = eGcd(toZn(a, n), n);
-    if (egcd.g !== 1n) {
-        throw new RangeError(`${a.toString()} does not have inverse modulo ${n.toString()}`);
-    }
-    else {
-        return toZn(egcd.x, n);
-    }
-}
-
-function modPow(b, e, n) {
-    if (typeof b === 'number')
-        b = BigInt(b);
-    if (typeof e === 'number')
-        e = BigInt(e);
-    if (typeof n === 'number')
-        n = BigInt(n);
-    if (n <= 0n) {
-        throw new RangeError('n must be > 0');
-    }
-    else if (n === 1n) {
-        return 0n;
-    }
-    b = toZn(b, n);
-    if (e < 0n) {
-        return modInv(modPow(b, abs(e), n), n);
-    }
-    let r = 1n;
-    while (e > 0) {
-        if ((e % 2n) === 1n) {
-            r = r * b % n;
-        }
-        e = e / 2n;
-        b = b ** 2n % n;
-    }
-    return r;
-}
+function n(n){return n>=0?n:-n}function t(n){if("number"==typeof n&&(n=BigInt(n)),1n===n)return 1;let t=1;do{t++;}while((n>>=1n)>1n);return t}function r(n,t){if("number"==typeof n&&(n=BigInt(n)),"number"==typeof t&&(t=BigInt(t)),n<=0n||t<=0n)throw new RangeError("a and b MUST be > 0");let r=0n,e=1n,o=1n,u=0n;for(;0n!==n;){const i=t/n,f=t%n,g=r-o*i,b=e-u*i;t=n,n=f,r=o,e=u,o=g,u=b;}return {g:t,x:r,y:e}}function e(t,r){let e="number"==typeof t?BigInt(n(t)):n(t),o="number"==typeof r?BigInt(n(r)):n(r);if(0n===e)return o;if(0n===o)return e;let u=0n;for(;0n===(1n&(e|o));)e>>=1n,o>>=1n,u++;for(;0n===(1n&e);)e>>=1n;do{for(;0n===(1n&o);)o>>=1n;if(e>o){const n=e;e=o,o=n;}o-=e;}while(0n!==o);return e<<u}function o(t,r){return "number"==typeof t&&(t=BigInt(t)),"number"==typeof r&&(r=BigInt(r)),0n===t&&0n===r?BigInt(0):n(t/e(t,r)*r)}function u(n,t){return n>=t?n:t}function i(n,t){return n>=t?t:n}function f(n,t){if("number"==typeof n&&(n=BigInt(n)),"number"==typeof t&&(t=BigInt(t)),t<=0n)throw new RangeError("n must be > 0");const r=n%t;return r<0n?r+t:r}function g(n,t){const e=r(f(n,t),t);if(1n!==e.g)throw new RangeError(`${n.toString()} does not have inverse modulo ${t.toString()}`);return f(e.x,t)}function b(t,r,e){if("number"==typeof t&&(t=BigInt(t)),"number"==typeof r&&(r=BigInt(r)),"number"==typeof e&&(e=BigInt(e)),e<=0n)throw new RangeError("n must be > 0");if(1n===e)return 0n;if(t=f(t,e),r<0n)return g(b(t,n(r),e),e);let o=1n;for(;r>0;)r%2n===1n&&(o=o*t%e),r/=2n,t=t**2n%e;return o}
 
 function fromBuffer(buf) {
     let ret = 0n;
@@ -233,7 +90,7 @@ function randBetween(max, min = 1n) {
     if (max <= min)
         throw new RangeError('Arguments MUST be: max > min');
     const interval = max - min;
-    const bitLen = bitLength(interval);
+    const bitLen = t(interval);
     let rnd;
     do {
         const buf = randBitsSync(bitLen);
@@ -555,13 +412,13 @@ function _isProbablyPrime(w, iterations) {
     }
     const m = d / (2n ** a);
     do {
-        const b = randBetween(d, 2n);
-        let z = modPow(b, m, w);
+        const b$1 = randBetween(d, 2n);
+        let z = b(b$1, m, w);
         if (z === 1n || z === d)
             continue;
         let j = 1;
         while (j < a) {
-            z = modPow(z, 2n, w);
+            z = b(z, 2n, w);
             if (z === d)
                 break;
             if (z === 1n)
@@ -576,15 +433,15 @@ function _isProbablyPrime(w, iterations) {
 function _isProbablyPrimeWorkerUrl() {
     let workerCode = `
   'use strict';
-  const ${eGcd.name} = ${eGcd.toString()};
-  const ${modInv.name} = ${modInv.toString()};
-  const ${modPow.name} = ${modPow.toString()};
-  const ${toZn.name} = ${toZn.toString()};
+  const ${r.name} = ${r.toString()};
+  const ${g.name} = ${g.toString()};
+  const ${b.name} = ${b.toString()};
+  const ${f.name} = ${f.toString()};
   const ${randBitsSync.name} = ${randBitsSync.toString()};
   const ${randBytesSync.name} = ${randBytesSync.toString()};
   const ${randBetween.name} = ${randBetween.toString()};
   const ${isProbablyPrime.name} = ${_isProbablyPrime.toString()};
-  ${bitLength.toString()};
+  ${t.toString()};
   ${fromBuffer.toString()};`;
     workerCode += `
   onmessage = async function(msg) {
@@ -673,4 +530,4 @@ function primeSync(bitLength, iterations = 16) {
     return rnd;
 }
 
-export { abs, bitLength, eGcd, gcd, isProbablyPrime, lcm, max, min, modInv, modPow, prime, primeSync, randBetween, randBits, randBitsSync, randBytes, randBytesSync, toZn };
+export { n as abs, t as bitLength, r as eGcd, e as gcd, isProbablyPrime, o as lcm, u as max, i as min, g as modInv, b as modPow, prime, primeSync, randBetween, randBits, randBitsSync, randBytes, randBytesSync, f as toZn };

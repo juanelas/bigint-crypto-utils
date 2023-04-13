@@ -2,7 +2,7 @@
 const fs = require('fs')
 const path = require('path')
 const glob = require('glob')
-const minimatch = require('minimatch')
+const minimatch = require('minimatch').minimatch
 const rimraf = require('rimraf')
 const runScript = require('../run-script.cjs')
 

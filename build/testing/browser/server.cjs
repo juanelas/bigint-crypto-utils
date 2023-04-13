@@ -61,23 +61,19 @@ async function buildTests (testFiles) {
     plugins: [
       multi(),
       replace({
-        '#pkg': `/${name}.esm.js`,
-        delimiters: ['', ''],
-        preventAssignment: true
-      }),
-      replace({
         IS_BROWSER: true,
         _MODULE_TYPE: "'ESM'",
         preventAssignment: true
       }),
       typescriptPlugin(tsBundleOptions),
-      resolve({
-        browser: true,
-        exportConditions: ['browser', 'default'],
-        mainFields: ['browser', 'module', 'main']
-      }),
-      commonjs(),
-      json()
+      commonjs({ extensions: ['.js', '.cjs', '.jsx', '.cjsx'] }),
+      json(),
+      resolve({ browser: true }),
+      replace({
+        '#pkg': `/${name}.esm.js`,
+        delimiters: ['', ''],
+        preventAssignment: true
+      })
     ],
     external: [`/${name}.esm.js`]
   }

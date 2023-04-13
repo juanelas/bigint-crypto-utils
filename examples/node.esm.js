@@ -1,4 +1,4 @@
-const bigintCryptoUtils = await import('../dist/esm/index.node.js')
+import * as bigintCryptoUtils from '#pkg'
 // const bigintCryptoUtils = require('bigint-crypto-utils')
 
 /* A BigInt with value 666 can be declared calling the bigint constructor as
