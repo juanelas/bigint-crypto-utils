@@ -1,4 +1,4 @@
-# bigint-crypto-utils - v3.2.2
+# bigint-crypto-utils - v3.3.0
 
 ## Table of contents
 
