@@ -1,4 +1,4 @@
-export { abs, bitLength, eGcd, gcd, lcm, max, min, modInv, modPow, toZn } from 'bigint-mod-arith'
+export * from 'bigint-mod-arith'
 
 export { isProbablyPrime } from './isProbablyPrime.js'
 export { prime, primeSync } from './prime.js'

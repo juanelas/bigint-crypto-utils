@@ -2,18 +2,32 @@
 
 ## Table of contents
 
+### Interfaces
+
+- [Egcd](interfaces/Egcd.md)
+
+### Type Aliases
+
+- [PrimeFactor](API.md#primefactor)
+- [PrimeFactorization](API.md#primefactorization)
+- [PrimePower](API.md#primepower)
+
 ### Functions
 
 - [abs](API.md#abs)
 - [bitLength](API.md#bitlength)
+- [crt](API.md#crt)
 - [eGcd](API.md#egcd)
 - [gcd](API.md#gcd)
 - [isProbablyPrime](API.md#isprobablyprime)
 - [lcm](API.md#lcm)
 - [max](API.md#max)
 - [min](API.md#min)
+- [modAdd](API.md#modadd)
 - [modInv](API.md#modinv)
+- [modMultiply](API.md#modmultiply)
 - [modPow](API.md#modpow)
+- [phi](API.md#phi)
 - [prime](API.md#prime)
 - [primeSync](API.md#primesync)
 - [randBetween](API.md#randbetween)
@@ -22,6 +36,24 @@
 - [randBytes](API.md#randbytes)
 - [randBytesSync](API.md#randbytessync)
 - [toZn](API.md#tozn)
+
+## Type Aliases
+
+### PrimeFactor
+
+Ƭ **PrimeFactor**: `number` \| `bigint` \| [`PrimePower`](API.md#primepower)
+
+___
+
+### PrimeFactorization
+
+Ƭ **PrimeFactorization**: [`bigint`, `bigint`][]
+
+___
+
+### PrimePower
+
+Ƭ **PrimePower**: [`number` \| `bigint`, `number` \| `bigint`]
 
 ## Functions
 
@@ -65,9 +97,35 @@ The bit length
 
 ___
 
+### crt
+
+▸ **crt**(`remainders`, `modulos`, `modulo?`): `bigint`
+
+Chinese remainder theorem states that if one knows the remainders of the Euclidean division of an integer n by several integers, then one can determine uniquely the remainder of the division of n by the product of these integers, under the condition that the divisors are pairwise coprime (no two divisors share a common factor other than 1). Provided that n_i are pairwise coprime, and a_i any integers, this function returns a solution for the following system of equations:
+   x ≡ a_1 mod n_1
+   x ≡ a_2 mod n_2
+   ⋮
+   x ≡ a_k mod n_k
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `remainders` | `bigint`[] | the array of remainders a_i. For example [17n, 243n, 344n] |
+| `modulos` | `bigint`[] | the array of modulos n_i. For example [769n, 2017n, 47701n] |
+| `modulo?` | `bigint` | the product of all modulos. Provided here just to save some operations if it is already known |
+
+#### Returns
+
+`bigint`
+
+x
+
+___
+
 ### eGcd
 
-▸ **eGcd**(`a`, `b`): `Egcd`
+▸ **eGcd**(`a`, `b`): [`Egcd`](interfaces/Egcd.md)
 
 An iterative implementation of the extended euclidean algorithm or extended greatest common divisor algorithm.
 Take positive integers a, b as input, and return a triple (g, x, y), such that ax + by = g = gcd(a, b).
@@ -85,7 +143,7 @@ RangeError if a or b are <= 0
 
 #### Returns
 
-`Egcd`
+[`Egcd`](interfaces/Egcd.md)
 
 A triple (g, x, y), such that ax + by = g = gcd(a, b).
 
@@ -202,6 +260,27 @@ Minimum of numbers a and b
 
 ___
 
+### modAdd
+
+▸ **modAdd**(`addends`, `n`): `bigint`
+
+Modular addition of (a_1 + ... + a_r) mod n
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `addends` | (`number` \| `bigint`)[] | an array of the numbers a_i to add. For example [3, 12353251235n, 1243, -12341232545990n] |
+| `n` | `number` \| `bigint` | the modulo |
+
+#### Returns
+
+`bigint`
+
+The smallest positive integer that is congruent with (a_1 + ... + a_r) mod n
+
+___
+
 ### modInv
 
 ▸ **modInv**(`a`, `n`): `bigint`
@@ -227,6 +306,28 @@ The inverse modulo n
 
 ___
 
+### modMultiply
+
+▸ **modMultiply**(`factors`, `n`): `bigint`
+
+Modular addition of (a_1 * ... * a_r) mod n
+ *
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `factors` | (`number` \| `bigint`)[] | an array of the numbers a_i to multiply. For example [3, 12353251235n, 1243, -12341232545990n] * |
+| `n` | `number` \| `bigint` | the modulo * |
+
+#### Returns
+
+`bigint`
+
+The smallest positive integer that is congruent with (a_1 * ... * a_r) mod n
+
+___
+
 ### modPow
 
 ▸ **modPow**(`b`, `e`, `n`, `primeFactorization?`): `bigint`
@@ -244,13 +345,33 @@ RangeError if n <= 0
 | `b` | `number` \| `bigint` | base |
 | `e` | `number` \| `bigint` | exponent |
 | `n` | `number` \| `bigint` | modulo |
-| `primeFactorization?` | `PrimeFactor`[] | an array of the prime factors, for example [5n, 5n, 13n, 27n], or prime powers as [p, k], for instance [[5, 2], [13, 1], [27, 1]]. If the prime factorization is provided the chinese remainder theorem is used to greatly speed up the exponentiation. |
+| `primeFactorization?` | [`PrimeFactor`](API.md#primefactor)[] | an array of the prime factors, for example [5n, 5n, 13n, 27n], or prime powers as [p, k], for instance [[5, 2], [13, 1], [27, 1]]. If the prime factorization is provided the chinese remainder theorem is used to greatly speed up the exponentiation. |
 
 #### Returns
 
 `bigint`
 
 b**e mod n
+
+___
+
+### phi
+
+▸ **phi**(`primeFactorization`): `bigint`
+
+A function that computes the Euler's totien function of a number n, whose prime power factorization is known
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `primeFactorization` | [`PrimeFactorization`](API.md#primefactorization) | an array of arrays containing the prime power factorization of a number n. For example, for n = (p1**k1)*(p2**k2)*...*(pr**kr), one should provide [[p1, k1], [p2, k2], ... , [pr, kr]] |
+
+#### Returns
+
+`bigint`
+
+phi((p1**k1)*(p2**k2)*...*(pr**kr))
 
 ___
 

@@ -16,6 +16,20 @@ declare function abs(a: number | bigint): number | bigint;
  */
 declare function bitLength(a: number | bigint): number;
 
+/**
+ * Chinese remainder theorem states that if one knows the remainders of the Euclidean division of an integer n by several integers, then one can determine uniquely the remainder of the division of n by the product of these integers, under the condition that the divisors are pairwise coprime (no two divisors share a common factor other than 1). Provided that n_i are pairwise coprime, and a_i any integers, this function returns a solution for the following system of equations:
+    x ≡ a_1 mod n_1
+    x ≡ a_2 mod n_2
+    ⋮
+    x ≡ a_k mod n_k
+ *
+ * @param remainders the array of remainders a_i. For example [17n, 243n, 344n]
+ * @param modulos the array of modulos n_i. For example [769n, 2017n, 47701n]
+ * @param modulo the product of all modulos. Provided here just to save some operations if it is already known
+ * @returns x
+ */
+declare function crt(remainders: bigint[], modulos: bigint[], modulo?: bigint): bigint;
+
 interface Egcd {
     g: bigint;
     x: bigint;
@@ -74,6 +88,14 @@ declare function max(a: number | bigint, b: number | bigint): number | bigint;
 declare function min(a: number | bigint, b: number | bigint): number | bigint;
 
 /**
+ * Modular addition of (a_1 + ... + a_r) mod n
+ * @param addends an array of the numbers a_i to add. For example [3, 12353251235n, 1243, -12341232545990n]
+ * @param n the modulo
+ * @returns The smallest positive integer that is congruent with (a_1 + ... + a_r) mod n
+ */
+declare function modAdd(addends: Array<number | bigint>, n: number | bigint): bigint;
+
+/**
  * Modular inverse.
  *
  * @param a The number to find an inverse for
@@ -84,6 +106,14 @@ declare function min(a: number | bigint, b: number | bigint): number | bigint;
  * @returns The inverse modulo n
  */
 declare function modInv(a: number | bigint, n: number | bigint): bigint;
+
+/**
+* Modular addition of (a_1 * ... * a_r) mod n
+ * @param factors an array of the numbers a_i to multiply. For example [3, 12353251235n, 1243, -12341232545990n]
+ * @param n the modulo
+ * @returns The smallest positive integer that is congruent with (a_1 * ... * a_r) mod n
+ */
+declare function modMultiply(factors: Array<number | bigint>, n: number | bigint): bigint;
 
 type PrimePower = [number | bigint, number | bigint];
 type PrimeFactor = number | bigint | PrimePower;
@@ -100,6 +130,15 @@ type PrimeFactor = number | bigint | PrimePower;
  * @returns b**e mod n
  */
 declare function modPow(b: number | bigint, e: number | bigint, n: number | bigint, primeFactorization?: PrimeFactor[]): bigint;
+
+type PrimeFactorization = Array<[bigint, bigint]>;
+/**
+ * A function that computes the Euler's totien function of a number n, whose prime power factorization is known
+ *
+ * @param primeFactorization an array of arrays containing the prime power factorization of a number n. For example, for n = (p1**k1)*(p2**k2)*...*(pr**kr), one should provide [[p1, k1], [p2, k2], ... , [pr, kr]]
+ * @returns phi((p1**k1)*(p2**k2)*...*(pr**kr))
+ */
+declare function phi(primeFactorization: PrimeFactorization): bigint;
 
 /**
  * Finds the smallest positive element that is congruent to a in modulo n
@@ -215,4 +254,4 @@ declare function randBytes(byteLength: number, forceLength?: boolean): Promise<U
  */
 declare function randBytesSync(byteLength: number, forceLength?: boolean): Uint8Array | Buffer;
 
-export { abs, bitLength, eGcd, gcd, isProbablyPrime, lcm, max, min, modInv, modPow, prime, primeSync, randBetween, randBits, randBitsSync, randBytes, randBytesSync, toZn };
+export { Egcd, PrimeFactor, PrimeFactorization, PrimePower, abs, bitLength, crt, eGcd, gcd, isProbablyPrime, lcm, max, min, modAdd, modInv, modMultiply, modPow, phi, prime, primeSync, randBetween, randBits, randBitsSync, randBytes, randBytesSync, toZn };
