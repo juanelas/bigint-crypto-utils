@@ -29,6 +29,8 @@
 
 ▸ **abs**(`a`): `number` \| `bigint`
 
+Absolute value. abs(a)==a if a>=0. abs(a)==-a if a<0
+
 #### Parameters
 
 | Name | Type |
@@ -39,15 +41,15 @@
 
 `number` \| `bigint`
 
-#### Defined in
-
-node_modules/bigint-mod-arith/dist/index.d.ts:1
+The absolute value of a
 
 ___
 
 ### bitLength
 
 ▸ **bitLength**(`a`): `number`
+
+Returns the (minimum) length of a number expressed in bits.
 
 #### Parameters
 
@@ -59,15 +61,20 @@ ___
 
 `number`
 
-#### Defined in
-
-node_modules/bigint-mod-arith/dist/index.d.ts:3
+The bit length
 
 ___
 
 ### eGcd
 
 ▸ **eGcd**(`a`, `b`): `Egcd`
+
+An iterative implementation of the extended euclidean algorithm or extended greatest common divisor algorithm.
+Take positive integers a, b as input, and return a triple (g, x, y), such that ax + by = g = gcd(a, b).
+
+**`Throws`**
+
+RangeError if a or b are <= 0
 
 #### Parameters
 
@@ -80,15 +87,15 @@ ___
 
 `Egcd`
 
-#### Defined in
-
-node_modules/bigint-mod-arith/dist/index.d.ts:10
+A triple (g, x, y), such that ax + by = g = gcd(a, b).
 
 ___
 
 ### gcd
 
 ▸ **gcd**(`a`, `b`): `bigint`
+
+Greatest common divisor of two integers based on the iterative binary algorithm.
 
 #### Parameters
 
@@ -101,9 +108,7 @@ ___
 
 `bigint`
 
-#### Defined in
-
-node_modules/bigint-mod-arith/dist/index.d.ts:12
+The greatest common divisor of a and b
 
 ___
 
@@ -132,15 +137,13 @@ RangeError if w<0
 
 A promise that resolves to a boolean that is either true (a probably prime number) or false (definitely composite)
 
-#### Defined in
-
-[src/ts/isProbablyPrime.ts:20](https://github.com/juanelas/bigint-crypto-utils/blob/f4ea3d5/src/ts/isProbablyPrime.ts#L20)
-
 ___
 
 ### lcm
 
 ▸ **lcm**(`a`, `b`): `bigint`
+
+The least common multiple computed as abs(a*b)/gcd(a,b)
 
 #### Parameters
 
@@ -153,9 +156,7 @@ ___
 
 `bigint`
 
-#### Defined in
-
-node_modules/bigint-mod-arith/dist/index.d.ts:14
+The least common multiple of a and b
 
 ___
 
@@ -163,6 +164,8 @@ ___
 
 ▸ **max**(`a`, `b`): `number` \| `bigint`
 
+Maximum. max(a,b)==a if a>=b. max(a,b)==b if a<b
+
 #### Parameters
 
 | Name | Type |
@@ -174,9 +177,7 @@ ___
 
 `number` \| `bigint`
 
-#### Defined in
-
-node_modules/bigint-mod-arith/dist/index.d.ts:16
+Maximum of numbers a and b
 
 ___
 
@@ -184,6 +185,8 @@ ___
 
 ▸ **min**(`a`, `b`): `number` \| `bigint`
 
+Minimum. min(a,b)==b if a>=b. min(a,b)==a if a<b
+
 #### Parameters
 
 | Name | Type |
@@ -195,9 +198,7 @@ ___
 
 `number` \| `bigint`
 
-#### Defined in
-
-node_modules/bigint-mod-arith/dist/index.d.ts:18
+Minimum of numbers a and b
 
 ___
 
@@ -205,42 +206,51 @@ ___
 
 ▸ **modInv**(`a`, `n`): `bigint`
 
+Modular inverse.
+
+**`Throws`**
+
+RangeError if a does not have inverse modulo n
+
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `a` | `number` \| `bigint` |
-| `n` | `number` \| `bigint` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `a` | `number` \| `bigint` | The number to find an inverse for |
+| `n` | `number` \| `bigint` | The modulo |
 
 #### Returns
 
 `bigint`
 
-#### Defined in
-
-node_modules/bigint-mod-arith/dist/index.d.ts:20
+The inverse modulo n
 
 ___
 
 ### modPow
 
-▸ **modPow**(`b`, `e`, `n`): `bigint`
+▸ **modPow**(`b`, `e`, `n`, `primeFactorization?`): `bigint`
+
+Modular exponentiation b**e mod n. Currently using the right-to-left binary method if the prime factorization is not provided, or the chinese remainder theorem otherwise.
+
+**`Throws`**
+
+RangeError if n <= 0
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `b` | `number` \| `bigint` |
-| `e` | `number` \| `bigint` |
-| `n` | `number` \| `bigint` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `b` | `number` \| `bigint` | base |
+| `e` | `number` \| `bigint` | exponent |
+| `n` | `number` \| `bigint` | modulo |
+| `primeFactorization?` | `PrimeFactor`[] | an array of the prime factors, for example [5n, 5n, 13n, 27n], or prime powers as [p, k], for instance [[5, 2], [13, 1], [27, 1]]. If the prime factorization is provided the chinese remainder theorem is used to greatly speed up the exponentiation. |
 
 #### Returns
 
 `bigint`
 
-#### Defined in
-
-node_modules/bigint-mod-arith/dist/index.d.ts:22
+b**e mod n
 
 ___
 
@@ -271,10 +281,6 @@ RangeError if bitLength < 1
 
 A promise that resolves to a bigint probable prime of bitLength bits.
 
-#### Defined in
-
-[src/ts/prime.ts:28](https://github.com/juanelas/bigint-crypto-utils/blob/f4ea3d5/src/ts/prime.ts#L28)
-
 ___
 
 ### primeSync
@@ -301,10 +307,6 @@ RangeError if bitLength < 1
 
 A bigint probable prime of bitLength bits.
 
-#### Defined in
-
-[src/ts/prime.ts:109](https://github.com/juanelas/bigint-crypto-utils/blob/f4ea3d5/src/ts/prime.ts#L109)
-
 ___
 
 ### randBetween
@@ -329,10 +331,6 @@ RangeError if max <= min
 `bigint`
 
 A cryptographically secure random bigint between [min,max]
-
-#### Defined in
-
-[src/ts/randBetween.ts:14](https://github.com/juanelas/bigint-crypto-utils/blob/f4ea3d5/src/ts/randBetween.ts#L14)
 
 ___
 
@@ -359,10 +357,6 @@ RangeError if bitLength < 1
 
 A Promise that resolves to a UInt8Array/Buffer (Browser/Node.js) filled with cryptographically secure random bits
 
-#### Defined in
-
-[src/ts/randBits.ts:13](https://github.com/juanelas/bigint-crypto-utils/blob/f4ea3d5/src/ts/randBits.ts#L13)
-
 ___
 
 ### randBitsSync
@@ -388,10 +382,6 @@ RangeError if bitLength < 1
 
 A Uint8Array/Buffer (Browser/Node.js) filled with cryptographically secure random bits
 
-#### Defined in
-
-[src/ts/randBits.ts:43](https://github.com/juanelas/bigint-crypto-utils/blob/f4ea3d5/src/ts/randBits.ts#L43)
-
 ___
 
 ### randBytes
@@ -416,10 +406,6 @@ RangeError if byteLength < 1
 `Promise`<`Uint8Array` \| `Buffer`\>
 
 A promise that resolves to a UInt8Array/Buffer (Browser/Node.js) filled with cryptographically secure random bytes
-
-#### Defined in
-
-[src/ts/randBytes.ts:13](https://github.com/juanelas/bigint-crypto-utils/blob/f4ea3d5/src/ts/randBytes.ts#L13)
 
 ___
 
@@ -447,27 +433,31 @@ RangeError if byteLength < 1
 
 A UInt8Array/Buffer (Browser/Node.js) filled with cryptographically secure random bytes
 
-#### Defined in
-
-[src/ts/randBytes.ts:54](https://github.com/juanelas/bigint-crypto-utils/blob/f4ea3d5/src/ts/randBytes.ts#L54)
-
 ___
 
 ### toZn
 
 ▸ **toZn**(`a`, `n`): `bigint`
 
+Finds the smallest positive element that is congruent to a in modulo n
+
+**`Remarks`**
+
+a and b must be the same type, either number or bigint
+
+**`Throws`**
+
+RangeError if n <= 0
+
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `a` | `number` \| `bigint` |
-| `n` | `number` \| `bigint` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `a` | `number` \| `bigint` | An integer |
+| `n` | `number` \| `bigint` | The modulo |
 
 #### Returns
 
 `bigint`
 
-#### Defined in
-
-node_modules/bigint-mod-arith/dist/index.d.ts:24
+A bigint with the smallest positive representation of a modulo n

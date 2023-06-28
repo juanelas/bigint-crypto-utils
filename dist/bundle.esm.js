@@ -1,4 +1,4 @@
-function n(n){return n>=0?n:-n}function t(n){if("number"==typeof n&&(n=BigInt(n)),1n===n)return 1;let t=1;do{t++;}while((n>>=1n)>1n);return t}function r(n,t){if("number"==typeof n&&(n=BigInt(n)),"number"==typeof t&&(t=BigInt(t)),n<=0n||t<=0n)throw new RangeError("a and b MUST be > 0");let r=0n,e=1n,o=1n,u=0n;for(;0n!==n;){const i=t/n,f=t%n,g=r-o*i,b=e-u*i;t=n,n=f,r=o,e=u,o=g,u=b;}return {g:t,x:r,y:e}}function e(t,r){let e="number"==typeof t?BigInt(n(t)):n(t),o="number"==typeof r?BigInt(n(r)):n(r);if(0n===e)return o;if(0n===o)return e;let u=0n;for(;0n===(1n&(e|o));)e>>=1n,o>>=1n,u++;for(;0n===(1n&e);)e>>=1n;do{for(;0n===(1n&o);)o>>=1n;if(e>o){const n=e;e=o,o=n;}o-=e;}while(0n!==o);return e<<u}function o(t,r){return "number"==typeof t&&(t=BigInt(t)),"number"==typeof r&&(r=BigInt(r)),0n===t&&0n===r?BigInt(0):n(t/e(t,r)*r)}function u(n,t){return n>=t?n:t}function i(n,t){return n>=t?t:n}function f(n,t){if("number"==typeof n&&(n=BigInt(n)),"number"==typeof t&&(t=BigInt(t)),t<=0n)throw new RangeError("n must be > 0");const r=n%t;return r<0n?r+t:r}function g(n,t){const e=r(f(n,t),t);if(1n!==e.g)throw new RangeError(`${n.toString()} does not have inverse modulo ${t.toString()}`);return f(e.x,t)}function b(t,r,e){if("number"==typeof t&&(t=BigInt(t)),"number"==typeof r&&(r=BigInt(r)),"number"==typeof e&&(e=BigInt(e)),e<=0n)throw new RangeError("n must be > 0");if(1n===e)return 0n;if(t=f(t,e),r<0n)return g(b(t,n(r),e),e);let o=1n;for(;r>0;)r%2n===1n&&(o=o*t%e),r/=2n,t=t**2n%e;return o}
+function n(n){return n>=0?n:-n}function t(n){if("number"==typeof n&&(n=BigInt(n)),1n===n)return 1;let t=1;do{t++;}while((n>>=1n)>1n);return t}function r(n,t){if("number"==typeof n&&(n=BigInt(n)),"number"==typeof t&&(t=BigInt(t)),n<=0n||t<=0n)throw new RangeError("a and b MUST be > 0");let r=0n,e=1n,o=1n,i=0n;for(;0n!==n;){const u=t/n,f=t%n,g=r-o*u,c=e-i*u;t=n,n=f,r=o,e=i,o=g,i=c;}return {g:t,x:r,y:e}}function e(n,t){if("number"==typeof n&&(n=BigInt(n)),"number"==typeof t&&(t=BigInt(t)),t<=0n)throw new RangeError("n must be > 0");const r=n%t;return r<0n?r+t:r}function o(n,t){const o=r(e(n,t),t);if(1n!==o.g)throw new RangeError(`${n.toString()} does not have inverse modulo ${t.toString()}`);return e(o.x,t)}function i(n,t,r){if(n.length!==t.length)throw new RangeError("The remainders and modulos arrays should have the same length");const i=r??t.reduce(((n,t)=>n*t),1n);return t.reduce(((t,r,u)=>{const f=i/r;return e(t+f*o(f,r)%i*n[u]%i,i)}),0n)}function u(t,r){let e="number"==typeof t?BigInt(n(t)):n(t),o="number"==typeof r?BigInt(n(r)):n(r);if(0n===e)return o;if(0n===o)return e;let i=0n;for(;0n===(1n&(e|o));)e>>=1n,o>>=1n,i++;for(;0n===(1n&e);)e>>=1n;do{for(;0n===(1n&o);)o>>=1n;if(e>o){const n=e;e=o,o=n;}o-=e;}while(0n!==o);return e<<i}function f(t,r){return "number"==typeof t&&(t=BigInt(t)),"number"==typeof r&&(r=BigInt(r)),0n===t&&0n===r?BigInt(0):n(t/u(t,r)*r)}function g(n,t){return n>=t?n:t}function c(n,t){return n>=t?t:n}function a(n){return n.map((n=>n[0]**(n[1]-1n)*(n[0]-1n))).reduce(((n,t)=>t*n),1n)}function s(t,r,u,f){if("number"==typeof t&&(t=BigInt(t)),"number"==typeof r&&(r=BigInt(r)),"number"==typeof u&&(u=BigInt(u)),u<=0n)throw new RangeError("n must be > 0");if(1n===u)return 0n;if(t=e(t,u),r<0n)return o(s(t,n(r),u,f),u);if(void 0!==f)return function(n,t,r,e){const o=e.map((n=>n[0]**n[1])),u=e.map((n=>a([n]))),f=u.map(((r,e)=>s(n,t%r,o[e])));return i(f,o,r)}(t,r,u,function(n){const t={};return n.forEach((n=>{if("bigint"==typeof n||"number"==typeof n){const r=String(n);void 0===t[r]?t[r]={p:BigInt(n),k:1n}:t[r].k+=1n;}else {const r=String(n[0]);void 0===t[r]?t[r]={p:BigInt(n[0]),k:BigInt(n[1])}:t[r].k+=BigInt(n[1]);}})),Object.values(t).map((n=>[n.p,n.k]))}(f));let g=1n;for(;r>0;)r%2n===1n&&(g=g*t%u),r/=2n,t=t**2n%u;return g}
 
 function fromBuffer(buf) {
     let ret = 0n;
@@ -412,13 +412,13 @@ function _isProbablyPrime(w, iterations) {
     }
     const m = d / (2n ** a);
     do {
-        const b$1 = randBetween(d, 2n);
-        let z = b(b$1, m, w);
+        const b = randBetween(d, 2n);
+        let z = s(b, m, w);
         if (z === 1n || z === d)
             continue;
         let j = 1;
         while (j < a) {
-            z = b(z, 2n, w);
+            z = s(z, 2n, w);
             if (z === d)
                 break;
             if (z === 1n)
@@ -434,9 +434,9 @@ function _isProbablyPrimeWorkerUrl() {
     let workerCode = `
   'use strict';
   const ${r.name} = ${r.toString()};
-  const ${g.name} = ${g.toString()};
-  const ${b.name} = ${b.toString()};
-  const ${f.name} = ${f.toString()};
+  const ${o.name} = ${o.toString()};
+  const ${s.name} = ${s.toString()};
+  const ${e.name} = ${e.toString()};
   const ${randBitsSync.name} = ${randBitsSync.toString()};
   const ${randBytesSync.name} = ${randBytesSync.toString()};
   const ${randBetween.name} = ${randBetween.toString()};
@@ -530,4 +530,4 @@ function primeSync(bitLength, iterations = 16) {
     return rnd;
 }
 
-export { n as abs, t as bitLength, r as eGcd, e as gcd, isProbablyPrime, o as lcm, u as max, i as min, g as modInv, b as modPow, prime, primeSync, randBetween, randBits, randBitsSync, randBytes, randBytesSync, f as toZn };
+export { n as abs, t as bitLength, r as eGcd, u as gcd, isProbablyPrime, f as lcm, g as max, c as min, o as modInv, s as modPow, prime, primeSync, randBetween, randBits, randBitsSync, randBytes, randBytesSync, e as toZn };
